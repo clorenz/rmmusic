@@ -1,0 +1,12 @@
+rmmusic shall be the successor to wmmusic, a web based music inventory system.
+
+The goal of rmmusic is to make it a proof of concept for clean and modern
+development, using the following tools, architecture paradigms and services:
+
+- git
+- gradle
+- spring
+- REST with HATEOAS
+- junit tests
+- cucumber-jvm tests
+- Frontend: Probably angular.js
