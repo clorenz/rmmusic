@@ -2,6 +2,7 @@ package de.christophlorenz.wmmusic.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.hateoas.ResourceSupport;
 
 import java.util.Date;
