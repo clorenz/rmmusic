@@ -1,4 +1,4 @@
-package de.christophlorenz.wmmusic.model;
+package de.christophlorenz.wmmusic.rest;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * Created by clorenz on 30.04.15.
  */
-public class Artist extends ResourceSupport {
+public class ArtistResource extends ResourceSupport {
 
     private final String name;
     private final String print;
@@ -21,7 +21,7 @@ public class Artist extends ResourceSupport {
     private final String remarks;
 
     @JsonCreator
-    public Artist(@JsonProperty("id") long id,
+    public ArtistResource(@JsonProperty("id") long id,
                   @JsonProperty("name") String name,
                   @JsonProperty("print") String print,
                   @JsonProperty("date") String date,
