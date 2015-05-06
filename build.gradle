@@ -40,6 +40,7 @@ dependencies {
     compile("org.springframework.hateoas:spring-hateoas")
     compile("org.springframework.plugin:spring-plugin-core:1.1.0.RELEASE")
     compile("com.jayway.jsonpath:json-path:0.9.1")
+    compile("org.springframework.data:spring-data-jpa")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.hibernate:hibernate-core:$hibernate_version")
     compile("org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final")

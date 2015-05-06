@@ -102,6 +102,7 @@
     <orderEntry type="library" exported="" name="Gradle: com.github.fge:msg-simple:1.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.google.guava:guava:16.0.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.github.fge:btf:1.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.h2database:h2:1.4.185" level="project" />
   </component>
   <component name="org.twodividedbyzero.idea.findbugs">
     <option name="_basePreferences">
