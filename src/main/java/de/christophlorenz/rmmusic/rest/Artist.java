@@ -1,18 +1,18 @@
-package de.christophlorenz.wmmusic.rest;
-
-import org.springframework.hateoas.Identifiable;
+package de.christophlorenz.rmmusic.rest;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by clorenz on 05.05.15.
  */
 @Entity
-@Table(name="artist")
+@Table(name="ARTIST")
 public class Artist {
 
     @Id
@@ -22,11 +22,12 @@ public class Artist {
 
     private String name;
     private String print;
-    private String date;
+    private Calendar birthday;
     private String country;
     private String location;
     private String url;
     private String remarks;
+    private Date timestamp;
 
 
     public String getName() {
@@ -45,12 +46,12 @@ public class Artist {
         this.print = print;
     }
 
-    public String getDate() {
-        return date;
+    public Calendar getBirthday() {
+        return birthday;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setBirthday(Calendar birthday) {
+        this.birthday = birthday;
     }
 
     public String getCountry() {
@@ -83,5 +84,17 @@ public class Artist {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public long getId() {
+        return id;
     }
 }

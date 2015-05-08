@@ -1,4 +1,4 @@
-package de.christophlorenz.wmmusic.rest;
+package de.christophlorenz.rmmusic.rest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

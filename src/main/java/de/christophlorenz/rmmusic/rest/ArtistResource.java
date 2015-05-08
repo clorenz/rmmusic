@@ -1,11 +1,8 @@
-package de.christophlorenz.wmmusic.rest;
+package de.christophlorenz.rmmusic.rest;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.hateoas.ResourceSupport;
-
-import java.util.Date;
 
 /**
  * Created by clorenz on 30.04.15.

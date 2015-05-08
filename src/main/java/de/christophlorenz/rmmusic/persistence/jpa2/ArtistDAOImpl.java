@@ -1,7 +1,7 @@
-package de.christophlorenz.wmmusic.persistence.jpa2;
+package de.christophlorenz.rmmusic.persistence.jpa2;
 
-import de.christophlorenz.wmmusic.dao.ArtistDAO;
-import de.christophlorenz.wmmusic.rest.Artist;
+import de.christophlorenz.rmmusic.dao.ArtistDAO;
+import de.christophlorenz.rmmusic.rest.Artist;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;

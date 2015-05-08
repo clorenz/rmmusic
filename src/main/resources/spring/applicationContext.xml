@@ -9,7 +9,7 @@
                 http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd">
 
     <!-- Directory to scan for repository classes -->
-    <jpa:repositories base-package="de.christophlorenz.rmmusic" />
+    <jpa:repositories base-package="de.christophlorenz.rmmusic.rest" />
 
     <context:property-placeholder location="classpath:application.properties" ignore-resource-not-found="false"/>
     <bean id="dataSource"
@@ -32,6 +32,7 @@
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="persistenceUnitName" value="jpaData" />
+        <property name="packagesToScan" value="de.christophlorenz.rmmusic.rest" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
         </property>

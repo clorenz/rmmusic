@@ -1,4 +1,4 @@
-package de.christophlorenz.wmmusic.rest;
+package de.christophlorenz.rmmusic.rest;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
@@ -9,8 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by clorenz on 30.04.15.

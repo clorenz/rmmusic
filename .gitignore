@@ -1,5 +1,7 @@
 .gradle/
 build/
 .idea/
+rmmusic/
+derby.log
 gradle/wrapper/gradle-wrapper.jar
 

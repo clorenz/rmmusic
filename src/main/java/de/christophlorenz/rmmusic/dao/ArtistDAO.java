@@ -1,7 +1,7 @@
-package de.christophlorenz.wmmusic.dao;
+package de.christophlorenz.rmmusic.dao;
 
 
-import de.christophlorenz.wmmusic.rest.Artist;
+import de.christophlorenz.rmmusic.rest.Artist;
 
 import java.util.List;
 
