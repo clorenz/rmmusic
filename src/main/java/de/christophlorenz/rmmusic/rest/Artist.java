@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -22,11 +24,13 @@ public class Artist {
 
     private String name;
     private String print;
-    private Calendar birthday;
+    @Temporal(TemporalType.DATE)
+    private Date birthday;
     private String country;
     private String location;
     private String url;
     private String remarks;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
 
 
@@ -46,11 +50,11 @@ public class Artist {
         this.print = print;
     }
 
-    public Calendar getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Calendar birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 

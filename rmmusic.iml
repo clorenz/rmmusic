@@ -106,6 +106,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: commons-collections:commons-collections:3.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.github.springtestdbunit:spring-test-dbunit:1.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.apache.derby:derby:10.11.1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.springframework:spring-test-mvc:1.0.0.M2" level="project" />
   </component>
   <component name="org.twodividedbyzero.idea.findbugs">
     <option name="_basePreferences">

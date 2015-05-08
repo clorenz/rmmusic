@@ -26,9 +26,13 @@ targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    maven {
+        url "http://repo.springsource.org/milestone/"
+    }
 }
 
 ext {
+    spring_version="4.1.6.RELEASE"
     hibernate_version = "4.3.9.Final"
     postgresql_version = "9.1-901-1.jdbc4"
 }
@@ -52,7 +56,8 @@ dependencies {
     testCompile("junit:junit:4.11") {
         exclude module: 'org.hamcrest:hamcrest-core'
     }
-    testCompile("org.springframework:spring-test:4.1.6.RELEASE")
+    testCompile("org.springframework:spring-test:$spring_version")
+    testCompile("org.springframework:spring-test-mvc:1.0.0.M2")
     testCompile("com.github.springtestdbunit:spring-test-dbunit:1.2.1")
     testCompile("org.dbunit:dbunit:2.4.9") {
         exclude module: 'junit:junit'
