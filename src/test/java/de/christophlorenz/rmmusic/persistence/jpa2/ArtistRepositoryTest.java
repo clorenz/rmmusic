@@ -1,4 +1,4 @@
-package de.christophlorenz.rmmusic.rest;
+package de.christophlorenz.rmmusic.persistence.jpa2;
 
 import de.christophlorenz.rmmusic.model.Artist;
 import de.christophlorenz.rmmusic.persistence.jpa2.ArtistRepository;
