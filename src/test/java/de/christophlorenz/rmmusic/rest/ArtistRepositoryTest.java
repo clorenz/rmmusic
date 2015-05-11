@@ -1,15 +1,11 @@
 package de.christophlorenz.rmmusic.rest;
 
-import org.apache.naming.java.javaURLContextFactory;
+import de.christophlorenz.rmmusic.model.Artist;
+import de.christophlorenz.rmmusic.persistence.jpa2.ArtistRepository;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -18,8 +14,6 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import java.util.List;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -129,5 +123,19 @@ public class ArtistRepositoryTest {
         assertThat(ret, not(nullValue()));
         assertThat(ret.size(), is(2));
         assertThat(ret.get(0).getId(), is(not(ret.get(1).getId())));
+    }
+
+    @Test
+    public void createAndUpdateModifiesArtist() {
+        Artist artist1 = new Artist();
+        artist1.setName("First artist");
+        artist1 = repository.save(artist1);
+        artist1.setName("Updated artist");
+        repository.save(artist1);
+
+        List<Artist> ret = repository.findAll();
+
+        assertThat(ret.size(), is(1));
+        assertThat(ret.get(0).getName(), is("Updated artist"));
     }
 }

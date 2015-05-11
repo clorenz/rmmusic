@@ -1,7 +1,7 @@
 package de.christophlorenz.rmmusic.dao;
 
 
-import de.christophlorenz.rmmusic.rest.Artist;
+import de.christophlorenz.rmmusic.model.Artist;
 
 import java.util.List;
 

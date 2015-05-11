@@ -16,7 +16,7 @@
                 http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
     <!-- Directory to scan for repository classes -->
-    <jpa:repositories base-package="de.christophlorenz.rmmusic.rest" />
+    <jpa:repositories base-package="de.christophlorenz.rmmusic" />
 
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -30,7 +30,7 @@
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="persistenceUnitName" value="jpaData" />
-        <property name="packagesToScan" value="de.christophlorenz.rmmusic.rest"/>
+        <property name="packagesToScan" value="de.christophlorenz.rmmusic"/>
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
                 <property name="generateDdl" value="true" />
