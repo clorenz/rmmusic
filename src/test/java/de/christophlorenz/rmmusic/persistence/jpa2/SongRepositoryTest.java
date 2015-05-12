@@ -31,57 +31,37 @@ import static org.hamcrest.core.Is.is;
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class })
-public class SongRepositoryTest {
-
-    @Autowired
-    private SongRepository repository;
-
-    @Autowired
-    private ArtistRepository artistRepository;
-
-    @Before
-    public void before() {
-        repository.deleteAll();
-        artistRepository.deleteAll();
-    }
+public class SongRepositoryTest extends BaseRepositoryTest {
 
     @Test(expected = DataIntegrityViolationException.class)
     public void addWithMissingArtistAndTitle() {
         Song song = new Song();
         song.setRelease("S/A");
-        repository.save(song);
+        songRepository.save(song);
     }
 
     @Test(expected = DataIntegrityViolationException.class)
     public void addWithMissingArtist() {
         Song song = new Song();
         song.setTitle("Songtitle");
-        repository.save(song);
+        songRepository.save(song);
     }
 
     @Test(expected = DataIntegrityViolationException.class)
     public void addWithMissingTitle() {
-        Artist artist = new Artist();
-        artist.setName("The Artist");
-        artist = artistRepository.save(artist);
+        Artist artist = createArtist("The Artist");
 
         Song song = new Song();
         song.setArtist(artist);
-        repository.save(song);
+        songRepository.save(song);
     }
 
     @Test
     public void saveAndRetrieveSong() {
-        Artist artist = new Artist();
-        artist.setName("The Artist");
-        artist = artistRepository.save(artist);
+        Artist artist = createArtist("The Artist");
+        Song song = createSong(artist,"Song Title");
 
-        Song song = new Song();
-        song.setArtist(artist);
-        song.setTitle("Song Title");
-        repository.save(song);
-
-        Song ret = repository.findByArtistAndTitle(artist, "Song Title").get(0);
+        Song ret = songRepository.findByArtistAndTitle(artist, "Song Title").get(0);
 
         assertThat(ret, is(not(nullValue())));
         assertThat(ret.getTitle(), is("Song Title"));
@@ -90,21 +70,11 @@ public class SongRepositoryTest {
 
     @Test
     public void saveAndFindFuzzy() {
-        Artist artist = new Artist();
-        artist.setName("The Artist");
-        artist = artistRepository.save(artist);
+        Artist artist = createArtist("The Artist");
+        Song song1 = createSong(artist, "Song Title One");
+        Song song2 = createSong(artist,"Song Title Two");
 
-        Song song1 = new Song();
-        song1.setArtist(artist);
-        song1.setTitle("Song Title One");
-        repository.save(song1);
-
-        Song song2 = new Song();
-        song2.setArtist(artist);
-        song2.setTitle("Song Title Two");
-        repository.save(song2);
-
-        List<Song> ret = repository.findByArtistAndTitleIgnoreCaseContaining(artist, "Song Title");
+        List<Song> ret = songRepository.findByArtistAndTitleIgnoreCaseContaining(artist, "Song Title");
 
         assertThat(ret.size(), is(2));
         assertThat(ret.get(0).getTitle(), is(not(ret.get(1).getTitle())));
@@ -113,21 +83,11 @@ public class SongRepositoryTest {
 
     @Test
     public void saveAndFindAllFuzzy() {
-        Artist artist = new Artist();
-        artist.setName("The Artist");
-        artist = artistRepository.save(artist);
+        Artist artist = createArtist("The Artist");
+        Song song1 = createSong(artist,"Song Title One");
+        Song song2 = createSong(artist,"Song Title Two");
 
-        Song song1 = new Song();
-        song1.setArtist(artist);
-        song1.setTitle("Song Title One");
-        repository.save(song1);
-
-        Song song2 = new Song();
-        song2.setArtist(artist);
-        song2.setTitle("Song Title Two");
-        repository.save(song2);
-
-        List<Song> ret = repository.findByArtistNameIgnoreCaseContainingAndTitleIgnoreCaseContaining("Art", "Song Title");
+        List<Song> ret = songRepository.findByArtistNameIgnoreCaseContainingAndTitleIgnoreCaseContaining("Art", "Song Title");
 
         assertThat(ret.size(), is(2));
         assertThat(ret.get(0).getTitle(), is(not(ret.get(1).getTitle())));
@@ -136,21 +96,11 @@ public class SongRepositoryTest {
 
     @Test
     public void saveAndFindExact() {
-        Artist artist = new Artist();
-        artist.setName("The Artist");
-        artist = artistRepository.save(artist);
+        Artist artist = createArtist("The Artist");
+        Song song1 = createSong(artist,"Song Title One");
+        Song song2 = createSong(artist,"Song Title One Plus Two");
 
-        Song song1 = new Song();
-        song1.setArtist(artist);
-        song1.setTitle("Song Title One");
-        repository.save(song1);
-
-        Song song2 = new Song();
-        song2.setArtist(artist);
-        song2.setTitle("Song Title One plus two");
-        repository.save(song2);
-
-        List<Song> ret = repository.findByArtistAndTitle(artist, "Song Title One");
+        List<Song> ret = songRepository.findByArtistAndTitle(artist, "Song Title One");
 
         assertThat(ret.size(), is(1));
         assertThat(ret.get(0).getTitle(), is("Song Title One"));

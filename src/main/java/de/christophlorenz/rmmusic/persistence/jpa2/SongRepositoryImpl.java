@@ -2,11 +2,11 @@ package de.christophlorenz.rmmusic.persistence.jpa2;
 
 import de.christophlorenz.rmmusic.model.Artist;
 import de.christophlorenz.rmmusic.model.Song;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
@@ -15,25 +15,20 @@ import java.util.List;
 @Repository
 public class SongRepositoryImpl implements SongRepositoryCustom {
 
-    @Autowired
-    private ArtistRepository artistRepository;
-
-    @Autowired
-    private SongRepository songRepository;
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public List<Song> findByArtistNameIgnoreCaseContainingAndTitleIgnoreCaseContaining(String artistName, @Param("title") String title) {
         // Retrieve all matching artistIDs;
-        List<Artist> artists = artistRepository.findByNameIgnoreCaseContaining(artistName);
+        // TODO: Case insensitive!
+        List<Artist> artists = em.createQuery("select a from Artist a where a.name like :artistName")
+                                .setParameter("artistName", "%"+artistName+"%")
+                                .getResultList();
 
-        List<Long> artistIds = new ArrayList<Long>();
-        for ( Artist artist : artists ) {
-            artistIds.add(artist.getId());
-        }
-
-        System.out.println("ARtistIds="+artistIds);
-
-        return songRepository.findByArtistIdInAndTitleIgnoreCaseContaining(artistIds, title);
+        return em.createQuery("select s from Song s where s.artist in :artists")
+                .setParameter("artists", artists)
+                .getResultList();
     }
 
 

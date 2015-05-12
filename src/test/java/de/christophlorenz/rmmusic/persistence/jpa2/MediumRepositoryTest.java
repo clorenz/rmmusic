@@ -33,23 +33,11 @@ import static org.junit.Assert.assertThat;
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class })
-public class MediumRepositoryTest {
-
-    @Autowired
-    private MediumRepository repository;
-
-    @Autowired
-    private ArtistRepository artistRepository;
-
-    @Before
-    public void before() {
-        repository.deleteAll();
-        artistRepository.deleteAll();
-    }
+public class MediumRepositoryTest extends BaseRepositoryTest{
 
     @Test
     public void findWithInvalidIdReturnsEmptyList() {
-        List<Medium> ret = repository.findById(0);
+        List<Medium> ret = mediumRepository.findById(0);
 
         assertThat(ret, not(nullValue()));
         assertThat(ret.size(), is(0));
@@ -61,7 +49,7 @@ public class MediumRepositoryTest {
         Medium medium = new Medium();
         medium.setType(Medium.CD);
 
-        repository.save(medium);
+        mediumRepository.save(medium);
     }
 
     @Test(expected = DataIntegrityViolationException.class)
@@ -69,7 +57,7 @@ public class MediumRepositoryTest {
         Medium medium = new Medium();
         medium.setCode("12345678");
 
-        repository.save(medium);
+        mediumRepository.save(medium);
     }
 
     @Test(expected = DataIntegrityViolationException.class)
@@ -77,18 +65,14 @@ public class MediumRepositoryTest {
         Medium medium = new Medium();
         medium.setTitle("Title");
 
-        repository.save(medium);
+        mediumRepository.save(medium);
     }
 
     @Test
     public void saveAndRetrievePlainMediumWithoutArtistReference() {
-        Medium medium = new Medium();
-        medium.setCode("12345678");
-        medium.setType(Medium.CD);
-        medium.setTitle("Media Title");
-        repository.save(medium);
+        Medium medium = createMedium("12345678", Medium.CD, "Media Title");
 
-        Medium ret = repository.findAll().get(0);
+        Medium ret = mediumRepository.findAll().get(0);
 
         assertThat(ret.getCode(), is("12345678"));
         assertThat(ret.getType(), is(Medium.CD));
@@ -97,13 +81,9 @@ public class MediumRepositoryTest {
 
     @Test
     public void saveAndRetrieveByTypeAndCode() {
-        Medium medium = new Medium();
-        medium.setCode("12345678");
-        medium.setType(Medium.CD);
-        medium.setTitle("Media Title");
-        repository.save(medium);
+        Medium medium = createMedium("12345678", Medium.CD, "Media Title");
 
-        Medium ret = repository.findByTypeAndCode(Medium.CD, "12345678");
+        Medium ret = mediumRepository.findByTypeAndCode(Medium.CD, "12345678");
 
         assertThat(ret.getCode(), is("12345678"));
         assertThat(ret.getType(), is(Medium.CD));
@@ -112,18 +92,10 @@ public class MediumRepositoryTest {
 
     @Test
     public void saveArtistSaveMediumRetrieveMediumWithArtist() {
-        Artist artist = new Artist();
-        artist.setName("Demo Artist");
-        artist = artistRepository.save(artist);
+        Artist artist = createArtist("Demo Artist");
+        Medium medium = createMedium("10000001", Medium.CD, "Demo Title", artist);
 
-        Medium medium = new Medium();
-        medium.setCode("10000001");
-        medium.setType(Medium.CD);
-        medium.setTitle("Demo Title");
-        medium.setArtist(artist);
-        repository.save(medium);
-
-        Medium ret = repository.findByTypeAndCode(Medium.CD,"10000001");
+        Medium ret = mediumRepository.findByTypeAndCode(Medium.CD,"10000001");
 
         assertThat(ret.getCode(), is("10000001"));
         Artist retArtist = ret.getArtist();

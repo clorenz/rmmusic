@@ -29,20 +29,11 @@ import static org.hamcrest.Matchers.nullValue;
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class })
-public class ArtistRepositoryTest {
-
-    @Autowired
-    private ArtistRepository repository;
-
-    @Before
-    public void before() {
-        repository.deleteAll();
-    }
-
+public class ArtistRepositoryTest extends BaseRepositoryTest {
 
     @Test
     public void findWithInvalidIdReturnsEmptyList() {
-        List<Artist> ret = repository.findById(0);
+        List<Artist> ret = artistRepository.findById(0);
 
         assertThat(ret, not(nullValue()));
         assertThat(ret.size(), is(0));
@@ -50,11 +41,9 @@ public class ArtistRepositoryTest {
 
     @Test
     public void createAndFind() {
-        Artist artist = new Artist();
-        artist.setName("First artist");
-        artist = repository.save(artist);
+        Artist artist = createArtist("First artist");
 
-        List<Artist> ret = repository.findAll();
+        List<Artist> ret = artistRepository.findAll();
 
         assertThat(ret, not(nullValue()));
         assertThat(ret.size(), is(1));
@@ -63,14 +52,10 @@ public class ArtistRepositoryTest {
 
     @Test
     public void createAndFindById() {
-        Artist artist1 = new Artist();
-        artist1.setName("First artist");
-        artist1 = repository.save(artist1);
-        Artist artist2 = new Artist();
-        artist2.setName("Second artist");
-        artist2 = repository.save(artist2);
+        Artist artist1 = createArtist("First artist");
+        Artist artist2 = createArtist("Second artist");
 
-        List<Artist> ret = repository.findById(artist1.getId());
+        List<Artist> ret = artistRepository.findById(artist1.getId());
 
         assertThat(ret, not(nullValue()));
         assertThat(ret.size(), is(1));
@@ -79,14 +64,10 @@ public class ArtistRepositoryTest {
 
     @Test
     public void createAndFindByName() {
-        Artist artist1 = new Artist();
-        artist1.setName("First artist");
-        artist1 = repository.save(artist1);
-        Artist artist2 = new Artist();
-        artist2.setName("Second artist");
-        artist2 = repository.save(artist2);
+        Artist artist1 = createArtist("First artist");
+        Artist artist2 = createArtist("Second artist");
 
-        List<Artist> ret = repository.findByName("First artist");
+        List<Artist> ret = artistRepository.findByName("First artist");
 
         assertThat(ret, not(nullValue()));
         assertThat(ret.size(), is(1));
@@ -95,14 +76,10 @@ public class ArtistRepositoryTest {
 
     @Test
     public void createAndFindByNameIgnoreCaseContaining() {
-        Artist artist1 = new Artist();
-        artist1.setName("First artist");
-        artist1 = repository.save(artist1);
-        Artist artist2 = new Artist();
-        artist2.setName("Second artist");
-        artist2 = repository.save(artist2);
+        Artist artist1 = createArtist("First artist");
+        Artist artist2 = createArtist("Second artist");
 
-        List<Artist> ret = repository.findByNameIgnoreCaseContaining("sec");
+        List<Artist> ret = artistRepository.findByNameIgnoreCaseContaining("sec");
 
         assertThat(ret, not(nullValue()));
         assertThat(ret.size(), is(1));
@@ -111,14 +88,10 @@ public class ArtistRepositoryTest {
 
     @Test
     public void createAndFindByNameIgnoreCaseContainingMultipleResults() {
-        Artist artist1 = new Artist();
-        artist1.setName("First artist");
-        artist1 = repository.save(artist1);
-        Artist artist2 = new Artist();
-        artist2.setName("Second artist");
-        artist2 = repository.save(artist2);
+        Artist artist1 = createArtist("First artist");
+        Artist artist2 = createArtist("Second artist");
 
-        List<Artist> ret = repository.findByNameIgnoreCaseContaining("artist");
+        List<Artist> ret = artistRepository.findByNameIgnoreCaseContaining("artist");
 
         assertThat(ret, not(nullValue()));
         assertThat(ret.size(), is(2));
@@ -127,13 +100,11 @@ public class ArtistRepositoryTest {
 
     @Test
     public void createAndUpdateModifiesArtist() {
-        Artist artist1 = new Artist();
-        artist1.setName("First artist");
-        artist1 = repository.save(artist1);
+        Artist artist1 = createArtist("First artist");
         artist1.setName("Updated artist");
-        repository.save(artist1);
+        artistRepository.save(artist1);
 
-        List<Artist> ret = repository.findAll();
+        List<Artist> ret = artistRepository.findAll();
 
         assertThat(ret.size(), is(1));
         assertThat(ret.get(0).getName(), is("Updated artist"));
