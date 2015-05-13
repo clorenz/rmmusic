@@ -24,12 +24,16 @@ public class BaseRepositoryTest {
     @Autowired
     protected RecordingRepository recordingRepository;
 
+    @Autowired
+    protected MediumTagRepository mediumTagRepository;
+
     @Before
     public void before() {
         recordingRepository.deleteAll();
         songRepository.deleteAll();
         mediumRepository.deleteAll();
         artistRepository.deleteAll();
+        mediumTagRepository.deleteAll();
     }
 
     public Artist createArtist(String name) {
