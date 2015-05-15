@@ -22,8 +22,8 @@
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/>
         <property name="url" value="jdbc:derby:memory:jmmusic;create=true"/>
-        <property name="username" value="app"/>
-        <property name="password" value="app"/>
+        <property name="username" value="rmmusic"/>
+        <property name="password" value="rmmusic"/>
     </bean>
 
     <bean id="entityManagerFactory"

@@ -107,6 +107,12 @@
     <orderEntry type="library" scope="TEST" name="Gradle: com.github.springtestdbunit:spring-test-dbunit:1.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.apache.derby:derby:10.11.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.springframework:spring-test-mvc:1.0.0.M2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.springframework.boot:spring-boot-starter-thymeleaf:1.2.3.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.thymeleaf:thymeleaf-spring4:2.1.4.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:1.2.7" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.thymeleaf:thymeleaf:2.1.4.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: ognl:ognl:3.0.8" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.unbescape:unbescape:1.1.0.RELEASE" level="project" />
   </component>
   <component name="org.twodividedbyzero.idea.findbugs">
     <option name="_basePreferences">

@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * Created by clorenz on 30.04.15.
  */
 @SpringBootApplication
-@ComponentScan(basePackages = {"de.christophlorenz.rmmusic", "de.christophlorenz.rmmusic.model"})
+@ComponentScan(basePackages = {"de.christophlorenz.rmmusic", "de.christophlorenz.rmmusic.model", "de.christophlorenz.rmmusic.web"})
 @EnableJpaRepositories(basePackages = {"de.christophlorenz.rmmusic.persistence.jpa2"})
 @ImportResource("classpath:/applicationContext.xml")
 public class Application {

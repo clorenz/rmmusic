@@ -50,6 +50,7 @@ dependencies {
     compile("org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final")
     compile("org.hibernate:hibernate-entitymanager:$hibernate_version")
     compile("postgresql:postgresql:$postgresql_version")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     testCompile("org.apache.derby:derby:10.11.1.1")
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("org.hamcrest:hamcrest-all:1.3")

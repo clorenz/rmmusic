@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title></title>
+</head>
+<body>
+<div th:fragment="menuFragment">
+<table border="0" cellpadding="2" cellspacing="0">
+    <tr>
+        <td>&nbsp;<a href="/wmmusic/do/selectMediumType?type=0"><img src="img/audio_tape.png" border="0" width="40"/></a>&nbsp;</td>
+        <td>&nbsp;<a href="/wmmusic/do/selectMediumType?type=1"><img src="img/video_tape.png" border="0" width="40"/></a>&nbsp;</td>
+        <td>&nbsp;<a href="/wmmusic/do/selectMediumType?type=2"><img src="img/md.png" border="0" width="40"/></a>&nbsp;</td>
+        <td>&nbsp;<a href="/wmmusic/do/selectMediumType?type=3"><img src="img/cd.png" border="0" width="40"/></a>&nbsp;</td>
+        <td>&nbsp;<a href="/wmmusic/do/selectMediumType?type=4"><img src="img/files.png" border="0" width="40"/></a>&nbsp;</td>
+        <td>&nbsp;<a href="/wmmusic/do/selectMediumType?type=5"><img src="img/lp.png" border="0" width="40"/></a>&nbsp;</td>
+        <td>&nbsp;<a href="/wmmusic/do/selectMediumType?type=6"><img src="img/single.png" border="0" width="40"/></a>&nbsp;</td>
+        <td>&nbsp;<a href="/wmmusic/do/selectMediumType?type=7"><img src="img/cd.png" border="0" width="40"/></a>&nbsp;</td>
+        <td style="background:#000000"><small>&nbsp;</small></td>
+        <td>&nbsp;<a href="/wmmusic/do/selectSongForm"><img src="img/song.png" border="0" width="40"/></a>&nbsp;</td>
+        <td style="background:#000000"><small>&nbsp;</small></td>
+        <td>&nbsp;<a href="/rmmusic/artist/select"><img src="img/artist.png" border="0" width="40"/></a>&nbsp;</td>
+        <td style="background:#000000"><small>&nbsp;</small></td>
+        <td>&nbsp;<a href="/wmmusic/do/printSticker"><img src="img/print.png" border="0" width="40"/></a>&nbsp;</td>
+        <td style="background:#000000"><small>&nbsp;</small></td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td align="center"><a href="/wmmusic/do/selectMediumType?type=0">Audio<br/>Tape</a></td>
+        <td align="center"><a href="/wmmusic/do/selectMediumType?type=1">Video<br/>Tape</a></td>
+        <td align="center"><a href="/wmmusic/do/selectMediumType?type=2">Minidisc</a></td>
+        <td align="center"><a href="/wmmusic/do/selectMediumType?type=3">CD-ROM</a></td>
+        <td align="center"><a href="/wmmusic/do/selectMediumType?type=4">Files</a></td>
+        <td align="center"><a href="/wmmusic/do/selectMediumType?type=5">LP</a></td>
+        <td align="center"><a href="/wmmusic/do/selectMediumType?type=6">Single</a></td>
+        <td align="center"><a href="/wmmusic/do/selectMediumType?type=7">CD</a></td>
+        <td></td>
+        <td align="center"><a href="/wmmusic/do/selectSongForm">Song</a></td>
+        <td></td>
+        <td align="center"><a href="/rmmusic/artist/select">Artist</a></td>
+        <td></td>
+        <td align="center"><a href="/wmmusic/do/printSticker">Print<br/>Sticker</a></td>
+        <td></td>
+        <td align="center"><a href="/wmmusic/do/statistics">Statistics</a></td>
+    </tr>
+</table>
+</div>
+</body>
+</html>
