@@ -60,6 +60,16 @@ public class Artist {
         this.birthday = birthday;
     }
 
+    /*
+    public void setBirthday(String bday) {
+        if ( bday!=null && bday.indexOf("-")>-1) {
+            birthday = INTL_FORMAT.parse(bday);
+        } else if ( bday!=null && bday.indexOf(".")>-1) {
+            birthday = GERMAN_FORMAT.parse(bday);
+        }
+    }
+    */
+
     public String getCountry() {
         return country;
     }
@@ -102,5 +112,20 @@ public class Artist {
 
     public long getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Artist{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", print='" + print + '\'' +
+                ", birthday=" + birthday +
+                ", country='" + country + '\'' +
+                ", location='" + location + '\'' +
+                ", url='" + url + '\'' +
+                ", remarks='" + remarks + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
     }
 }

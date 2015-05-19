@@ -30,26 +30,46 @@
         font-weight: bold;
         color: #333;
         }
-        .search {
-        width: 200px;
+        .edit {
+        width: 600px;
         padding: 20px;
         }
         fieldset {
         padding: 20px;
         }
+        label {
+            width: 200px;
+        }
     </style>
 </head>
 <body>
 <div th:include="menu :: menuFragment"></div>
-
-<div class="search">
-    <form method="get" action="/rmmusic/artist/edit">
+<div class="edit">
+    <form method="post" th:action="@{/rmmusic/artist/edit}" th:object="${artist}">
         <fieldset>
-            <label for="artist">Artist</label>
-            <input size="32" name="artist" id="artist"
-                   th:attr="placeholder=#{artistForm.search.placeholder}" />
-            <label for="exact">Exact match</label>
-            <input name="exact" id="exact" type="checkbox"/>
+            <label for="id">ID</label>
+            <span th:text="*{id}"/>
+            <br/>
+            <label for="name">Name</label>
+            <input id="name" type="text" disabled="true" th:field="*{name}"/>
+            <br/>
+            <label for="print">Print</label>
+            <input id="print" type="text" th:field="*{print}"/>
+            <br/>
+            <label for="country">Country</label>
+            <input id="country" type="text" th:field="*{country}" width="100" maxlength="3"/>
+            <input id="location" type="text" th:field="*{location}"/>
+            <br/>
+            <label for="birthday">Birthday</label>
+            <input id="birthday" type="text" th:field="*{birthday}"/>
+            <p th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">Incorrect date</p>
+            <br/>
+            <label for="url">Url</label>
+            <input id="url" type="text" th:field="*{url}"/>
+            <br/>
+            <label for="remarks">remarks</label>
+            <textarea id="remarks" th:field="*{remarks}"/>
+            <br/>
             <input name="submit" id="submit" type="submit"/>
         </fieldset>
     </form>
