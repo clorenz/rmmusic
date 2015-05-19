@@ -21,5 +21,7 @@ public interface ArtistRepository extends JpaRepository<Artist, Long>{
 
     List<Artist> findByNameIgnoreCaseContaining(@Param("name") String name);
 
+    List<Artist> findByNameIgnoreCaseStartingWithOrderByNameAsc(@Param("name") String name);
+
     List<Artist> findByName(@Param("name") String name);
 }
