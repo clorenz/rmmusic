@@ -41,7 +41,7 @@
 </head>
 <body>
 <div th:include="menu :: menuFragment"></div>
-
+<b><p th:text="${message} + '!'" /></b>
 <div class="search">
     <form method="get" action="/rmmusic/artist/edit">
         <fieldset>

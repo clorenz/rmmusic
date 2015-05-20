@@ -47,11 +47,12 @@
 <div class="edit">
     <form method="post" th:action="@{/rmmusic/artist/edit}" th:object="${artist}">
         <fieldset>
-            <label for="id">ID</label>
-            <span th:text="*{id}"/>
+            <label for="id_field">ID</label>
+            <span id="id_field" th:text="*{id}"/>
+            <input name="id" type="hidden" th:field="*{id}"/>
             <br/>
             <label for="name">Name</label>
-            <input id="name" type="text" disabled="true" th:field="*{name}"/>
+            <input id="name" type="text" readonly="readonly" th:field="*{name}"/>
             <br/>
             <label for="print">Print</label>
             <input id="print" type="text" th:field="*{print}"/>
@@ -61,7 +62,7 @@
             <input id="location" type="text" th:field="*{location}"/>
             <br/>
             <label for="birthday">Birthday</label>
-            <input id="birthday" type="text" th:field="*{birthday}"/>
+            <input id="birthday" type="text" th:field="*{{birthday}}"/>
             <p th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">Incorrect date</p>
             <br/>
             <label for="url">Url</label>
@@ -70,7 +71,7 @@
             <label for="remarks">remarks</label>
             <textarea id="remarks" th:field="*{remarks}"/>
             <br/>
-            <input name="submit" id="submit" type="submit"/>
+            <input name="submit" id="submit" type="submit" autofocus="autofocus"/>
         </fieldset>
     </form>
 </div>

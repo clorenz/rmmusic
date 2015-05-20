@@ -14,13 +14,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 /**
  * Created by clorenz on 15.05.15.
@@ -39,7 +38,7 @@ public class RootController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(
-                new SimpleDateFormat("yyyy-MM-dd"), false));
+                new SimpleDateFormat("dd.MM.yyyy"), false));
     }
 
     @RequestMapping("/")
@@ -77,14 +76,20 @@ public class RootController {
     @RequestMapping(value = "/artist/edit", method = RequestMethod.POST)
     public String editArtist(@Valid @ModelAttribute("artist") Artist artist,
                              BindingResult br,
-                             Model model) {
-        log.info("br="+br);
+                             Model model,
+                             RedirectAttributes redirectAttributes) {
+
+        artist.setTimestamp(new Date());
+
         if ( br.hasErrors()) {
             return "rmmusic/artistEdit";
         }
 
         log.info("Submitted artist "+artist);
 
-        return "rmmusic/artistForm";
+        artist = artistRepository.save(artist);
+        redirectAttributes.addFlashAttribute("message", "Successfully saved artist "+artist.getName()+" with ID "+artist.getId());
+
+        return "redirect:select";
     }
 }

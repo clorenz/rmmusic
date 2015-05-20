@@ -1,7 +1,5 @@
 package de.christophlorenz.rmmusic.model;
 
-import org.springframework.stereotype.Component;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,7 +7,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -35,6 +32,9 @@ public class Artist {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
 
+    public void setId(long id) {
+        this.id=id;
+    }
 
     public String getName() {
         return name;
@@ -59,16 +59,6 @@ public class Artist {
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
-
-    /*
-    public void setBirthday(String bday) {
-        if ( bday!=null && bday.indexOf("-")>-1) {
-            birthday = INTL_FORMAT.parse(bday);
-        } else if ( bday!=null && bday.indexOf(".")>-1) {
-            birthday = GERMAN_FORMAT.parse(bday);
-        }
-    }
-    */
 
     public String getCountry() {
         return country;
