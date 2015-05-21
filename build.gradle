@@ -51,6 +51,7 @@ dependencies {
     compile("org.hibernate:hibernate-entitymanager:$hibernate_version")
     compile("postgresql:postgresql:$postgresql_version")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("org.apache.commons:commons-lang3:3.4")
     testCompile("org.apache.derby:derby:10.11.1.1")
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("org.hamcrest:hamcrest-all:1.3")

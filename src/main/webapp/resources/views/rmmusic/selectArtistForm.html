@@ -5,52 +5,35 @@
     <script type="text/javascript" th:src="@{/rmmusic/js/jquery.autocomplete-1.2.20.min.js}"></script>
     <title>rmmusic</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style>
-        body {
-        font-family: sans-serif;
-        }
-        .autocomplete-suggestions {
-        border: 1px solid #999;
-        background: #FFF;
-        overflow: auto;
-        max-height: none;
-        }
-        .autocomplete-suggestion {
-        font-family: sans-serif;
-        padding: 2px 5px;
-        white-space: nowrap;
-        overflow: hidden;
-        cursor: pointer;
-        color: #888;
-        }
-        .autocomplete-selected {
-        background: #F0F0F0;
-        }
-        .autocomplete-suggestions strong {
-        font-weight: bold;
-        color: #333;
-        }
-        .search {
-        width: 200px;
-        padding: 20px;
-        }
-        fieldset {
-        padding: 20px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/rmmusic.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/form.css}"/>
 </head>
 <body>
 <div th:include="menu :: menuFragment"></div>
-<b><p th:text="${message} + '!'" /></b>
+<div th:include="flash :: flashFragment"></div>
 <div class="search">
-    <form method="get" action="/rmmusic/artist/edit">
+    <form class="rmmusic_form" id="select_artist_form" method="get" action="/rmmusic/artist/edit">
         <fieldset>
-            <label for="artist">Artist</label>
-            <input size="32" name="artist" id="artist"
-                   th:attr="placeholder=#{artistForm.search.placeholder}" />
-            <label for="exact">Exact match</label>
-            <input name="exact" id="exact" type="checkbox"/>
-            <input name="submit" id="submit" type="submit"/>
+            <ul>
+                <li>
+                    <h2 th:text="#{selectArtistForm.headline}"/>
+                </li>
+                <li>
+                    <label for="artist" th:text="#{selectArtistForm.label.artist}"></label>
+                    <input size="32" name="artist" id="artist"
+                            th:attr="placeholder=#{selectArtistForm.search.placeholder}"
+                            autofocus="autofocus"
+                            required="required"/>
+                    <span class="form_hint" th:text="#{selectArtistForm.hint.artist}"></span>
+                </li>
+                <li>
+                    <label for="exact">Exact match</label>
+                    <input name="exact" id="exact" type="checkbox"/>
+                </li>
+                <li>
+                    <button class="submit" type="submit" th:text="#{selectArtistForm.button.submit}"></button>
+                </li>
+            </ul>
         </fieldset>
     </form>
 </div>

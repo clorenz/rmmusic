@@ -1,0 +1,26 @@
+.list ul {
+        width:750px;
+        list-style-type:none;
+        list-style-position:outside;
+        margin:0px;
+        padding:0px;
+        }
+        .list li{
+        padding:12px;
+        border-bottom:1px solid #eee;
+        position:relative;
+        }
+        .list li:first-child, .list li:last-child {
+        border-bottom:1px solid #777;
+        }
+        .list h2 {
+        margin:0;
+        display: inline;
+        }
+        .list {
+        width: 800px;
+        padding: 20px;
+        }
+        fieldset {
+        padding: 20px;
+        }

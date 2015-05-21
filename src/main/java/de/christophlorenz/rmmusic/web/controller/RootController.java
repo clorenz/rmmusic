@@ -13,13 +13,11 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by clorenz on 15.05.15.
@@ -46,32 +44,6 @@ public class RootController {
         model.addAttribute("version",VERSION);
     }
 
-    @RequestMapping("/artist/select")
-    public String selectArtist(Model model) {
-        return "rmmusic/artistForm";
-    }
-
-    @RequestMapping(value = "/artist/edit", method = RequestMethod.GET)
-    public String editArtist(@RequestParam(value = "artist", required = true ) final String name,
-                             @RequestParam(value = "exact", required = false) final String exact,
-                             Model model) {
-
-        List<Artist> artists = ("on".equalsIgnoreCase(exact)) ? artistRepository.findByName(name)
-                                                            : artistRepository.findByNameIgnoreCaseContaining(name);
-        Artist artist;
-        if ( artists.isEmpty()) {
-            artist = new Artist();
-            artist.setName(name);
-            artist.setPrint(name);      // TODO
-        } else {
-            artist = artists.get(0);
-        }
-
-        model.addAttribute("artist", artist);
-
-        log.info("Setting attribute artist="+artist);
-        return "rmmusic/artistEdit";
-    }
 
     @RequestMapping(value = "/artist/edit", method = RequestMethod.POST)
     public String editArtist(@Valid @ModelAttribute("artist") Artist artist,

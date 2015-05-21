@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title>rmmusic</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/rmmusic.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/list.css}"/>
+</head>
+<body>
+<div th:include="menu :: menuFragment"></div>
+<div th:include="flash :: flashFragment"></div>
+<div class="list">
+    <fieldset>
+        <ul>
+            <li>
+                <h2 th:text="#{artistList.headline}"/>
+            </li>
+            <li th:each="artist : ${artists}">
+                <a th:href="@{'edit/'+${artist.id}}"><span id="name" th:text="${artist.name}"></span></a>
+            </li>
+        </ul>
+    </fieldset>
+</div>
+</body>
+</html>
