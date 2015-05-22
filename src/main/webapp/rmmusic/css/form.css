@@ -75,7 +75,7 @@
         box-shadow: 0 0 3px #aaa;
         }
         /* Button Style */
-        button.submit {
+        button.submit, button.delete {
         background-color: #68b12f;
         background: -webkit-gradient(linear, left top, left bottom, from(#68b12f), to(#50911e));
         background: -webkit-linear-gradient(top, #68b12f, #50911e);
@@ -101,11 +101,22 @@
         text-align: center;
         text-shadow: 0 -1px 0 #396715;
         }
-        button.submit:hover {
+        button.delete {
+          background-color: #b1682f !important;
+          background: -webkit-gradient(linear, left top, left bottom, from(#b1682f), to(#91501e));
+          background: -webkit-linear-gradient(top, #b1682f, #91501e);
+          background: -moz-linear-gradient(top, #b1682f, #91501e);
+          background: -ms-linear-gradient(top, #b1682f, #91501e);
+          background: -o-linear-gradient(top, #b1682f, #91501e);
+          background: linear-gradient(top, #b1682f, #91501e);
+          border: 1px solid #915011;
+          border-bottom: 1px solid #995b2b;
+        }
+        button.submit:hover, button.delete:hover {
         opacity:.85;
         cursor: pointer;
         }
-        button.submit:active {
+        button.submit:active, button.delete:active {
         border: 1px solid #20911e;
         box-shadow: 0 0 10px 5px #356b0b inset;
         -webkit-box-shadow:0 0 10px 5px #356b0b inset ;
@@ -116,13 +127,18 @@
         .rmmusic_form input:focus, .rmmusic_form textarea:focus { /* add this to the already existing style */
         padding-right:70px;
         }
+        .rmmusic_form input:invalid, .rmmusic_form textarea:invalid { /* when a field is considered invalid by the browser */
+            background: #fff url(/rmmusic/img/invalid.png) no-repeat 98% center;
+            box-shadow: 0 0 5px #d45252;
+            border-color: #b03535
+        }
         .rmmusic_form input, .rmmusic_form textarea { /* add this to the already existing style */
         -moz-transition: padding .25s;
         -webkit-transition: padding .25s;
         -o-transition: padding .25s;
         transition: padding .25s;
         }
-        .rmmusic_form input:required:valid, .rmmusic_form textarea:required:valid { /* when a field is considered valid by the browser */
+        .rmmusic_form input:valid, .rmmusic_form textarea:valid { /* when a field is considered valid by the browser */
         background: #fff url(/rmmusic/img/valid.png) no-repeat 98% center;
         box-shadow: 0 0 5px #5cd053;
         border-color: #28921f;

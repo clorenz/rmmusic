@@ -8,11 +8,16 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,9 +45,7 @@ public class ArtistController {
             // Should not be possible
             return "forward:/select";
         } else {
-            Artist artist = artists.get(0);
-            model.addAttribute("artist", artist);
-            return "rmmusic/artistEdit";
+            return editFirstArtistInList(artists, model);
         }
     }
 
@@ -57,16 +60,62 @@ public class ArtistController {
         if ( artists.isEmpty()) {
             return editNewArtist(name, model);
         } else if ( artists.size()==1) {
-            Artist artist = artists.get(0);
-            model.addAttribute("artist", artist);
-            return "rmmusic/artistEdit";
+            return editFirstArtistInList(artists, model);
         } else {
             model.addAttribute("artists", artists);
             return "rmmusic/artistList";
         }
     }
 
-    private String editNewArtist(@RequestParam(value = "artist", required = true) String name, Model model) {
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String editArtist(@Valid @ModelAttribute("artist") Artist artist,
+                             BindingResult br,
+                             Model model,
+                             RedirectAttributes redirectAttributes) {
+
+        artist.setTimestamp(new Date());
+
+        if ( br.hasErrors()) {
+            return "rmmusic/artistEdit";
+        }
+
+        log.info("Submitted artist "+artist);
+
+        artist = artistRepository.save(artist);
+        redirectAttributes.addFlashAttribute("success", "Successfully saved artist "+artist.getName()+" with ID "+artist.getId());
+
+        return "redirect:select";
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String deleteArtist(@Valid @RequestParam("id") Long id,
+                               RedirectAttributes redirectAttributes) {
+        log.info("Removing artist "+id);
+
+        Artist artist = artistRepository.getOne(id);
+        if ( artist!=null ) {
+            try {
+                artistRepository.delete(artist);
+                redirectAttributes.addFlashAttribute("success", "Successfully removed artist " + artist.getName() + " with ID " + artist.getId());
+                return "redirect:select";
+            } catch (Exception e) {
+                log.error("Cannot delete artist with id=" + id + ": ", e);
+            }
+        }
+
+        redirectAttributes.addFlashAttribute("error", "Could not remove artist with id "+id);
+        return "redirect:select";
+    }
+
+    private String editFirstArtistInList(List<Artist> artists, Model model) {
+        Artist artist = artists.get(0);
+        model.addAttribute("artist", artist);
+        log.info("Editing artist="+artist);
+        return "rmmusic/artistEdit";
+    }
+
+
+    private String editNewArtist(String name, Model model) {
         Artist artist = new Artist();
         artist.setName(name);
         artist.setPrint(calculatePrintName(name));

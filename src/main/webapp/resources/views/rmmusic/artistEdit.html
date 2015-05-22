@@ -3,14 +3,34 @@
 <head>
     <script type="text/javascript" th:src="@{/rmmusic/js/jquery-2.1.4.min.js}"></script>
     <script type="text/javascript" th:src="@{/rmmusic/js/jquery.autocomplete-1.2.20.min.js}"></script>
+    <script type="text/javascript" th:src="@{/rmmusic/js/jquery-ui-1.11.4-min.js}"></script>
     <title>rmmusic</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/rmmusic.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/form.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/jquery-ui-1.11.4-min.css}"/>
+    <style>
+        #country {
+          width: 50px;
+        }
+        #remarks {
+          width: 500px;
+        }
+    </style>
+    <script>
+		if (top !== self) {
+			$.ui.dialog.prototype._focusTabbable = $.noop;
+		}
+	</script>
 </head>
 <body>
 <div th:include="menu :: menuFragment"></div>
 <div th:include="flash :: flashFragment"></div>
+
+<div id="dialog" th:title="#{deleteArtistDialog.title}">
+    <p th:text="#{deleteArtistDialog.text}"/>
+</div>
+
 <div class="edit">
     <form method="post" th:action="@{/rmmusic/artist/edit}" th:object="${artist}" class="rmmusic_form" id="edit_artist_form">
         <fieldset>
@@ -26,29 +46,29 @@
                 </li>
                 <li>
                     <label for="name">Name</label>
-                    <input id="name" type="text" readonly="readonly" th:field="*{name}"/>
+                    <input id="name" type="text" th:field="*{name}"/>
                     <span class="form_hint" th:text="#{editArtistForm.hint.name}"></span>
                 </li>
                 <li>
                     <label for="print">Print</label>
-                    <input id="print" type="text" th:field="*{print}" autofocus="autofocus"/>
+                    <input id="print" type="text" th:field="*{print}" autofocus="autofocus" required="required"/>
                     <span class="form_hint" th:text="#{editArtistForm.hint.print}"></span>
                 </li>
                 <li>
-                    <label for="country">Country</label>
-                    <input id="country" type="text" th:field="*{country}" width="100" maxlength="3"/>
+                    <label for="country">Country / Location</label>
+                    <input id="country" type="text" th:field="*{country}" length="3" width="100" maxlength="3" pattern="([a-zA-Z]{3}){0,1}"/>
                     <span class="form_hint" th:text="#{editArtistForm.hint.country}"></span>
                     <input id="location" type="text" th:field="*{location}"/>
                     <span class="form_hint" th:text="#{editArtistForm.hint.location}"></span>
                 </li>
                 <li>
                     <label for="birthday">Birthday</label>
-                    <input id="birthday" type="text" th:field="*{{birthday}}"/>
+                    <input id="birthday" type="text" th:field="*{{birthday}}" width="10" maxlength="10" th:pattern="#{date.pattern}"/>
                     <span class="form_hint" th:text="#{editArtistForm.hint.birthday}"></span>
                 </li>
                 <li>
                     <label for="url">Url</label>
-                    <input id="url" type="text" th:field="*{url}"/>
+                    <input id="url" type="url" th:field="*{url}"/>
                 </li>
                 <li>
                     <label for="remarks">Remarks</label>
@@ -57,12 +77,13 @@
                 <li>
                     <button th:if="*{id > 0}" class="submit" type="submit" th:text="#{editArtistForm.button.submit.changes}"></button>
                     <button th:if="*{id == 0}" class="submit" type="submit" th:text="#{editArtistForm.button.submit.create}"></button>
+                    <button th:if="*{id > 0}" class="delete" type="button" id="delete" th:text="#{editArtistForm.button.delete}" tabindex="-1"></button>
                 </li>
             </ul>
         </fieldset>
     </form>
 </div>
-<script type="application/javascript">
+<script th:inline="javascript" type="text/javascript">
     jQuery(function () {
         $('#artist').autocomplete({
             serviceUrl: '/artist/search/findByNameIgnoreCaseStartingWithOrderByNameAsc',
@@ -80,8 +101,38 @@
                   })
                 };
             }
-        })
+        });
+        $("#dialog").dialog({
+            autoOpen: false,
+            modal: true,
+				resizable: false,
+				buttons: {
+					"Yes": function() {
+					    deleteArtist([[*{id}]]);
+						$(this).dialog("close");
+					},
+					"No": function() {
+						$(this).dialog("close");
+					}
+				}
+        });
+        $("#delete").on("click", function() {
+            $("#dialog").dialog("open");
+        });
     });
+
+    function deleteArtist(id) {
+        var deleteForm = document.createElement("form");
+        deleteForm.setAttribute("method","post");
+        deleteForm.setAttribute("action","/rmmusic/artist/delete");
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type","hidden");
+        hiddenField.setAttribute("name","id");
+        hiddenField.setAttribute("value",id);
+        deleteForm.appendChild(hiddenField);
+        document.body.appendChild(deleteForm);
+        deleteForm.submit();
+    }
 </script>
 </body>
 </html>

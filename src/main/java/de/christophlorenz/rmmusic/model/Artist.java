@@ -1,13 +1,18 @@
 package de.christophlorenz.rmmusic.model;
 
+import org.springframework.util.StringUtils;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by clorenz on 05.05.15.
@@ -102,6 +107,16 @@ public class Artist {
 
     public long getId() {
         return id;
+    }
+
+    @PostLoad
+    public void trimCountryAndFixInvalidBirthdays() {
+        country = StringUtils.trimAllWhitespace(country);
+        Calendar birthdayCalendar = new GregorianCalendar();
+        birthdayCalendar.setTime(birthday);
+        if ( birthdayCalendar.get(Calendar.YEAR) <=1 ) {
+            birthday=null;
+        }
     }
 
     @Override
