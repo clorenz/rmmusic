@@ -1,7 +1,5 @@
 package de.christophlorenz.rmmusic.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,7 +32,7 @@ public class Medium {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false)
