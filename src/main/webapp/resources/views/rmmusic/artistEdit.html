@@ -31,6 +31,7 @@
     <p th:text="#{deleteArtistDialog.text}"/>
 </div>
 
+<div id="rmmusic_body">
 <div class="edit">
     <form method="post" th:action="@{/rmmusic/artist/edit}" th:object="${artist}" class="rmmusic_form" id="edit_artist_form">
         <fieldset>
@@ -39,14 +40,14 @@
                     <h2 th:if="*{id > 0}" th:text="#{editArtistForm.headline.edit}"/>
                     <h2 th:if="*{id == 0}" th:text="#{editArtistForm.headline.create}"/>
                 </li>
-                <li>
+                <li th:if="*{id > 0}">
                     <label for="id_field">ID</label>
                     <span id="id_field" th:text="*{id}"/>
                     <input name="id" type="hidden" th:field="*{id}"/>
                 </li>
                 <li>
                     <label for="name">Name</label>
-                    <input id="name" type="text" th:field="*{name}"/>
+                    <input id="name" type="text" th:field="*{name}" required="required"/>
                     <span class="form_hint" th:text="#{editArtistForm.hint.name}"></span>
                 </li>
                 <li>
@@ -83,6 +84,10 @@
         </fieldset>
     </form>
 </div>
+</div>
+
+<div th:include="flash :: flashFragmentFoot"></div>
+
 <script th:inline="javascript" type="text/javascript">
     jQuery(function () {
         $('#artist').autocomplete({
@@ -108,7 +113,7 @@
 				resizable: false,
 				buttons: {
 					"Yes": function() {
-					    deleteArtist([[*{id}]]);
+					    deleteArtist('[[${artist.id}]]');
 						$(this).dialog("close");
 					},
 					"No": function() {

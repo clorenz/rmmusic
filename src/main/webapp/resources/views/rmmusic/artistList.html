@@ -10,6 +10,7 @@
 <body>
 <div th:include="menu :: menuFragment"></div>
 <div th:include="flash :: flashFragment"></div>
+<div id="rmmusic_body">
 <div class="list">
     <fieldset>
         <ul>
@@ -22,5 +23,9 @@
         </ul>
     </fieldset>
 </div>
+</div>
+
+<div th:include="flash :: flashFragmentFoot"></div>
+
 </body>
 </html>

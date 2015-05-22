@@ -11,6 +11,7 @@
 <body>
 <div th:include="menu :: menuFragment"></div>
 <div th:include="flash :: flashFragment"></div>
+<div id="rmmusic_body">
 <div class="search">
     <form class="rmmusic_form" id="select_artist_form" method="get" action="/rmmusic/artist/edit">
         <fieldset>
@@ -37,6 +38,10 @@
         </fieldset>
     </form>
 </div>
+</div>
+
+<div th:include="flash :: flashFragmentFoot"></div>
+
 <script type="application/javascript">
     jQuery(function () {
         $('#artist').autocomplete({

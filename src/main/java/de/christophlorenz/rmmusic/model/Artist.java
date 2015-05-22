@@ -2,6 +2,7 @@ package de.christophlorenz.rmmusic.model;
 
 import org.springframework.util.StringUtils;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,6 +11,7 @@ import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -18,15 +20,16 @@ import java.util.GregorianCalendar;
  * Created by clorenz on 05.05.15.
  */
 @Entity
-@Table(name="ARTIST")
+@Table(name="ARTIST", uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
 public class Artist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
+    @Column(name = "name")
     private String name;
+
     private String print;
     @Temporal(TemporalType.DATE)
     private Date birthday;
@@ -112,10 +115,12 @@ public class Artist {
     @PostLoad
     public void trimCountryAndFixInvalidBirthdays() {
         country = StringUtils.trimAllWhitespace(country);
-        Calendar birthdayCalendar = new GregorianCalendar();
-        birthdayCalendar.setTime(birthday);
-        if ( birthdayCalendar.get(Calendar.YEAR) <=1 ) {
-            birthday=null;
+        if ( birthday!=null ) {
+            Calendar birthdayCalendar = new GregorianCalendar();
+            birthdayCalendar.setTime(birthday);
+            if (birthdayCalendar.get(Calendar.YEAR) <= 1) {
+                birthday = null;
+            }
         }
     }
 

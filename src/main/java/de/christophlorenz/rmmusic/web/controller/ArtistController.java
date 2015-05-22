@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,6 +80,13 @@ public class ArtistController {
             return "rmmusic/artistEdit";
         }
 
+        // Verify, that we don't have any other artist with the same name!
+        if ( !artistRepository.findByName(artist.getName()).isEmpty()) {
+            br.addError(new FieldError("name","name","Name is already used for another artist"));
+            model.addAttribute("error","Name "+br.getRawFieldValue("name")+" is already used for another artist");
+            return "rmmusic/artistEdit";
+        }
+
         log.info("Submitted artist "+artist);
 
         artist = artistRepository.save(artist);
@@ -90,7 +98,7 @@ public class ArtistController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public String deleteArtist(@Valid @RequestParam("id") Long id,
                                RedirectAttributes redirectAttributes) {
-        log.info("Removing artist "+id);
+        log.info("Removing artist " + id);
 
         Artist artist = artistRepository.getOne(id);
         if ( artist!=null ) {

@@ -6,8 +6,10 @@
 </head>
 <body>
 <div th:fragment="flashFragment">
-    <span th:if="${success != null}" class="flash_success" th:text="${success} + '!'" />
-    <span th:if="${error != null}" class="flash_error" th:text="${error}" />
+    <div th:if="${success != null}" class="info message"><p th:text="${success} + '!'" /></div>
+    <div th:if="${error != null}" class="error message"><p th:text="${error}" /></div>
+</div>
+<div th:fragment="flashFragmentFoot">
 </div>
 </body>
 </html>
