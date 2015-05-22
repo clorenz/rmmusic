@@ -60,7 +60,13 @@
                   })
                 };
             }
-        })
+        });
+
+        $("#artist").keyup(function(event){
+            if(event.which == 13){
+                document.select_artist_form.submit();
+            }
+        });
     });
 </script>
 </body>

@@ -20,7 +20,11 @@
         color: #333;
         }
         .search {
-        width: 800px;
+        width: 850px;
+        padding: 20px;
+        }
+        .edit {
+        width: 850px;
         padding: 20px;
         }
         fieldset {
@@ -29,9 +33,13 @@
         label {
           width: 100px;
         }
-        *:focus { background: #CFC; }
+        *:focus { background-color: #CFC !important; }
+        /*
+        .rmmusic_form input.focus { background: #CFC !important; }
+        .rmmusic_form textarea.focus { background: #CFC !important; }
+        */
         .rmmusic_form ul {
-        width:750px;
+        width:800px;
         list-style-type:none;
         list-style-position:outside;
         margin:0px;
@@ -128,7 +136,7 @@
         padding-right:70px;
         }
         .rmmusic_form input:invalid, .rmmusic_form textarea:invalid { /* when a field is considered invalid by the browser */
-            background: #fff url(/rmmusic/img/invalid.png) no-repeat 98% center;
+            background: url(/rmmusic/img/invalid.png) no-repeat 98% center;
             box-shadow: 0 0 5px #d45252;
             border-color: #b03535
         }
@@ -139,7 +147,7 @@
         transition: padding .25s;
         }
         .rmmusic_form input:valid, .rmmusic_form textarea:valid { /* when a field is considered valid by the browser */
-        background: #fff url(/rmmusic/img/valid.png) no-repeat 98% center;
+        background: url(/rmmusic/img/valid.png) no-repeat 98% center;
         box-shadow: 0 0 5px #5cd053;
         border-color: #28921f;
         }
