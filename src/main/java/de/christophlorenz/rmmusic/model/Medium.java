@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,6 +20,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name="MEDIUM", uniqueConstraints = @UniqueConstraint(columnNames = {"type","code"}))
+@NamedQuery(name = "Medium.findLabelsIgnoreCaseStartingWithAsc", query = "select m from Medium m where lower(m.label) like lower(concat(?1,'%'))")
 public class Medium {
 
     public static final int AUDIO_TAPE=0;
@@ -38,7 +40,7 @@ public class Medium {
     @Column(nullable = false)
     private Integer type;
 
-    @Column(nullable = false, length = 8)
+    @Column(length = 8)
     private String code;
 
     @ManyToOne(optional=true, targetEntity = Artist.class, fetch = FetchType.EAGER)

@@ -22,7 +22,11 @@ public interface MediumRepository extends JpaRepository<Medium, Long> {
 
     Medium findByTypeAndCode(@Param("type") int type, @Param("code") String code);
 
-    // http://www.petrikainulainen.net/programming/spring-framework/spring-from-the-trenches-new-like-expressions-of-spring-data-jpa/
-    @Query(value = "Select distinct(label) from Medium m WHERE label like :label%", nativeQuery = true)
-    List<String> findLabelsIgnoreCaseStartingWithAsc(@Param("label") String label);
+    List<Medium> findLabelsIgnoreCaseStartingWithAsc(@Param("label") String label);
+
+    @Query(value = "Select m from Medium m, Artist a where m.type=:type and a.name=:artist and m.artist.id = a.id")
+    List<Medium> findByTypeAndArtist(@Param("type") Integer type, @Param("artist") String artist);
+
+    @Query(value = "Select m from Medium m, Artist a where m.type=:type and m.title=:title and a.name=:artist and m.artist.id = a.id")
+    List<Medium> findByTypeAndArtistAndTitle(@Param("type") Integer type, @Param("artist") String artist, @Param("title") String title);
 }
