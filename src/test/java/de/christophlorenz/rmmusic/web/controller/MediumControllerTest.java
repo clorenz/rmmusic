@@ -87,7 +87,7 @@ public class MediumControllerTest {
      */
     @Test
     public void testCalculateCodeOnEmptyCodeReturnsEmptyCode() throws Exception {
-        assertThat(mediumController.calculateCode(null), is(nullValue()));
+        assertThat(mediumController.calculateCode(Medium.SINGLE, null), is(nullValue()));
     }
 
     @Test
@@ -97,7 +97,7 @@ public class MediumControllerTest {
 
         when(dummyRepository.findByArtist(eq("BZN"))).thenReturn(new ArrayList<Medium>());
 
-        assertThat(mediumController.calculateCode(artist), is("BZN    1"));
+        assertThat(mediumController.calculateCode(Medium.SINGLE,artist), is("BZN    1"));
     }
 
     @Test
@@ -107,21 +107,37 @@ public class MediumControllerTest {
 
         when(dummyRepository.findByArtist(eq("BZNBZNBZN"))).thenReturn(new ArrayList<Medium>());
 
-        assertThat(mediumController.calculateCode(artist), is("BZNBZN 1"));
+        assertThat(mediumController.calculateCode(Medium.SINGLE,artist), is("BZNBZN 1"));
     }
 
     @Test
-    public void testCalculateCodeOnExistingArtistNameIncrementsLastFound() throws Exception {
+    public void testCalculateCodeOnExistingArtistNameIncrementsLastFoundOnSameMedium() throws Exception {
         Artist artist = new Artist();
         artist.setName("BZN");
 
         List<Medium> twoMedia = new ArrayList<Medium>();
-        twoMedia.add(createMedium("BZN    1"));
-        twoMedia.add(createMedium("BZN    2"));
+        twoMedia.add(createMedium(Medium.SINGLE,"BZN    1"));
+        twoMedia.add(createMedium(Medium.SINGLE,"BZN    2"));
 
+        when(dummyRepository.findByTypeAndArtist(eq(Medium.SINGLE), eq("BZN"))).thenReturn(twoMedia);
+
+        assertThat(mediumController.calculateCode(Medium.SINGLE,artist), is("BZN    3"));
+    }
+
+
+    @Test
+    public void testCalculateCodeOnExistingArtistNameStartingWithOneOnNewMedium() throws Exception {
+        Artist artist = new Artist();
+        artist.setName("BZN");
+
+        List<Medium> twoMedia = new ArrayList<Medium>();
+        twoMedia.add(createMedium(Medium.SINGLE,"BZN    1"));
+        twoMedia.add(createMedium(Medium.SINGLE,"BZN    2"));
+
+        when(dummyRepository.findByTypeAndArtist(eq(Medium.CD),eq("BZN"))).thenReturn(new ArrayList<Medium>());
         when(dummyRepository.findByArtist(eq("BZN"))).thenReturn(twoMedia);
 
-        assertThat(mediumController.calculateCode(artist), is("BZN    3"));
+        assertThat(mediumController.calculateCode(Medium.CD,artist), is("BZN    1"));
     }
 
     @Test
@@ -130,12 +146,12 @@ public class MediumControllerTest {
         artist.setName("BZN");
 
         List<Medium> twoMedia = new ArrayList<Medium>();
-        twoMedia.add(createMedium("BZN    8"));
-        twoMedia.add(createMedium("BZN    9"));
+        twoMedia.add(createMedium(Medium.SINGLE,"BZN    8"));
+        twoMedia.add(createMedium(Medium.SINGLE,"BZN    9"));
 
-        when(dummyRepository.findByArtist(eq("BZN"))).thenReturn(twoMedia);
+        when(dummyRepository.findByTypeAndArtist(eq(Medium.SINGLE), eq("BZN"))).thenReturn(twoMedia);
 
-        assertThat(mediumController.calculateCode(artist), is("BZN   10"));
+        assertThat(mediumController.calculateCode(Medium.SINGLE,artist), is("BZN   10"));
     }
 
 
@@ -145,12 +161,12 @@ public class MediumControllerTest {
         artist.setName("BZN");
 
         List<Medium> twoMedia = new ArrayList<Medium>();
-        twoMedia.add(createMedium("BZNBZNB8"));
-        twoMedia.add(createMedium("BZNBZNB9"));
+        twoMedia.add(createMedium(Medium.SINGLE,"BZNBZNB8"));
+        twoMedia.add(createMedium(Medium.SINGLE,"BZNBZNB9"));
 
-        when(dummyRepository.findByArtist(eq("BZN"))).thenReturn(twoMedia);
+        when(dummyRepository.findByTypeAndArtist(eq(Medium.SINGLE), eq("BZN"))).thenReturn(twoMedia);
 
-        assertThat(mediumController.calculateCode(artist), is("BZNBZN10"));
+        assertThat(mediumController.calculateCode(Medium.SINGLE,artist), is("BZNBZN10"));
     }
 
 
@@ -159,10 +175,11 @@ public class MediumControllerTest {
         Artist artist = new Artist();
         artist.setName("Nachname, Vorname");
 
+        when(dummyRepository.findByTypeAndArtist(eq(Medium.SINGLE),eq("Nachname, Vorname"))).thenReturn(new ArrayList<Medium>());
         when(dummyRepository.findByArtist(eq("Nachname, Vorname"))).thenReturn(new ArrayList<Medium>());
         when(dummyRepository.findByCodeStartsWith(eq("NacVor"))).thenReturn(new ArrayList<Medium>());
 
-        assertThat(mediumController.calculateCode(artist), is("NacVor 1"));
+        assertThat(mediumController.calculateCode(Medium.SINGLE,artist), is("NacVor 1"));
     }
 
 
@@ -171,12 +188,13 @@ public class MediumControllerTest {
         Artist artist = new Artist();
         artist.setName("Nachname, Vorname");
 
+        when(dummyRepository.findByTypeAndArtist(eq(Medium.SINGLE),eq("Nachname, Vorname"))).thenReturn(new ArrayList<Medium>());
         when(dummyRepository.findByArtist(eq("Nachname, Vorname"))).thenReturn(new ArrayList<Medium>());
         List<Medium> mediumList = new ArrayList<Medium>();
-        mediumList.add(createMedium("NacVor 1"));
+        mediumList.add(createMedium(Medium.SINGLE,"NacVor 1"));
         when(dummyRepository.findByCodeStartsWith(eq("NacVor"))).thenReturn(mediumList);
 
-        assertThat(mediumController.calculateCode(artist), is(nullValue()));
+        assertThat(mediumController.calculateCode(Medium.SINGLE,artist), is(nullValue()));
     }
 
 
@@ -185,16 +203,18 @@ public class MediumControllerTest {
         Artist artist = new Artist();
         artist.setName("Baker, George, Selection");
 
+        when(dummyRepository.findByTypeAndArtist(eq(Medium.SINGLE),eq("Nachname, Vorname"))).thenReturn(new ArrayList<Medium>());
         when(dummyRepository.findByArtist(eq("Baker, George, Selection"))).thenReturn(new ArrayList<Medium>());
         when(dummyRepository.findByCodeStartsWith(eq("BaGeSe"))).thenReturn(new ArrayList<Medium>());
 
-        assertThat(mediumController.calculateCode(artist), is("BaGeSe 1"));
+        assertThat(mediumController.calculateCode(Medium.SINGLE,artist), is("BaGeSe 1"));
     }
 
 
-    private Medium createMedium(String code) {
+    private Medium createMedium(int type, String code) {
         Medium medium = new Medium();
         medium.setCode(code);
+        medium.setType(type);
         return medium;
     }
 

@@ -121,11 +121,13 @@ public class MediumController {
     }
 
 
+    // TODO: How to get the value of the submit attribute??
     @RequestMapping(value = "/single/edit", method = RequestMethod.POST)
     public String editSingle(@Valid @ModelAttribute("medium") Medium medium,
                              BindingResult br,
                              Model model,
                              RedirectAttributes redirectAttributes) {
+        boolean created=false;
 
         medium.setTimestamp(new Date());
 
@@ -136,8 +138,11 @@ public class MediumController {
             return "rmmusic/editSingleForm";
         }
 
+        if ( medium.getId()==0)
+            created=true;
+
         medium = mediumRepository.save(medium);
-        redirectAttributes.addFlashAttribute("success", "Successfully saved medium "+medium.getCode());
+        redirectAttributes.addFlashAttribute("success", "Successfully "+(created?"created":"saved")+" medium S "+medium.getCode());
 
         return "redirect:select";
     }
@@ -152,20 +157,55 @@ public class MediumController {
         single.setType(Medium.SINGLE);
         single.setArtist(artist);
         single.setTitle(title);
-        single.setCode(calculateCode(artist));
+        single.setCode(calculateCode(Medium.SINGLE,artist));
 
         model.addAttribute("medium", single);
         return "rmmusic/editSingleForm";
     }
 
 
-    protected String calculateCode(Artist artist) {
+    @RequestMapping(value = "/single/delete", method = RequestMethod.POST)
+    public String deleteArtist(@Valid @RequestParam("id") Long id,
+                               RedirectAttributes redirectAttributes) {
+        log.info("Removing single " + id);
+
+        Medium medium = mediumRepository.getOne(id);
+        if ( medium!=null ) {
+            try {
+                mediumRepository.delete(medium);
+                redirectAttributes.addFlashAttribute("success", "Successfully removed single with code S " + medium.getCode());
+                return "redirect:select";
+            } catch (Exception e) {
+                log.error("Cannot delete medium with id=" + id + ": ", e);
+            }
+        }
+
+        redirectAttributes.addFlashAttribute("error", "Could not remove medium with id "+id);
+        return "redirect:select";
+    }
+
+
+    protected String calculateCode(int mediumType, Artist artist) {
         // Check, if there are already media from this artist. If yes, use their code prefix and incrememnt the number
         if ( artist!=null ) {
             String artistName = artist.getName();
-            List<Medium> mediaOfArtist = mediumRepository.findByArtist(artistName);
+            List<Medium> mediaOfArtist = mediumRepository.findByTypeAndArtist(mediumType, artistName);
             if ( mediaOfArtist==null || mediaOfArtist.isEmpty()) {
-                return calculateShortenedArtistNameWithOne(artistName);
+                // On this very medium, we have no codes yet, but what on the other ones?
+                mediaOfArtist = mediumRepository.findByArtist(artistName);
+
+                // Still nothing found? Create a new one!
+                if ( mediaOfArtist==null || mediaOfArtist.isEmpty())
+                    return calculateShortenedArtistNameWithOne(artistName);
+                else {
+                    Collections.sort(mediaOfArtist, new MediaCodeComparator());
+                    String lastMedium = mediaOfArtist.get(mediaOfArtist.size()-1).getCode();
+
+                    String lastMediumDigits = lastMedium.replaceAll("\\D", "");
+
+                    String newCode = lastMedium.substring(0,lastMedium.length()-lastMediumDigits.length()-1);
+                    return (newCode + SIX_BLANKS).substring(0,6)+" 1";
+                }
             }
 
             // Sort according to their suffix

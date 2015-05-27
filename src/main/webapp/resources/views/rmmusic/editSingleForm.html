@@ -16,6 +16,12 @@
         #remarks {
         width: 500px;
         }
+        button#editsongs {
+            margin-left: 20px;
+        }
+        button#sticker {
+            margin-left: 20px;
+        }
     </style>
     <script>
 		if (top !== self) {
@@ -95,6 +101,8 @@
                         <input name="type" type="hidden" th:field="*{type}"/>
                         <button th:if="*{id > 0}" class="submit" type="submit" th:text="#{editMediumForm.button.submit.changes}"></button>
                         <button th:if="*{id == 0}" class="submit" type="submit" th:text="#{editMediumForm.button.submit.create}"></button>
+                        <button th:if="*{id > 0}" class="submit" type="submit" value="editsongs" id="editsongs" th:text="#{editMediumForm.button.editsongs}"></button>
+                        <button th:if="*{id > 0}" class="submit" type="submit" value="sticker" id="sticker" th:text="#{editMediumForm.button.sticker}"></button>
                         <button th:if="*{id > 0}" class="delete" type="button" id="delete" th:text="#{editMediumForm.button.delete}" tabindex="-1"></button>
                     </li>
                 </ul>
@@ -147,7 +155,7 @@
     function deleteMedium(id) {
         var deleteForm = document.createElement("form");
         deleteForm.setAttribute("method","post");
-        deleteForm.setAttribute("action","/rmmusic/medium/delete");
+        deleteForm.setAttribute("action","/rmmusic/medium/single/delete");
         var hiddenField = document.createElement("input");
         hiddenField.setAttribute("type","hidden");
         hiddenField.setAttribute("name","id");
