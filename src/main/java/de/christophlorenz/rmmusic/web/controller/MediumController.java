@@ -1,5 +1,6 @@
 package de.christophlorenz.rmmusic.web.controller;
 
+import com.google.common.annotations.VisibleForTesting;
 import de.christophlorenz.rmmusic.model.Artist;
 import de.christophlorenz.rmmusic.model.Medium;
 import de.christophlorenz.rmmusic.persistence.jpa2.ArtistRepository;
@@ -31,12 +32,18 @@ import java.util.List;
 public class MediumController {
 
     private static final Logger log = Logger.getLogger(MediumController.class);
+    private static final String SIX_BLANKS = "      ";
 
     @Autowired
     MediumRepository mediumRepository;
 
     @Autowired
     ArtistRepository artistRepository;
+
+    @VisibleForTesting
+    protected void setMediumRepository(MediumRepository mediumRepository) {
+        this.mediumRepository = mediumRepository;
+    }
 
     @RequestMapping("/single/select")
     public String selectSingle(Model model) {
@@ -142,20 +149,61 @@ public class MediumController {
 
     protected String editNewSingle(Model model, Artist artist, String title) {
         Medium single = new Medium();
+        single.setType(Medium.SINGLE);
         single.setArtist(artist);
         single.setTitle(title);
         single.setCode(calculateCode(artist));
 
-        model.addAttribute("single", single);
+        model.addAttribute("medium", single);
         return "rmmusic/editSingleForm";
     }
 
 
     protected String calculateCode(Artist artist) {
         // Check, if there are already media from this artist. If yes, use their code prefix and incrememnt the number
+        if ( artist!=null ) {
+            String artistName = artist.getName();
+            List<Medium> mediaOfArtist = mediumRepository.findByArtist(artistName);
+            if ( mediaOfArtist==null || mediaOfArtist.isEmpty()) {
+                return calculateShortenedArtistNameWithOne(artistName);
+            }
 
-        // If not, generate up to 6 characters from the name parts (name, not print!)
+            // Sort according to their suffix
+            Collections.sort(mediaOfArtist, new MediaCodeComparator());
+            String lastMedium = mediaOfArtist.get(mediaOfArtist.size()-1).getCode();
+            // Extract number
+            int lastMediumNumber = Integer.parseInt(lastMedium.replaceAll("\\D", ""));
+            int nextMediumNumber = (lastMediumNumber+1);
 
+            String newCode = lastMedium.replace(""+lastMediumNumber, ""+nextMediumNumber);
+
+            if ( newCode.length()>lastMedium.length()) {
+                newCode = lastMedium.substring(0,lastMedium.length()-(""+nextMediumNumber).length())+nextMediumNumber;
+            }
+
+            return newCode;
+        }
         return null;
+    }
+
+    private String calculateShortenedArtistNameWithOne(String artistName) {
+        String ret="";
+        String newCode="";
+
+        String[] artistParts = artistName.replaceAll("\\s", "").split(",");
+        int length = (int) Math.floor(6 / Math.min(6, artistParts.length));
+        String[] newParts = new String[artistParts.length];
+
+        for (int partNo = 0; partNo < Math.min(6, artistParts.length); partNo++) {
+            ret += artistParts[partNo].substring(0, Math.min(length, artistParts[partNo].length()));
+        }
+
+        ret += SIX_BLANKS;
+        newCode = ret.substring(0, 6);
+
+        if ( mediumRepository.findByCodeStartsWith(newCode).isEmpty())
+            return newCode+" 1";
+        else
+            return null;
     }
 }

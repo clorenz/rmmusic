@@ -22,6 +22,8 @@ public interface MediumRepository extends JpaRepository<Medium, Long> {
 
     Medium findByTypeAndCode(@Param("type") int type, @Param("code") String code);
 
+    List<Medium> findByCodeStartsWith(@Param("code") String code);
+
     List<Medium> findByTypeAndCodeIgnoreCaseStartingWithOrderByCodeAsc(@Param("type") int type, @Param("code") String code);
 
     @Query(value = "Select m from Medium m, Artist a where m.type=:type and a.name=:artist and m.artist.id = a.id")
@@ -32,4 +34,7 @@ public interface MediumRepository extends JpaRepository<Medium, Long> {
 
     @Query(value = "Select m from Medium m, Artist a where m.type=:type and m.title=:title and a.name=:artist and m.artist.id = a.id")
     List<Medium> findByTypeAndArtistAndTitleExact(@Param("type") Integer type, @Param("artist") String artist, @Param("title") String title);
+
+    @Query(value = "Select m from Medium m, Artist a where a.name=:artist and m.artist.id = a.id")
+    List<Medium> findByArtist(@Param("artist") String artist);
 }
