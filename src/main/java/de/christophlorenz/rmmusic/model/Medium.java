@@ -40,7 +40,7 @@ public class Medium {
     @Column(nullable = false)
     private Integer type;
 
-    @Column(length = 8)
+    @Column(length = 8, nullable = false)
     private String code;
 
     @ManyToOne(optional=true, targetEntity = Artist.class, fetch = FetchType.EAGER)
