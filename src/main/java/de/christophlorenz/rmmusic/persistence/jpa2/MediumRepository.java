@@ -21,9 +21,7 @@ public interface MediumRepository extends JpaRepository<Medium, Long> {
     List<Medium> findById(@Param("id") long id);
 
     Medium findByTypeAndCode(@Param("type") int type, @Param("code") String code);
-
-    List<Medium> findLabelsIgnoreCaseStartingWithAsc(@Param("label") String label);
-
+    
     @Query(value = "Select m from Medium m, Artist a where m.type=:type and a.name=:artist and m.artist.id = a.id")
     List<Medium> findByTypeAndArtist(@Param("type") Integer type, @Param("artist") String artist);
 
