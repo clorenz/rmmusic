@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <script type="text/javascript" th:src="@{/rmmusic/js/jquery-2.1.4.min.js}"></script>
+    <script type="text/javascript" th:src="@{/rmmusic/js/jquery.autocomplete-1.2.20.min.js}"></script>
+    <title>rmmusic</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/rmmusic.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/form.css}"/>
+</head>
+<body>
+<div th:include="menu :: menuFragment"></div>
+<div th:include="flash :: flashFragment"></div>
+<div id="rmmusic_body">
+    <div class="search">
+        <form class="rmmusic_form" id="select_single_form" method="get" action="/rmmusic/medium/single/edit">
+            <fieldset>
+                <ul>
+                    <li>
+                        <h2 th:text="#{selectSingleForm.headline}"/>
+                    </li>
+                    <li>
+                        <label for="code" th:text="#{form.label.code}"></label>
+                        S <input size="8" name="code" id="code" maxlength="8" width="100" pattern="[\sa-zA-Z0-9&amp;+]{8}" />
+                        <span class="form_hint" th:text="#{form.hint.code}"></span>
+                    </li>
+                    <li>
+                        <label for="artist" th:text="#{form.label.artist}"></label>
+                        <input size="32" name="artist" id="artist"
+                               th:attr="placeholder=#{form.placeholder.artist}"
+                               autofocus="autofocus"/>
+                        <span class="form_hint" th:text="#{form.hint.artist}"></span>
+                    </li>
+                    <li>
+                        <label for="title" th:text="#{form.label.title}"></label>
+                        <input name="title" id="title"
+                               th:attr="placeholder=#{form.placeholder.title}"/>
+                        <span class="form_hint" th:text="#{form.hint.title}"></span>
+                    </li>
+                    <li>
+                        <label for="exact" th:text="#{form.label.exact}"></label>
+                        <input name="exact" id="exact" type="checkbox"/>
+                    </li>
+                    <li>
+                        <button class="submit" type="submit" th:text="#{selectMediumForm.button.submit}"></button>
+                    </li>
+                </ul>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<div th:include="flash :: flashFragmentFoot"></div>
+
+<script type="application/javascript">
+    jQuery(function () {
+        $('#code').autocomplete({
+            serviceUrl: '/medium/search/findByTypeAndCodeIgnoreCaseStartingWithOrderByCodeAsc',
+            paramName: "code",
+            params: { type: 6 },
+            minChars: 2,
+            maxHeight: 'none',
+            transformResult: function (response) {
+                // overwrite, maybe needed for reading additional information in response
+                // return $.parseJSON(response);
+                var codelist = $.parseJSON(response);
+                return {
+                  suggestions: $.map(codelist._embedded.medium, function(mediumDetails) {
+                    return { value: mediumDetails.code, data: mediumDetails.code };
+                  })
+                };
+            }
+        });
+
+        $('#artist').autocomplete({
+            serviceUrl: '/artist/search/findByNameIgnoreCaseStartingWithOrderByNameAsc',
+            paramName: "name",
+            params: {},
+            minChars: 1,
+            maxHeight: 'none',
+            transformResult: function (response) {
+                // overwrite, maybe needed for reading additional information in response
+                // return $.parseJSON(response);
+                var artistlist = $.parseJSON(response);
+                return {
+                  suggestions: $.map(artistlist._embedded.artist, function(artistDetails) {
+                    return { value: artistDetails.name, data: artistDetails.name };
+                  })
+                };
+            }
+        });
+
+        $("#code").keyup(function(event){
+            if(event.which == 13){
+                $("#exact").prop("checked", true);
+                document.select_single_form.submit();
+            }
+        });
+
+        $("#title").keyup(function(event){
+            if(event.which == 13){
+                document.select_single_form.submit();
+            }
+        });
+    });
+</script>
+</body>
+</html>

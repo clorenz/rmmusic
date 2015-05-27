@@ -20,15 +20,15 @@
                     <h2 th:text="#{selectArtistForm.headline}"/>
                 </li>
                 <li>
-                    <label for="artist" th:text="#{selectArtistForm.label.artist}"></label>
+                    <label for="artist" th:text="#{form.label.artist}"></label>
                     <input size="32" name="artist" id="artist"
-                            th:attr="placeholder=#{selectArtistForm.search.placeholder}"
+                            th:attr="placeholder=#{form.placeholder.artist}"
                             autofocus="autofocus"
                             required="required"/>
-                    <span class="form_hint" th:text="#{selectArtistForm.hint.artist}"></span>
+                    <span class="form_hint" th:text="#{form.hint.artist}"></span>
                 </li>
                 <li>
-                    <label for="exact">Exact match</label>
+                    <label for="exact" th:text="#{form.label.exact}"></label>
                     <input name="exact" id="exact" type="checkbox"/>
                 </li>
                 <li>
