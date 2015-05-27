@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title>rmmusic</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/rmmusic.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/list.css}"/>
+    <style>
+        #code {
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+<div th:include="menu :: menuFragment"></div>
+<div th:include="flash :: flashFragment"></div>
+<div id="rmmusic_body">
+    <div class="list">
+        <fieldset>
+            <ul>
+                <li>
+                    <h2 th:text="#{mediaList.headline}"/>
+                </li>
+                <li th:each="medium : ${media}">
+                    <a th:href="@{'edit/'+${medium.id}}"><span id="code" th:text="${medium.code}"></span></a>
+                        <span id="artist" th:text="${medium.artist.name}"></span> -
+                        <span id="title" th:text="${medium.title}"></span>
+                </li>
+            </ul>
+        </fieldset>
+    </div>
+</div>
+
+<div th:include="flash :: flashFragmentFoot"></div>
+
+</body>
+</html>

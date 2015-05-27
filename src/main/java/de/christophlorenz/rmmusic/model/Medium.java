@@ -331,4 +331,38 @@ public class Medium {
     public void setRemarks(String remarks) {
         this.remarks = remarks;
     }
+
+    @Override
+    public String toString() {
+        return "Medium{" +
+                "id=" + id +
+                ", type=" + type +
+                ", code='" + code + '\'' +
+                ", artist=" + artist +
+                ", title='" + title + '\'' +
+                ", label='" + label + '\'' +
+                ", ordercode='" + ordercode + '\'' +
+                ", pYear=" + pYear +
+                ", size=" + size +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", system='" + system + '\'' +
+                ", recBeginDate=" + recBeginDate +
+                ", recBeginB=" + recBeginB +
+                ", recEndDate=" + recEndDate +
+                ", burningDate=" + burningDate +
+                ", discId=" + discId +
+                ", trackOffsets='" + trackOffsets + '\'' +
+                ", category='" + category + '\'' +
+                ", id3Genre='" + id3Genre + '\'' +
+                ", digital='" + digital + '\'' +
+                ", audio=" + audio +
+                ", rewritable=" + rewritable +
+                ", magic='" + magic + '\'' +
+                ", filesType='" + filesType + '\'' +
+                ", buyDate=" + buyDate +
+                ", buyPrice=" + buyPrice +
+                ", remarks='" + remarks + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }

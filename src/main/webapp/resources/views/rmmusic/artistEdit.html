@@ -41,7 +41,7 @@
                     <h2 th:if="*{id == 0}" th:text="#{editArtistForm.headline.create}"/>
                 </li>
                 <li th:if="*{id > 0}">
-                    <label for="id_field">ID</label>
+                    <label for="id_field" th:text="#{form.label.id}"></label>
                     <span id="id_field" th:text="*{id}"/>
                     <input name="id" type="hidden" th:field="*{id}"/>
                 </li>
@@ -72,7 +72,7 @@
                     <input id="url" type="url" th:field="*{url}"/>
                 </li>
                 <li>
-                    <label for="remarks">Remarks</label>
+                    <label for="remarks" th:text="#{form.label.remarks}"></label>
                     <textarea id="remarks" th:field="*{remarks}"/>
                 </li>
                 <li>

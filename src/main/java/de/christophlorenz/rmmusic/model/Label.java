@@ -27,6 +27,8 @@ public class Label implements Serializable {
         return label;
     }
 
+    public String getName() { return label; }
+
     public void setLabel(String label) {
         this.label = label;
     }
