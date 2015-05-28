@@ -53,7 +53,7 @@
                         <h2 th:if="*{id == 0}" th:text="#{editTapeForm.headline.create}"/>
                     </li>
                     <li th:if="*{id > 0}">
-                        <label for="id_field" th:text="#{form.label.id}"></label>
+                        <label id="label_id" for="id_field" th:text="#{form.label.id}"></label>
                         <span id="id_field" th:text="*{id}"/>
                         <input name="id" type="hidden" th:field="*{id}"/>
                     </li>

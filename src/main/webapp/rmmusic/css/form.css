@@ -21,14 +21,14 @@
         }
         .search {
         width: 1000px;
-        padding: 20px;
+        padding: 10px;
         }
         .edit {
         width: 1000px;
-        padding: 20px;
+        padding: 10px;
         }
         fieldset {
-        padding: 20px;
+        padding: 10px;
         }
         label {
           width: 100px;
@@ -46,11 +46,11 @@
         padding:0px;
         }
         .rmmusic_form li{
-        padding:12px;
+        padding:4px;
         border-bottom:1px solid #eee;
         position:relative;
         }
-        .rmmusic_form li:first-child, .select_artist_form li:last-child {
+        .rmmusic_form li:first-child, li:last-child {
         border-bottom:1px solid #777;
         }
         .rmmusic_form h2 {
@@ -59,10 +59,13 @@
         }
         .rmmusic_form label {
         width:150px;
-        margin-top: 3px;
+        margin-top: 7px;
         display:inline-block;
         float:left;
         padding:3px;
+        }
+        #label_id {
+          margin-top: -2px;
         }
         .rmmusic_form input {
         height:20px;
