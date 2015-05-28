@@ -39,18 +39,18 @@
 <div th:include="menu :: menuFragment"></div>
 <div th:include="flash :: flashFragment"></div>
 
-<div id="dialog" th:title="#{deleteCDROMDialog.title}">
-    <p th:text="#{deleteCDROMDialog.text}"/>
+<div id="dialog" th:title="#{deleteVideoDialog.title}">
+    <p th:text="#{deleteVideoDialog.text}"/>
 </div>
 
 <div id="rmmusic_body">
     <div class="edit">
-        <form method="post" th:action="@{/rmmusic/medium/cdrom/edit}" th:object="${medium}" class="rmmusic_form" id="edit_cdrom_form">
+        <form method="post" th:action="@{/rmmusic/medium/video/edit}" th:object="${medium}" class="rmmusic_form" id="edit_video_form">
             <fieldset>
                 <ul>
                     <li>
-                        <h2 th:if="*{id > 0}" th:text="#{editCDROMForm.headline.edit}"/>
-                        <h2 th:if="*{id == 0}" th:text="#{editCDROMForm.headline.create}"/>
+                        <h2 th:if="*{id > 0}" th:text="#{editVideoForm.headline.edit}"/>
+                        <h2 th:if="*{id == 0}" th:text="#{editVideoForm.headline.create}"/>
                     </li>
                     <li th:if="*{id > 0}">
                         <label for="id_field" th:text="#{form.label.id}"></label>
@@ -85,6 +85,11 @@
                         <span class="form_hint" th:text="#{form.hint.manufacturer}"></span>
                     </li>
                     <li>
+                        <label for="system" th:text="#{form.label.system}"></label>
+                        <input id="system" name="system" type="text" th:field="*{system}" required="required"/>
+                        <span class="form_hint" th:text="#{form.hint.system}"></span>
+                    </li>
+                    <li>
                         <label for="recBeginDate" th:text="#{form.label.recbegindate}"></label>
                         <input id="recBeginDate" type="text" th:field="*{{recBeginDate}}" width="10" maxlength="10" th:pattern="#{date.pattern}"/>
                         <span class="form_hint" th:text="#{form.hint.recbegindate}"></span>
@@ -95,27 +100,9 @@
                         <span class="form_hint" th:text="#{form.hint.recenddate}"></span>
                     </li>
                     <li>
-                        <label for="burningDate" th:text="#{form.label.burningdate}"></label>
-                        <input id="burningDate" type="text" th:field="*{{burningDate}}" width="10" maxlength="10" th:pattern="#{date.pattern}"/>
-                        <span class="form_hint" th:text="#{form.hint.burningdate}"></span>
-                    </li>
-                    <li>
-                        <label for="audio" th:text="#{form.label.audio}"></label>
-                        <input name="audio" id="audio" type="checkbox" th:field="*{{audio}}"/>
-                    </li>
-                    <li>
-                        <label for="rewritable" th:text="#{form.label.rewritable}"></label>
-                        <input name="rewritable" id="rewritable" type="checkbox" th:field="*{{rewritable}}"/>
-                    </li>
-                    <li>
-                        <label for="discid" th:text="#{form.label.discid}"></label>
-                        <input id="discid" type="text" th:field="*{{discId}}" width="10" maxlength="10" pattern="[0-9A-F]*"/>
-                        <span class="form_hint" th:text="#{form.hint.discid}"></span>
-                    </li>
-                    <li>
-                        <label for="trackOffsets" th:text="#{form.label.trackoffsets}"></label>
-                        <textarea id="trackOffsets" th:field="*{trackOffsets}" pattern="[0-9,]*"/>
-                        <span class="trackOffsets" th:text="#{form.hint.trackoffsets}"></span>
+                        <label for="buyDate" th:text="#{form.label.buydate}"></label>
+                        <input id="buyDate" type="text" th:field="*{{buyDate}}" width="10" maxlength="10" th:pattern="#{date.pattern}"/>
+                        <span class="form_hint" th:text="#{form.hint.buydate}"></span>
                     </li>
                     <li>
                         <label for="buyPrice" th:text="#{form.label.buyprice}"></label>
@@ -183,7 +170,7 @@
     function deleteMedium(id) {
         var deleteForm = document.createElement("form");
         deleteForm.setAttribute("method","post");
-        deleteForm.setAttribute("action","/rmmusic/medium/cdrom/delete");
+        deleteForm.setAttribute("action","/rmmusic/medium/video/delete");
         var hiddenField = document.createElement("input");
         hiddenField.setAttribute("type","hidden");
         hiddenField.setAttribute("name","id");
