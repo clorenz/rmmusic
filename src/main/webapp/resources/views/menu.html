@@ -8,6 +8,7 @@
 <div th:fragment="menuFragment">
 <table border="0" cellpadding="2" cellspacing="0">
     <tr>
+        <td rowspan="3" style="padding-right: 20px; text-align:center;"><a href="/rmmusic/"><img src="/rmmusic/img/rmmusic.png" width="100" border="0"/></a><br/><h2 th:text="#{rmmusic.with.version}"/></td>
         <td>&nbsp;<a href="/rmmusic/medium/tape/select"><img src="/rmmusic/img/audio_tape.png" border="0" width="40"/></a>&nbsp;</td>
         <td>&nbsp;<a href="/rmmusic/medium/video/select"><img src="/rmmusic/img/video_tape.png" border="0" width="40"/></a>&nbsp;</td>
         <td>&nbsp;<a href="/rmmusic/medium/cdrom/select"><img src="/rmmusic/img/cd.png" border="0" width="40"/></a>&nbsp;</td>
@@ -39,7 +40,11 @@
         <td></td>
         <td align="center"><a href="/wmmusic/do/statistics">Statistics</a></td>
     </tr>
+    <tr style="height: 76px;">
+        <td colspan="14"></td>
+    </tr>
 </table>
+<hr/>
 </div>
 </body>
 </html>

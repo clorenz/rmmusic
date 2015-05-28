@@ -3,9 +3,10 @@
 <head>
     <title>rmmusic</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/rmmusic.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/form.css}"/>
 </head>
 <body>
 <div th:include="menu :: menuFragment"></div>
-<p th:text="'rmmusic ' + ${version} + '!'" />
 </body>
 </html>
