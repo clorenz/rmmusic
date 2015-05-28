@@ -39,18 +39,18 @@
 <div th:include="menu :: menuFragment"></div>
 <div th:include="flash :: flashFragment"></div>
 
-<div id="dialog" th:title="#{deleteVideoDialog.title}">
-    <p th:text="#{deleteVideoDialog.text}"/>
+<div id="dialog" th:title="#{deleteTapeDialog.title}">
+    <p th:text="#{deleteTapeDialog.text}"/>
 </div>
 
 <div id="rmmusic_body">
     <div class="edit">
-        <form method="post" th:action="@{/rmmusic/medium/video/edit}" th:object="${medium}" class="rmmusic_form" id="edit_video_form">
+        <form method="post" th:action="@{/rmmusic/medium/tape/edit}" th:object="${medium}" class="rmmusic_form" id="edit_tape_form">
             <fieldset>
                 <ul>
                     <li>
-                        <h2 th:if="*{id > 0}" th:text="#{editVideoForm.headline.edit}"/>
-                        <h2 th:if="*{id == 0}" th:text="#{editVideoForm.headline.create}"/>
+                        <h2 th:if="*{id > 0}" th:text="#{editTapeForm.headline.edit}"/>
+                        <h2 th:if="*{id == 0}" th:text="#{editTapeForm.headline.create}"/>
                     </li>
                     <li th:if="*{id > 0}">
                         <label for="id_field" th:text="#{form.label.id}"></label>
@@ -80,19 +80,19 @@
                         <span class="form_hint" th:text="#{form.hint.size}"></span>
                     </li>
                     <li>
-                        <label for="manufacturer" th:text="#{form.label.manufacturer}"></label>
-                        <input id="manufacturer" name="manufacturer" type="text" th:field="*{manufacturer}" required="required"/>
-                        <span class="form_hint" th:text="#{form.hint.manufacturer}"></span>
-                    </li>
-                    <li>
-                        <label for="system" th:text="#{form.label.system}"></label>
-                        <input id="system" name="system" type="text" th:field="*{system}" required="required"/>
-                        <span class="form_hint" th:text="#{form.hint.system}"></span>
+                        <label for="manufacturer" th:text="#{form.label.manufacturerOrLabel}"></label>
+                        <input id="manufacturer" name="manufacturer" type="text" th:field="*{manufacturer}"/>
+                        <span class="form_hint" th:text="#{form.hint.manufacturerOrLabel}"></span>
                     </li>
                     <li>
                         <label for="recBeginDate" th:text="#{form.label.recbegindate}"></label>
                         <input id="recBeginDate" type="text" th:field="*{{recBeginDate}}" width="10" maxlength="10" th:pattern="#{date.pattern}"/>
                         <span class="form_hint" th:text="#{form.hint.recbegindate}"></span>
+                    </li>
+                    <li>
+                        <label for="recBeginB" th:text="#{form.label.recbeginb}"></label>
+                        <input id="recBeginB" type="text" th:field="*{{recBeginB}}" width="10" maxlength="10" th:pattern="#{date.pattern}"/>
+                        <span class="form_hint" th:text="#{form.hint.recbeginb}"></span>
                     </li>
                     <li>
                         <label for="recEndDate" th:text="#{form.label.recenddate}"></label>

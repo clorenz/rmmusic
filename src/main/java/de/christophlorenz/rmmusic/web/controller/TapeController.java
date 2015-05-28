@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by clorenz on 28.05.15.
  */
 @Controller
-@RequestMapping("/rmmusic/medium/video")
-public class VideoController extends MediumController {
+@RequestMapping("/rmmusic/medium/tape")
+public class TapeController extends MediumController {
 
     @Override
     protected String getSelectFormTemplate() {
-        return "rmmusic/selectVideoForm";
+        return "rmmusic/selectTapeForm";
     }
 
     @Override
     protected String getEditFormTemplate() {
-        return "rmmusic/editVideoForm";
+        return "rmmusic/editTapeForm";
     }
 
     @Override
@@ -28,16 +28,16 @@ public class VideoController extends MediumController {
 
     @Override
     protected String getMediumTypeName() {
-        return "Video tape";
+        return "tape";
     }
 
     @Override
     protected String getMediumTypeAbbreviation() {
-        return "V";
+        return "C";
     }
 
     @Override
     protected int getMediumType() {
-        return Medium.VIDEO_TAPE;
+        return Medium.AUDIO_TAPE;
     }
 }

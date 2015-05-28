@@ -65,7 +65,7 @@
                     </li>
                     <li>
                         <label for="artistname" th:text="#{form.label.artist}"></label>
-                        <input id="artistname" type="text" th:field="*{artist.name}" readonly="readonly"/>
+                        <input id="artistname" type="text" th:field="*{artist.name}"/>
                         <span class="form_hint" th:text="#{form.hint.artist}"></span>
                         <input id="artist" type="hidden" th:field="*{artist.id}"/>
                     </li>
@@ -144,7 +144,7 @@
 
 <script th:inline="javascript" type="text/javascript">
     jQuery(function () {
-        $('#artistname').autocomplete({
+        $('#artistname').devbridgeAutocomplete({
             serviceUrl: '/artist/search/findByNameIgnoreCaseStartingWithOrderByNameAsc',
             paramName: "name",
             params: {},

@@ -160,6 +160,12 @@ public abstract class MediumController {
         medium.setTimestamp(new Date());
         if ( StringUtils.isBlank(medium.getArtist().getName())) {
             medium.setArtist(null);
+        } else {
+            List<Artist> artists = artistRepository.findByName(medium.getArtist().getName());
+            if ( artists!=null && artists.size()==1) {
+                log.info("Changing artist to "+artists.get(0));
+                medium.setArtist(artists.get(0));
+            }
         }
 
         log.info("Medium="+medium);
