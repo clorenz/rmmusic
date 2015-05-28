@@ -137,7 +137,7 @@ public abstract class MediumController {
     protected String editMediumReturnToEditSongs(@Valid @ModelAttribute("medium") Medium medium,
                              Model model,
                              RedirectAttributes redirectAttributes) {
-        return "redirect:../../songsOnMedium/"+medium.getId();
+        return "redirect:../../recording/?medium="+medium.getId();
     }
 
 
