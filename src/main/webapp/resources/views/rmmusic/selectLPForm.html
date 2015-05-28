@@ -13,15 +13,15 @@
 <div th:include="flash :: flashFragment"></div>
 <div id="rmmusic_body">
     <div class="search">
-        <form class="rmmusic_form" id="select_cd_form" method="get" action="/rmmusic/medium/cd/edit">
+        <form class="rmmusic_form" id="select_LP_form" method="get" action="/rmmusic/medium/lp/edit">
             <fieldset>
                 <ul>
                     <li>
-                        <h2 th:text="#{selectCDForm.headline}"/>
+                        <h2 th:text="#{selectLPForm.headline}"/>
                     </li>
                     <li>
                         <label for="code" th:text="#{form.label.code}"></label>
-                        D <input size="8" name="code" id="code" maxlength="8" width="100" pattern="[\sa-zA-Z0-9&amp;+]{8}" />
+                        L <input size="8" name="code" id="code" maxlength="8" width="100" pattern="[\sa-zA-Z0-9&amp;+]{8}" />
                         <span class="form_hint" th:text="#{form.hint.code}"></span>
                     </li>
                     <li>
@@ -57,7 +57,7 @@
         $('#code').autocomplete({
             serviceUrl: '/medium/search/findByTypeAndCodeIgnoreCaseStartingWithOrderByCodeAsc',
             paramName: "code",
-            params: { type: 7 },
+            params: { type: 5 },
             minChars: 2,
             maxHeight: 'none',
             transformResult: function (response) {
@@ -93,13 +93,13 @@
         $("#code").keyup(function(event){
             if(event.which == 13){
                 $("#exact").prop("checked", true);
-                document.select_cd_form.submit();
+                document.select_lp_form.submit();
             }
         });
 
         $("#title").keyup(function(event){
             if(event.which == 13){
-                document.select_cd_form.submit();
+                document.select_lp_form.submit();
             }
         });
     });

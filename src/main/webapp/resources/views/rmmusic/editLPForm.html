@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <script type="text/javascript" th:src="@{/rmmusic/js/jquery-2.1.4.min.js}"></script>
+    <script type="text/javascript" th:src="@{/rmmusic/js/jquery.autocomplete-1.2.20.min.js}"></script>
+    <script type="text/javascript" th:src="@{/rmmusic/js/jquery-ui-1.11.4-min.js}"></script>
+    <title>rmmusic</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/rmmusic.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/form.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/jquery-ui-1.11.4-min.css}"/>
+    <style>
+        #code {
+        width: 100px;
+        }
+        #remarks {
+        width: 500px;
+        }
+        button#editsongs {
+            margin-left: 20px;
+        }
+        button#sticker {
+            margin-left: 20px;
+        }
+        button#delete {
+        margin-left: 50px;
+        }
+    </style>
+    <script>
+		if (top !== self) {
+			$.ui.dialog.prototype._focusTabbable = $.noop;
+		}
+	</script>
+</head>
+<body>
+<div th:include="menu :: menuFragment"></div>
+<div th:include="flash :: flashFragment"></div>
+
+<div id="dialog" th:title="#{deleteLPDialog.title}">
+    <p th:text="#{deleteLPDialog.text}"/>
+</div>
+
+<div id="rmmusic_body">
+    <div class="edit">
+        <form method="post" th:action="@{/rmmusic/medium/lp/edit}" th:object="${medium}" class="rmmusic_form" id="edit_lp_form">
+            <fieldset>
+                <ul>
+                    <li>
+                        <h2 th:if="*{id > 0}" th:text="#{editLPForm.headline.edit}"/>
+                        <h2 th:if="*{id == 0}" th:text="#{editLPForm.headline.create}"/>
+                    </li>
+                    <li th:if="*{id > 0}">
+                        <label for="id_field" th:text="#{form.label.id}"></label>
+                        <span id="id_field" th:text="*{id}"/>
+                        <input name="id" type="hidden" th:field="*{id}"/>
+                    </li>
+                    <li>
+                        <label for="code" th:text="#{form.label.code}"></label>
+                        <input th:if="*{id == 0}" id="code" type="text" th:field="*{code}" required="required" maxlength="8" width="100" pattern="[\sa-zA-Z0-9&amp;+]{8}"/>
+                        <input th:if="*{id > 0}" id="code" type="text" th:field="*{code}" required="required" maxlength="8" width="100" readonly="readonly"/>
+                        <span class="form_hint" th:text="#{form.hint.code}"></span>
+                    </li>
+                    <li>
+                        <label for="artistname" th:text="#{form.label.artist}"></label>
+                        <input id="artistname" type="text" th:field="*{artist.name}" readonly="readonly"/>
+                        <span class="form_hint" th:text="#{form.hint.artist}"></span>
+                        <input id="artist" type="hidden" th:field="*{artist.id}"/>
+                    </li>
+                    <li>
+                        <label for="title" th:text="#{form.label.title}"></label>
+                        <input id="title" type="text" th:field="*{title}" autofocus="autofocus" required="required"/>
+                        <span class="form_hint" th:text="#{form.hint.title}"></span>
+                    </li>
+                    <li>
+                        <label for="label" th:text="#{form.label.label}"></label>
+                        <input id="label" name="label" type="text" th:field="*{label}" required="required"/>
+                        <span class="form_hint" th:text="#{form.hint.label}"></span>
+                    </li>
+                    <li>
+                        <label for="ordercode" th:text="#{form.label.ordercode}"></label>
+                        <input id="ordercode" type="text" th:field="*{ordercode}" required="required"/>
+                        <span class="form_hint" th:text="#{form.hint.ordercode}"></span>
+                    </li>
+                    <li>
+                        <label for="pYear" th:text="#{form.label.publishyear}"></label>
+                        <input id="pYear" type="text" th:field="*{pYear}" pattern="\d{0,4}"/>
+                        <span class="form_hint" th:text="#{form.hint.publishyear}"></span>
+                    </li>
+                    <li>
+                        <label for="buyDate" th:text="#{form.label.buydate}"></label>
+                        <input id="buyDate" type="text" th:field="*{{buyDate}}" width="10" maxlength="10" th:pattern="#{date.pattern}"/>
+                        <span class="form_hint" th:text="#{form.hint.buydate}"></span>
+                    </li>
+                    <li>
+                        <label for="buyPrice" th:text="#{form.label.buyprice}"></label>
+                        <input id="buyPrice" type="text" th:field="*{{buyPrice}}" width="6" maxlength="6" th:pattern="#{price.pattern}"/>
+                        <span class="form_hint" th:text="#{form.hint.buyprice}"></span>
+                    </li>
+                    <li>
+                        <label for="remarks" th:text="#{form.label.remarks}"></label>
+                        <textarea id="remarks" th:field="*{remarks}"/>
+                    </li>
+                    <li>
+                        <input name="type" type="hidden" th:field="*{type}"/>
+                        <button th:if="*{id > 0}" class="submit" type="submit" th:text="#{editMediumForm.button.submit.changes}"></button>
+                        <button th:if="*{id == 0}" class="submit" type="submit" th:text="#{editMediumForm.button.submit.create}"></button>
+                        <button th:if="*{id > 0}" class="submit" type="submit" name="editsongs" value="editsongs" id="editsongs" th:text="#{editMediumForm.button.editsongs}"></button>
+                        <button th:if="*{id > 0}" class="submit" type="submit" name="sticker" value="sticker" id="sticker" th:text="#{editMediumForm.button.sticker}"></button>
+                        <button th:if="*{id > 0}" class="delete" type="button" id="delete" th:text="#{editMediumForm.button.delete}" tabindex="-1"></button>
+                    </li>
+                </ul>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<div th:include="flash :: flashFragmentFoot"></div>
+
+<script th:inline="javascript" type="text/javascript">
+    jQuery(function () {
+        $('#label').devbridgeAutocomplete({
+            serviceUrl: '/label/search/findByLabelIgnoreCaseStartingWithOrderByLabelAsc',
+            paramName: "label",
+            params: { type: 5 },
+            minChars: 2,
+            maxHeight: 'none',
+            transformResult: function (response) {
+                // overwrite, maybe needed for reading additional information in response
+                // return $.parseJSON(response);
+                var codelist = $.parseJSON(response);
+                return {
+                  suggestions: $.map(codelist._embedded.label, function(labelDetails) {
+                    return { value: labelDetails.name, data: labelDetails.name };
+                  })
+                };
+            }
+        });
+
+        $("#dialog").dialog({
+            autoOpen: false,
+            modal: true,
+				resizable: false,
+				buttons: {
+					"Yes": function() {
+					    deleteMedium('[[${medium.id}]]');
+						$(this).dialog("close");
+					},
+					"No": function() {
+						$(this).dialog("close");
+					}
+				}
+        });
+        $("#delete").on("click", function() {
+            $("#dialog").dialog("open");
+        });
+    });
+
+    function deleteMedium(id) {
+        var deleteForm = document.createElement("form");
+        deleteForm.setAttribute("method","post");
+        deleteForm.setAttribute("action","/rmmusic/medium/lp/delete");
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type","hidden");
+        hiddenField.setAttribute("name","id");
+        hiddenField.setAttribute("value",id);
+        deleteForm.appendChild(hiddenField);
+        document.body.appendChild(deleteForm);
+        deleteForm.submit();
+    }
+</script>
+</body>
+</html>
