@@ -13,6 +13,9 @@
         #code {
         width: 100px;
         }
+        #digital {
+          width: 50px;
+        }
         #remarks {
         width: 500px;
         }
@@ -36,18 +39,18 @@
 <div th:include="menu :: menuFragment"></div>
 <div th:include="flash :: flashFragment"></div>
 
-<div id="dialog" th:title="#{deleteSingleDialog.title}">
-    <p th:text="#{deleteSingleDialog.text}"/>
+<div id="dialog" th:title="#{deleteCDDialog.title}">
+    <p th:text="#{deleteCDDialog.text}"/>
 </div>
 
 <div id="rmmusic_body">
     <div class="edit">
-        <form method="post" th:action="@{/rmmusic/medium/single/edit}" th:object="${medium}" class="rmmusic_form" id="edit_single_form">
+        <form method="post" th:action="@{/rmmusic/medium/cd/edit}" th:object="${medium}" class="rmmusic_form" id="edit_cd_form">
             <fieldset>
                 <ul>
                     <li>
-                        <h2 th:if="*{id > 0}" th:text="#{editSingleForm.headline.edit}"/>
-                        <h2 th:if="*{id == 0}" th:text="#{editSingleForm.headline.create}"/>
+                        <h2 th:if="*{id > 0}" th:text="#{editCDForm.headline.edit}"/>
+                        <h2 th:if="*{id == 0}" th:text="#{editCDForm.headline.create}"/>
                     </li>
                     <li th:if="*{id > 0}">
                         <label for="id_field" th:text="#{form.label.id}"></label>
@@ -87,6 +90,11 @@
                         <span class="form_hint" th:text="#{form.hint.publishyear}"></span>
                     </li>
                     <li>
+                        <label for="digital" th:text="#{form.label.digital}"></label>
+                        <input id="digital" type="text" th:field="*{digital}" pattern="[AaDd]{0,3}"/>
+                        <span class="form_hint" th:text="#{form.hint.digital}"></span>
+                    </li>
+                    <li>
                         <label for="buyDate" th:text="#{form.label.buydate}"></label>
                         <input id="buyDate" type="text" th:field="*{{buyDate}}" width="10" maxlength="10" th:pattern="#{date.pattern}"/>
                         <span class="form_hint" th:text="#{form.hint.buydate}"></span>
@@ -121,7 +129,7 @@
         $('#label').devbridgeAutocomplete({
             serviceUrl: '/label/search/findByLabelIgnoreCaseStartingWithOrderByLabelAsc',
             paramName: "label",
-            params: { type: 6 },
+            params: { type: 7 },
             minChars: 2,
             maxHeight: 'none',
             transformResult: function (response) {
@@ -158,7 +166,7 @@
     function deleteMedium(id) {
         var deleteForm = document.createElement("form");
         deleteForm.setAttribute("method","post");
-        deleteForm.setAttribute("action","/rmmusic/medium/single/delete");
+        deleteForm.setAttribute("action","/rmmusic/medium/cd/delete");
         var hiddenField = document.createElement("input");
         hiddenField.setAttribute("type","hidden");
         hiddenField.setAttribute("name","id");

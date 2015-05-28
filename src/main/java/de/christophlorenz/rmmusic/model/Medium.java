@@ -1,5 +1,7 @@
 package de.christophlorenz.rmmusic.model;
 
+import org.springframework.util.StringUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -330,6 +333,11 @@ public class Medium {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    @PostLoad
+    public void trimDigital() {
+        digital = StringUtils.trimAllWhitespace(digital);
     }
 
     @Override

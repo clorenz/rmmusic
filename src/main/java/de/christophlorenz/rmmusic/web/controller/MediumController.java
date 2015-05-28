@@ -9,7 +9,6 @@ import de.christophlorenz.rmmusic.persistence.jpa2.MediumRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,9 +26,7 @@ import java.util.List;
 /**
  * Created by clorenz on 27.05.15.
  */
-@Controller
-@RequestMapping("/rmmusic/medium")
-public class MediumController {
+public abstract class MediumController {
 
     private static final Logger log = Logger.getLogger(MediumController.class);
     private static final String SIX_BLANKS = "      ";
@@ -45,85 +42,111 @@ public class MediumController {
         this.mediumRepository = mediumRepository;
     }
 
-    @RequestMapping("/single/select")
-    public String selectSingle(Model model) {
-        return "rmmusic/selectSingleForm";
+    protected abstract String getSelectFormTemplate();
+
+    protected abstract String getEditFormTemplate();
+
+    protected abstract String getListFormTemplate();
+
+    protected abstract String getMediumTypeName();
+
+    protected abstract String getMediumTypeAbbreviation();
+
+    protected abstract int getMediumType();
+
+    @RequestMapping("/select")
+    public String selectMedium(Model model) {
+        return getSelectFormTemplate();
     }
 
-    @RequestMapping(value = "/single/edit", method = RequestMethod.GET)
-    public String editSingle(@RequestParam(value="code", required = false) final String code,
-                             @RequestParam(value="artist", required = false) final String artist,
-                             @RequestParam(value="title", required = false) final String title,
-                             @RequestParam(value="exact", required = false) final String exact,
-                             Model model) {
 
-        log.info("Code="+code+", artist="+artist+", title="+title+", exact="+exact);
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    protected String editMedium(final String code, final String artist, final String title, final String exact,
+                                final Model model) {
+
+        log.info("Type="+getMediumType()+", code="+code+", artist="+artist+", title="+title+", exact="+exact);
 
         // If no parameter was set, throw an error
         if (StringUtils.isBlank(code) && StringUtils.isBlank(artist) && StringUtils.isBlank(title)) {
             model.addAttribute("error", "Please fill out at least one field");
-            return "rmmusic/selectSingleForm";
+            return getSelectFormTemplate();
         }
 
         // If "exact" was set, and no code was given but not both fields, artist and title, are set, throw an error
         if ( "on".equals(exact) && StringUtils.isBlank(code) && ( StringUtils.isBlank(artist) || StringUtils.isBlank(title)) ) {
             model.addAttribute("error", "If 'exact' is selected, you have to fill out both, artist and title or the code field");
-            return "rmmusic/selectSingleForm";
+            return getSelectFormTemplate();
         }
 
         if ( !StringUtils.isBlank(code)) {
-            Medium medium = mediumRepository.findByTypeAndCode(Medium.SINGLE, code);
+            Medium medium = mediumRepository.findByTypeAndCode(getMediumType(), code);
             model.addAttribute("medium", medium);
-            return "rmmusic/editSingleForm";
+            return getEditFormTemplate();
         } else {
             List<Medium> media;
             if ( "on".equals(exact)) {
-                media = mediumRepository.findByTypeAndArtistAndTitleExact(Medium.SINGLE, artist, title);
+                media = mediumRepository.findByTypeAndArtistAndTitleExact(getMediumType(), artist, title);
             } else {
-                media = mediumRepository.findByTypeAndArtistAndTitle(Medium.SINGLE, artist, title);
+                media = mediumRepository.findByTypeAndArtistAndTitle(getMediumType(), artist, title);
             }
 
             if ( media.isEmpty()) {
                 // Check, if artist is valid
                 List<Artist> artists = artistRepository.findByName(artist);
                 if ( artists.size()==1) {
-                    return editNewSingle(model, artists.get(0), title);
+                    return editNewMedium(model, artists.get(0), title, getMediumType(), getEditFormTemplate());
                 } else {
                     model.addAttribute("error", "Invalid or unknown artist '"+artist+"'");
-                    return "rmmusic/selectSingleForm";
+                    return getSelectFormTemplate();
                 }
             } else if ( media.size()==1) {
-                return editFirstSingleInList(media, model);
+                return editFirstMediumInList(media, model, getEditFormTemplate());
             } else {
                 Collections.sort(media, new MediaCodeComparator());
                 model.addAttribute("media", media);
-                return "rmmusic/mediaList";
+                return getListFormTemplate();
             }
 
         }
     }
 
 
-    @RequestMapping(value = "/single/edit/{id}", method = RequestMethod.GET)
-    public String editSingleById(@PathVariable(value="id") Long id,
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    protected String editMediumById(@PathVariable(value="id") Long id,
                                  Model model) {
-
         try {
             Medium medium = mediumRepository.getOne(id);
             log.debug("Medium=" + medium);
             model.addAttribute("medium", medium);
-            return "rmmusic/editSingleForm";
+            return getEditFormTemplate();
         } catch ( Exception e) {
             log.warn("No medium with id="+id+" found!");
-            model.addAttribute("error", "No single found with id="+id);
+            model.addAttribute("error", "No medium found with id="+id);
             return "forward:../select";
         }
     }
 
 
-    // TODO: How to get the value of the submit attribute??
-    @RequestMapping(value = "/single/edit", method = RequestMethod.POST)
-    public String editSingle(@Valid @ModelAttribute("medium") Medium medium,
+    // TODO Ugly, since this should be a GET method, not POST!
+    @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "editsongs")
+    protected String editMediumReturnToEditSongs(@Valid @ModelAttribute("medium") Medium medium,
+                             Model model,
+                             RedirectAttributes redirectAttributes) {
+        return "redirect:../../songsOnMedium/"+medium.getId();
+    }
+
+
+    @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "sticker")
+    protected String editMediumReturnToCreateSticker(@Valid @ModelAttribute("medium") Medium medium,
+                             Model model,
+                             RedirectAttributes redirectAttributes) {
+        log.info("Forwarding to ../../sticker/create");
+        return "forward:../../sticker/create";
+    }
+
+
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    protected String editMedium(@Valid @ModelAttribute("medium") Medium medium,
                              BindingResult br,
                              Model model,
                              RedirectAttributes redirectAttributes) {
@@ -135,53 +158,58 @@ public class MediumController {
 
         if ( br.hasErrors()) {
             log.info("Errors="+br.toString());
-            return "rmmusic/editSingleForm";
+            return getEditFormTemplate();
         }
 
         if ( medium.getId()==0)
             created=true;
 
         medium = mediumRepository.save(medium);
-        redirectAttributes.addFlashAttribute("success", "Successfully "+(created?"created":"saved")+" medium S "+medium.getCode());
+        redirectAttributes.addFlashAttribute("success", "Successfully "+(created?"created":"saved")+" medium "+getMediumTypeAbbreviation()+" "+medium.getCode());
 
-        return "redirect:select";
-    }
-
-    private String editFirstSingleInList(List<Medium> media, Model model) {
-        model.addAttribute("medium", media.get(0));
-        return "rmmusic/editSingleForm";
-    }
-
-    protected String editNewSingle(Model model, Artist artist, String title) {
-        Medium single = new Medium();
-        single.setType(Medium.SINGLE);
-        single.setArtist(artist);
-        single.setTitle(title);
-        single.setCode(calculateCode(Medium.SINGLE,artist));
-
-        model.addAttribute("medium", single);
-        return "rmmusic/editSingleForm";
+        if ( created ) {
+            return "redirect:editSongs?medium_id=" + medium.getId();
+        } else {
+            return "redirect:select";
+        }
     }
 
 
-    @RequestMapping(value = "/single/delete", method = RequestMethod.POST)
-    public String deleteArtist(@Valid @RequestParam("id") Long id,
-                               RedirectAttributes redirectAttributes) {
-        log.info("Removing single " + id);
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    protected String deleteMedium(@Valid @RequestParam("id") Long id,
+                                  RedirectAttributes redirectAttributes) {
+        log.info("Removing " + getMediumTypeName()+" " + id);
 
         Medium medium = mediumRepository.getOne(id);
         if ( medium!=null ) {
             try {
                 mediumRepository.delete(medium);
-                redirectAttributes.addFlashAttribute("success", "Successfully removed single with code S " + medium.getCode());
+                redirectAttributes.addFlashAttribute("success", "Successfully removed "+ getMediumTypeName()+" with code "
+                        +getMediumTypeAbbreviation()+" "+ medium.getCode());
                 return "redirect:select";
             } catch (Exception e) {
                 log.error("Cannot delete medium with id=" + id + ": ", e);
             }
         }
 
-        redirectAttributes.addFlashAttribute("error", "Could not remove medium with id "+id);
+        redirectAttributes.addFlashAttribute("error", "Could not remove "+ getMediumTypeName()+" with id "+id);
         return "redirect:select";
+    }
+
+    private String editFirstMediumInList(List<Medium> media, Model model, String viewEdit) {
+        model.addAttribute("medium", media.get(0));
+        return viewEdit;
+    }
+
+    protected String editNewMedium(Model model, Artist artist, String title, int type, String editFormPath) {
+        Medium medium = new Medium();
+        medium.setType(type);
+        medium.setArtist(artist);
+        medium.setTitle(title);
+        medium.setCode(calculateCode(type,artist));
+
+        model.addAttribute("medium", medium);
+        return editFormPath;
     }
 
 
