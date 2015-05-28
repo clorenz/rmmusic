@@ -16,7 +16,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by clorenz on 11.05.15.
@@ -336,9 +338,37 @@ public class Medium {
     }
 
     @PostLoad
-    public void trimDigital() {
+    public void trimDigitalAndDatesAndFixPrice() {
         digital = StringUtils.trimAllWhitespace(digital);
+        if ( buyPrice!=null && buyPrice < 0.01) {
+            buyPrice=null;
+        }
+        if ( recBeginDate!=null ) {
+            recBeginDate=fixEmptyDate(recBeginDate);
+        }
+        if ( recBeginB!=null) {
+            recBeginB=fixEmptyDate(recBeginB);
+        }
+        if ( recEndDate!=null) {
+            recEndDate=fixEmptyDate(recEndDate);
+        }
+        if ( burningDate!=null) {
+            burningDate=fixEmptyDate(burningDate);
+        }
+        if ( discId!=null && discId==0) {
+            discId=null;
+        }
     }
+
+    private Date fixEmptyDate(Date date) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        if (calendar.get(Calendar.YEAR) <= 1) {
+            return null;
+        }
+        return date;
+    }
+
 
     @Override
     public String toString() {

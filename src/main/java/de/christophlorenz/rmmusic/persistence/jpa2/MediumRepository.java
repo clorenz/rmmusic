@@ -37,4 +37,6 @@ public interface MediumRepository extends JpaRepository<Medium, Long> {
 
     @Query(value = "Select m from Medium m, Artist a where a.name=:artist and m.artist.id = a.id")
     List<Medium> findByArtist(@Param("artist") String artist);
+
+    List<Medium> findByType(@Param("type") int type);
 }

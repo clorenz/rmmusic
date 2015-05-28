@@ -68,8 +68,13 @@ public abstract class MediumController {
 
         // If no parameter was set, throw an error
         if (StringUtils.isBlank(code) && StringUtils.isBlank(artist) && StringUtils.isBlank(title)) {
-            model.addAttribute("error", "Please fill out at least one field");
-            return getSelectFormTemplate();
+            if ( getMediumType() >= Medium.LP) {
+                model.addAttribute("error", "Please fill out at least one field");
+                return getSelectFormTemplate();
+            } else {
+                // For Audio tapes, video tapes, minidiscs and cdroms, we increment the code, so all fields can be empty here
+                return editNewMedium(model, null, null, getMediumType(), getEditFormTemplate());
+            }
         }
 
         // If "exact" was set, and no code was given but not both fields, artist and title, are set, throw an error
@@ -153,6 +158,9 @@ public abstract class MediumController {
         boolean created=false;
 
         medium.setTimestamp(new Date());
+        if ( StringUtils.isBlank(medium.getArtist().getName())) {
+            medium.setArtist(null);
+        }
 
         log.info("Medium="+medium);
 
@@ -250,8 +258,17 @@ public abstract class MediumController {
             }
 
             return newCode;
+        } else {
+            // Retrieve highest number from this very medium and increment it afterwards
+            List<Medium> mediaOfType = mediumRepository.findByType(mediumType);
+            if ( mediaOfType.isEmpty()) {
+                return "1";
+            }
+            Collections.sort(mediaOfType, new MediaCodeComparator());
+            String lastMedium = mediaOfType.get(mediaOfType.size()-1).getCode();
+            int lastMediumNumber = Integer.parseInt(lastMedium.replaceAll("\\D", ""));
+            return ""+(lastMediumNumber+1);
         }
-        return null;
     }
 
     private String calculateShortenedArtistNameWithOne(String artistName) {

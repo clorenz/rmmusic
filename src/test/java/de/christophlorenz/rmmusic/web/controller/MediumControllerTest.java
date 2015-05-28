@@ -34,7 +34,7 @@ public class MediumControllerTest {
     @Before
     public void before() throws Exception {
         MockitoAnnotations.initMocks(this);
-        mediumController = new MediumController();
+        mediumController = new CDROMController();
         mediumController.setMediumRepository(dummyRepository);
     }
 
@@ -86,8 +86,20 @@ public class MediumControllerTest {
      * Method: calculateCode(Artist artist)
      */
     @Test
-    public void testCalculateCodeOnEmptyCodeReturnsEmptyCode() throws Exception {
-        assertThat(mediumController.calculateCode(Medium.SINGLE, null), is(nullValue()));
+    public void testCalculateCodeOnNullCodeAndNoMediaBeforeReturnsOne() throws Exception {
+        assertThat(mediumController.calculateCode(Medium.ROM, null), is("1"));
+    }
+
+
+    @Test
+    public void testCalculateCodeOnNullCodeAndExistingMediaBeforeReturnsLastPlusOne() throws Exception {
+        List<Medium> twoMedia = new ArrayList<Medium>();
+        twoMedia.add(createMedium(Medium.ROM,"1"));
+        twoMedia.add(createMedium(Medium.ROM,"2"));
+
+        when(dummyRepository.findByType(eq(Medium.ROM))).thenReturn(twoMedia);
+
+        assertThat(mediumController.calculateCode(Medium.ROM, null), is("3"));
     }
 
     @Test
