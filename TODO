@@ -1,3 +1,5 @@
+Anbindung an discogs? Bei Medien, um z.B. Images anzuzeigen und/oder Daten zu submitten / retrieven?
+
 insert into artist(id,name,print,timestamp) values(1,'No artist','No artist',now());
 
 Uniqueness von artist.name sichern! Evtl. per validator?
