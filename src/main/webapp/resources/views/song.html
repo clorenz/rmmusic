@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title></title>
+</head>
+<body>
+<div th:fragment="songDisplayFragment">
+<div class="edit">
+    <form method="post" th:action="@{/rmmusic/song/edit}" th:object="${song}" class="rmmusic_form edit_song" id="edit_song_form">
+        <fieldset>
+            <ul>
+                <li>
+                    <label for="artistname" th:text="#{form.label.artist}"></label>
+                    <input id="artistname" type="text" th:field="*{artist.name}" readonly="readonly" tabindex="-1"/>
+                </li>
+                <li>
+                    <label for="title" th:text="#{form.label.title}"></label>
+                    <input id="title" type="text" th:field="*{title}" readonly="readonly" tabindex="-1"/>
+                </li>
+                <li>
+                    <label for="release" th:text="#{form.label.release}"></label>
+                    <input id="release" type="text" th:field="*{release}" readonly="readonly" tabindex="-1"/>
+                </li>
+                <li>
+                    <label for="year" th:text="#{form.label.year}"></label>
+                    <input id="year" type="text" th:field="*{year}" readonly="readonly" tabindex="-1"/>
+                </li>
+                <li>
+                    <label for="authors" th:text="#{form.label.authors}"></label>
+                    <input id="authors" type="text" th:field="*{authors}" readonly="readonly" tabindex="-1"/>
+                </li>
+                <li>
+                    <label for="dance" th:text="#{form.label.dance}"></label>
+                    <input id="dance" type="text" th:field="*{dance}" readonly="readonly" tabindex="-1"/>
+                </li>
+                <li class="fatline">
+                    <label for="remarks" th:text="#{form.label.remarks}"></label>
+                    <textarea id="remarks" th:field="*{remarks}" readonly="readonly" tabindex="-1" />
+                </li>
+                <li>
+                    <input name="id" type="hidden" th:field="*{id}"/>
+                    <button th:if="*{id > 0}" class="submit" type="submit" th:text="#{editSongForm.button.submit.editsong}" tabindex="-1"></button>
+
+                </li>
+            </ul>
+        </fieldset>
+    </form>
+</div>
+</div>
+<div th:fragment="editSongFormFragment">
+</div>
+</body>
+</html>

@@ -177,4 +177,101 @@ public class Recording {
         int seconds = time % 60;
         return new String().format("%d:%02d", minutes, seconds);
     }
+
+    public void setTimeFormatted(String timeFormatted) {
+        String[] parts = timeFormatted.split(":");
+        time = Integer.parseInt(parts[0]);
+        if (parts.length == 2)
+            time = 60 * time + (int) Integer.parseInt(parts[1]);
+    }
+
+    public Boolean getQualityStereo() {
+        return ( (quality & 1) == 1);
+    }
+
+    public void setQualityStereo(boolean stereo) {
+        if ( quality==null) { quality=0; }
+        quality &= ~(1<<0);                     // Bit löschen
+        quality |= (stereo?1:0)<<0;             // ggf. Bit setzen
+    }
+
+    public Boolean getQualityNoisefree() {
+        return ( (quality & 2) == 2);
+    }
+
+    public void setQualityNoisefree(boolean noisefree) {
+        if ( quality==null) { quality=0; }
+        quality &= ~(1<<1);                     // Bit löschen
+        quality |= (noisefree?1:0)<<1;          // ggf. Bit setzen
+    }
+
+    public Boolean getQualityComplete() {
+        return ( (quality & 4) == 4);
+    }
+
+    public void setQualityComplete(boolean complete) {
+        if ( quality==null) { quality=0; }
+        quality &= ~(1<<2);             // Bit löschen
+        quality |= (complete?1:0)<<2;   // ggf. Bit setzen
+    }
+
+    public Boolean getSpecialMaxi() {
+        return ( (special & 1) == 1);
+    }
+
+    public void setSpecialMaxi(boolean maxi) {
+        if ( special==null) { special=0; }
+        special &= ~(1<<0);         // Bit löschen
+        special |= (maxi?1:0)<<0;  // ggf. Bit setzen
+    }
+
+    public Boolean getSpecialLive() {
+        return ( (special & 2) == 2);
+    }
+
+    public void setSpecialLive(boolean live) {
+        if ( special==null) { special=0; }
+        special &= ~(1<<1);         // Bit löschen
+        special |= (live?1:0)<<1;   // ggf. Bit setzen
+    }
+
+    public Boolean getSpecialRemix() {
+        return ( (special & 4) == 4);
+    }
+
+    public void setSpecialRemix(boolean remix) {
+        if ( special==null) { special=0; }
+        special &= ~(1<<2);         // Bit löschen
+        special |= (remix?1:0)<<2;  // ggf. Bit setzen
+    }
+
+    public Boolean getSpecialVideo() {
+        return ( (special & 8) == 8);
+    }
+
+    public void setSpecialVideo(boolean video) {
+        if ( special==null) { special=0; }
+        special &= ~(1<<3);         // Bit löschen
+        special |= (video?1:0)<<3;  // ggf. Bit setzen
+    }
+
+    @Override
+    public String toString() {
+        return "Recording{" +
+                "id=" + id +
+                ", song=" + song +
+                ", medium=" + medium +
+                ", side='" + side + '\'' +
+                ", track=" + track +
+                ", counter='" + counter + '\'' +
+                ", time=" + time +
+                ", recordingYear=" + recordingYear +
+                ", longplay='" + longplay + '\'' +
+                ", quality=" + quality +
+                ", remarks='" + remarks + '\'' +
+                ", special=" + special +
+                ", digital='" + digital + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }

@@ -53,6 +53,15 @@
         .rmmusic_form li:first-child, li:last-child {
         border-bottom:1px solid #777;
         }
+        .rmmusic_form li.fatline {
+                border-bottom:1px solid #777;
+        }
+        .edit_song li:first-child {
+                border-bottom:1px solid #eee;
+        }
+        .edit_song li:last-child {
+                border-bottom:none;
+        }
         .rmmusic_form h2 {
         margin:0;
         display: inline;
