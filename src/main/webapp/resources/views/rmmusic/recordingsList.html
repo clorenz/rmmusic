@@ -6,22 +6,76 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/rmmusic.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/list.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/form.css}"/>
+    <style>
+        .buttonlist {
+            margin-top: 10px;
+        }
+        .buttonlist button {
+            margin-bottom: 10px;
+        }
+        .buttonlist .left {
+            margin-left: 2px;
+        }
+    </style>
 </head>
 <body>
 <div th:include="menu :: menuFragment"></div>
 <div th:include="flash :: flashFragment"></div>
 <div id="rmmusic_body">
     <div class="list">
-        <fieldset>
-            <ul>
-                <li>
-                    <h2 th:text="#{recordingsList.headline}"/>
-                </li>
-                <li th:each="recording : ${recordings}">
-                    <a th:href="@{'edit/'+${recording.id}}"><span id="name" th:text="${mediumcodeprefix}"></span>&nbsp;<span id="name" th:text="${recording.medium.code}"></span></a>
-                </li>
-            </ul>
-        </fieldset>
+        <form method="post" th:action="@{/rmmusic/recording}" th:object="${medium}" class="rmmusic_form" id="songs_on_medium_form">
+            <fieldset>
+                <ul>
+                    <li>
+                        <h2 th:text="#{recordingsList.headline}"/>
+                    </li>
+                    <li>
+                        <table class="recordings_list">
+                            <tr>
+                                <th><span th:text="#{recordingslist.header.medium}"></span></th>
+                                <th><span th:text="#{recordingslist.header.position}"></span></th>
+                                <th><span th:text="#{recordingslist.header.artist}"></span></th>
+                                <th><span th:text="#{recordingslist.header.song}"></span></th>
+                                <th><span th:text="#{recordingslist.header.year}"></span></th>
+                                <th><span th:text="#{recordingslist.header.authors}"></span></th>
+                                <th><span th:text="#{recordingslist.header.time}"></span></th>
+                            </tr>
+                            <tr th:each="recording : ${recordings}">
+                                <td>
+                                    <a th:href="@{'edit/'+${recording.id}}"><span id="name" th:text="${mediumcodeprefix}"></span>&nbsp;<span id="name" th:text="${recording.medium.code}"></span></a>
+                                </td>
+                                <td>
+                                    <span th:if="${recording.side == null}" id="side" th:text="${recording.side}"></span>
+                                    <span th:if="${recording.track > 0}" id="track" th:text="${recording.track}"></span>
+                                    <span th:if="${recording.counter == null}" id="counter" th:text="${recording.counter}"></span>
+                                </td>
+                                <td>
+                                    <span id="artist" th:text="${recording.song.artist.name}"></span>
+                                </td>
+                                <td>
+                                    <span id="title" th:text="${recording.song.title}"></span>
+                                </td>
+                                <td>
+                                    <span th:if="${recording.recordingYear > 0}" id="year" th:text="${recording.recordingYear}"></span>
+                                </td>
+                                <td>
+                                    <span class="authors" th:text="${recording.song.authors}"></span>
+                                </td>
+                                <td>
+                                    <span id="time" th:text="${{recording.timeFormatted}}"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </li>
+                    <li class="buttonlist">
+                        <!-- <input name="medium" type="hidden" th:field="*{medium}"/> -->
+                        <button class="submit left" type="submit" name="add" value="add" th:text="#{songsOnMediumForm.button.submit.add}" autofocus="autofocus"></button>
+                        <button class="submit" type="submit" name="back" value="back" th:text="#{songsOnMediumForm.button.submit.back}" tabindex="-1"></button>
+                    </li>
+                </ul>
+            </fieldset>
+        </form>
     </div>
 </div>
 

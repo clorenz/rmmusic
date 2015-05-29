@@ -1,6 +1,8 @@
 package de.christophlorenz.rmmusic.web.controller;
 
+import de.christophlorenz.rmmusic.model.Medium;
 import de.christophlorenz.rmmusic.model.Recording;
+import de.christophlorenz.rmmusic.persistence.jpa2.MediumRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.RecordingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -21,15 +24,23 @@ public class RecordingController {
     @Autowired
     RecordingRepository recordingRepository;
 
+    @Autowired
+    MediumRepository mediumRepository;
+
+    SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     protected String editMediumById(@RequestParam(value = "medium") Long mediumId, Model model) {
 
         List<Recording> recordings = recordingRepository.findByMediumId(mediumId);
-
         model.addAttribute("recordings", recordings);
         if ( !recordings.isEmpty()) {
             model.addAttribute("mediumcodeprefix", calculateMediumCodePrefix(recordings.get(0).getMedium().getType()));
         }
+
+        Medium medium = mediumRepository.getOne(mediumId);
+        model.addAttribute("medium", medium);
+        model.addAttribute("displayTimeFormatter", sdf);
 
         return "rmmusic/recordingsList";
     }

@@ -1,5 +1,5 @@
 .list ul {
-        width:750px;
+        width:950px;
         list-style-type:none;
         list-style-position:outside;
         margin:0px;
@@ -18,9 +18,32 @@
         display: inline;
         }
         .list {
-        width: 800px;
+        width: 1000px;
         padding: 20px;
         }
         fieldset {
         padding: 20px;
         }
+.recordings_list {
+        width: 920px;
+        background-color: #eee;
+        margin-top: 10px;
+}
+.recordings_list th {
+        padding: 10px;
+}
+.recordings_list tr:first-child {
+        background-color: #eee !important;
+}
+.recordings_list tr:nth-child(even) {
+        background-color: #ddd;
+}
+.recordings_list tr:nth-child(odd) {
+        background-color: #ccc;
+}
+.recordings_list td {
+     padding: 10px;
+}
+.recordings_list .authors {
+        font-size: 80%;
+}

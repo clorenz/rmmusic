@@ -171,4 +171,10 @@ public class Recording {
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
+
+    public String getTimeFormatted() {
+        int minutes = (int) Math.floor((double)time/60d);
+        int seconds = time % 60;
+        return new String().format("%d:%02d", minutes, seconds);
+    }
 }
