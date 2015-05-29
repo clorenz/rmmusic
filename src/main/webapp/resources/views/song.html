@@ -11,32 +11,38 @@
         <fieldset>
             <ul>
                 <li>
-                    <label for="artistname" th:text="#{form.label.artist}"></label>
-                    <input id="artistname" type="text" th:field="*{artist.name}" readonly="readonly" tabindex="-1"/>
+                    <label for="artist" th:text="#{form.label.artist}"></label>
+                    <input id="artist" type="text" th:field="*{artist.name}" tabindex="-1"/>
+                    <span class="form_hint" th:text="#{form.hint.artist}"></span>
                 </li>
                 <li>
                     <label for="title" th:text="#{form.label.title}"></label>
-                    <input id="title" type="text" th:field="*{title}" readonly="readonly" tabindex="-1"/>
+                    <input id="title" type="text" th:field="*{title}" tabindex="-1"/>
+                    <span class="form_hint" th:text="#{form.hint.title}"></span>
                 </li>
                 <li>
                     <label for="release" th:text="#{form.label.release}"></label>
-                    <input id="release" type="text" th:field="*{release}" readonly="readonly" tabindex="-1"/>
+                    <input id="release" type="text" th:field="*{release}" tabindex="-1" maxlength="3" length="3" pattern=".{0,3}"/>
+                    <span class="form_hint" th:text="#{form.hint.relear}"></span>
                 </li>
                 <li>
                     <label for="year" th:text="#{form.label.year}"></label>
-                    <input id="year" type="text" th:field="*{year}" readonly="readonly" tabindex="-1"/>
+                    <input id="year" type="text" th:field="*{year}" tabindex="-1" length="4" maxlength="4" pattern="\d{0,4}"/>
+                    <span class="form_hint" th:text="#{form.hint.year}"></span>
                 </li>
                 <li>
                     <label for="authors" th:text="#{form.label.authors}"></label>
-                    <input id="authors" type="text" th:field="*{authors}" readonly="readonly" tabindex="-1"/>
+                    <input id="authors" type="text" th:field="*{authors}" tabindex="-1"/>
+                    <span class="form_hint" th:text="#{form.hint.authors}"></span>
                 </li>
                 <li>
                     <label for="dance" th:text="#{form.label.dance}"></label>
-                    <input id="dance" type="text" th:field="*{dance}" readonly="readonly" tabindex="-1"/>
+                    <input id="dance" type="text" th:field="*{dance}" tabindex="-1" length="2" maxlength="2"/>
+                    <span class="form_hint" th:text="#{form.hint.dance}"></span>
                 </li>
                 <li class="fatline">
                     <label for="remarks" th:text="#{form.label.remarks}"></label>
-                    <textarea id="remarks" th:field="*{remarks}" readonly="readonly" tabindex="-1" />
+                    <textarea id="remarks" th:field="*{remarks}" tabindex="-1" />
                 </li>
                 <li>
                     <input name="id" type="hidden" th:field="*{id}"/>
@@ -46,6 +52,27 @@
             </ul>
         </fieldset>
     </form>
+    <script type="application/javascript">
+    jQuery(function () {
+        $('#artist').devbridgeAutocomplete({
+            serviceUrl: '/artist/search/findByNameIgnoreCaseStartingWithOrderByNameAsc',
+            paramName: "name",
+            params: {},
+            minChars: 1,
+            maxHeight: 'none',
+            transformResult: function (response) {
+                // overwrite, maybe needed for reading additional information in response
+                // return $.parseJSON(response);
+                var artistlist = $.parseJSON(response);
+                return {
+                  suggestions: $.map(artistlist._embedded.artist, function(artistDetails) {
+                    return { value: artistDetails.name, data: artistDetails.name };
+                  })
+                };
+            }
+        });
+    });
+    </script>
 </div>
 </div>
 <div th:fragment="editSongFormFragment">

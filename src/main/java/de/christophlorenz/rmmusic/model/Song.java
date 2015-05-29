@@ -129,4 +129,20 @@ public class Song {
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
+
+    @Override
+    public String toString() {
+        return "Song{" +
+                "id=" + id +
+                ", artist=" + artist +
+                ", title='" + title + '\'' +
+                ", release='" + release + '\'' +
+                ", year=" + year +
+                ", authors='" + authors + '\'' +
+                ", dance='" + dance + '\'' +
+                ", id3Genre='" + id3Genre + '\'' +
+                ", remarks='" + remarks + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }
