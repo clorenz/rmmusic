@@ -114,11 +114,9 @@ public class RecordingController {
         }
 
         // Select song, pass-through mediumId and next position on medium
-
-        // evtl. forward??
-        //TODO return "redirect:../../song/select?medium="+medium+"&side="+side+"&track="+track+"&counter="+counter;
-
-        return null;
+        String redirect = "redirect:../../song/select?medium_id=" + medium.getId() + "&side=" + side + "&track=" + track + "&counter=" + counter;
+        log.info("Redirecing to "+redirect);
+        return redirect;
     }
 
 
