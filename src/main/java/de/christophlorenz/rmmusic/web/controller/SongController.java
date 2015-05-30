@@ -34,6 +34,11 @@ public class SongController {
     @Autowired
     ArtistRepository artistRepository;
 
+    @RequestMapping("/select")
+    public String selectArtist(Model model) {
+        return "rmmusic/selectSongForm";
+    }
+
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     protected String editSong(@Valid @ModelAttribute("song") Song song,
                               HttpServletRequest request,

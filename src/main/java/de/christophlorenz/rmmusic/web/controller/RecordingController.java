@@ -53,10 +53,25 @@ public class RecordingController {
         }
 
         Medium medium = mediumRepository.getOne(mediumId);
-        model.addAttribute("medium", medium);
+        model.addAttribute("mediumid", medium.getId());
         model.addAttribute("displayTimeFormatter", sdf);
 
         return "rmmusic/recordingsList";
+    }
+
+    @RequestMapping(value="/", method = RequestMethod.POST, params = "add")
+    protected String addRecordingToMedium(@Valid @ModelAttribute("mediumid") long mediumId,
+                                          BindingResult br,
+                                          Model model,
+                                          RedirectAttributes redirectAttributes) {
+        log.info("Adding new song to "+mediumId);
+
+        // Select song, pass-through mediumId and next position on medium
+
+        // evtl. forward??
+        //TODO return "redirect:../../song/select?medium="+medium+"&side="+side+"&track="+track+"&counter="+counter;
+
+        return null;
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)

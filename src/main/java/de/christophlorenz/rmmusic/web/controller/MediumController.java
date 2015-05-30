@@ -182,7 +182,7 @@ public abstract class MediumController {
         redirectAttributes.addFlashAttribute("success", "Successfully "+(created?"created":"saved")+" medium "+getMediumTypeAbbreviation()+" "+medium.getCode());
 
         if ( created ) {
-            return "redirect:editSongs?medium_id=" + medium.getId();
+            return "redirect:../../recording/?medium="+medium.getId();
         } else {
             return "redirect:select";
         }
