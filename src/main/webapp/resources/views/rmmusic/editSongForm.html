@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <script type="text/javascript" th:src="@{/rmmusic/js/jquery-2.1.4.min.js}"></script>
+    <script type="text/javascript" th:src="@{/rmmusic/js/jquery.autocomplete-1.2.20.min.js}"></script>
+    <script type="text/javascript" th:src="@{/rmmusic/js/jquery-ui-1.11.4-min.js}"></script>
+    <title>rmmusic</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/rmmusic.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/form.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/jquery-ui-1.11.4-min.css}"/>
+    <style>
+        #code, #medium {
+        width: 100px;
+        }
+        #track, #time, #year, #digital {
+        width: 60px;
+        }
+        #remarks {
+        width: 500px;
+        }
+        button#delete {
+        margin-left: 50px;
+        }
+        input[type="checkbox"] {
+        margin-right: 50px;
+        }
+        span.checkboxlabel {
+        display: inline-block; width: 100px; text-align: right;
+        }
+    </style>
+    <script>
+		if (top !== self) {
+			$.ui.dialog.prototype._focusTabbable = $.noop;
+		}
+	</script>
+</head>
+<body>
+<div th:include="menu :: menuFragment"></div>
+<div th:include="flash :: flashFragment"></div>
+
+<div id="dialog" th:title="#{deleteSongDialog.title}">
+    <p th:text="#{deleteSongDialog.text}"/>
+</div>
+
+<div id="rmmusic_body">
+    <div th:include="song :: songDisplayFragment"></div>
+</div>
+
+<div th:include="flash :: flashFragmentFoot"></div>
+</body>
+</html>

@@ -45,14 +45,15 @@
                     <textarea id="remarks" th:field="*{remarks}" tabindex="-1" />
                 </li>
                 <li>
+                    <input name="redirect" type="hidden" th:value="${redirect}"/>
                     <input name="id" type="hidden" th:field="*{id}"/>
                     <button th:if="*{id > 0}" class="submit" type="submit" th:text="#{editSongForm.button.submit.editsong}" tabindex="-1"></button>
-
+                    <button th:if="${show_delete_button == 1}" class="delete" type="button" id="delete" th:text="#{editSongForm.button.delete}" tabindex="-1"></button>
                 </li>
             </ul>
         </fieldset>
     </form>
-    <script type="application/javascript">
+    <script type="application/javascript" th:inline="javascript">
     jQuery(function () {
         $('#artist').devbridgeAutocomplete({
             serviceUrl: '/artist/search/findByNameIgnoreCaseStartingWithOrderByNameAsc',
@@ -71,7 +72,36 @@
                 };
             }
         });
+        $("#dialog").dialog({
+            autoOpen: false,
+            modal: true,
+				resizable: false,
+				buttons: {
+					"Yes": function() {
+					    deleteSong('[[${song.id}]]');
+						$(this).dialog("close");
+					},
+					"No": function() {
+						$(this).dialog("close");
+					}
+				}
+        });
+        $("#delete").on("click", function() {
+            $("#dialog").dialog("open");
+        });
     });
+    function deleteSong(id) {
+        var deleteForm = document.createElement("form");
+        deleteForm.setAttribute("method","post");
+        deleteForm.setAttribute("action","/rmmusic/song/delete");
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type","hidden");
+        hiddenField.setAttribute("name","id");
+        hiddenField.setAttribute("value",id);
+        deleteForm.appendChild(hiddenField);
+        document.body.appendChild(deleteForm);
+        deleteForm.submit();
+    }
     </script>
 </div>
 </div>

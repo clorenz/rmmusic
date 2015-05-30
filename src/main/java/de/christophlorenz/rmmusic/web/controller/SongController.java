@@ -4,15 +4,13 @@ import de.christophlorenz.rmmusic.model.Artist;
 import de.christophlorenz.rmmusic.model.Song;
 import de.christophlorenz.rmmusic.persistence.jpa2.ArtistRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.SongRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +36,18 @@ public class SongController {
     @RequestMapping("/select")
     public String selectArtist(Model model) {
         return "rmmusic/selectSongForm";
+    }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public String editSongById(@PathVariable(value = "id") long id,
+                               HttpServletRequest request,
+                               Model model) {
+        Song song = songRepository.getOne(id);
+
+        model.addAttribute("redirect", request.getHeader("referer"));
+        model.addAttribute("song", song);
+        model.addAttribute("show_delete_button", 1);
+        return "rmmusic/editSongForm";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
@@ -78,6 +88,7 @@ public class SongController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     protected String editSong(@Valid @ModelAttribute("song") Song song,
+                              @RequestParam(value = "redirect", required = false) String redirect,
                               HttpServletRequest request,
                               BindingResult br,
                                Model model,
@@ -89,7 +100,7 @@ public class SongController {
             redirectAttributes.addFlashAttribute("error", "Invalid artist. Song was NOT updated");
             String referer = request.getHeader("referer");
             String origin = request.getHeader("origin");
-            String redirect = referer.replace(origin, "");
+            redirect = referer.replace(origin, "");
 
             log.info("Redirecting to redirect:"+redirect);
 
@@ -102,21 +113,38 @@ public class SongController {
 
         songRepository.save(song);
 
-        String referer = request.getHeader("referer");
-        if ( referer.indexOf("/recording/edit") > -1) {
-            // Redirecting to that very edit form
-            redirectAttributes.addFlashAttribute("success", "Successfully updated song " + song.getArtist().getName() + " - " + song.getTitle());
-
+        if (StringUtils.isBlank(redirect)) {
+            String referer = request.getHeader("referer");
             String origin = request.getHeader("origin");
-            String redirect = referer.replace(origin, "");
-
-            log.info("Redirecting to redirect:"+redirect);
-
-            return "redirect:"+ redirect;
+            redirect = referer.replace(origin, "");
         }
 
+        log.info("Redirect="+redirect);
 
+        // Redirecting to that very edit form
+        redirectAttributes.addFlashAttribute("success", "Successfully updated song " + song.getArtist().getName() + " - " + song.getTitle());
+        log.info("Redirecting to redirect:"+redirect);
 
-        return null;
+        return "redirect:"+ redirect;
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String deleteSong(@Valid @RequestParam("id") Long id,
+                               RedirectAttributes redirectAttributes) {
+        log.info("Removing song " + id);
+
+        Song song = songRepository.getOne(id);
+        if ( song!=null ) {
+            try {
+                songRepository.delete(song);
+                redirectAttributes.addFlashAttribute("success", "Successfully removed song " + song.getArtist().getName()+" - " + song.getTitle() + " with ID " + id);
+                return "redirect:select";
+            } catch (Exception e) {
+                log.error("Cannot delete song with id=" + id + ": ", e);
+            }
+        }
+
+        redirectAttributes.addFlashAttribute("error", "Could not remove song with id "+id);
+        return "redirect:select";
     }
 }
