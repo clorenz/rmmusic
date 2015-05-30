@@ -1,7 +1,6 @@
 package de.christophlorenz.rmmusic.model;
 
-import org.springframework.util.StringUtils;
-
+import org.apache.commons.lang3.StringUtils;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -339,7 +338,7 @@ public class Medium {
 
     @PostLoad
     public void trimDigitalAndDatesAndFixPrice() {
-        digital = StringUtils.trimAllWhitespace(digital);
+        digital = StringUtils.trim(digital);
         if ( buyPrice!=null && buyPrice < 0.01) {
             buyPrice=null;
         }
