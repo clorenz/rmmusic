@@ -24,24 +24,24 @@
         fieldset {
         padding: 20px;
         }
-.recordings_list {
+.recordings_list, ,songs_list {
         width: 920px;
         background-color: #eee;
         margin-top: 10px;
 }
-.recordings_list th {
+.recordings_list th, ,songs_list th {
         padding: 10px;
 }
-.recordings_list tr:first-child {
+.recordings_list tr:first-child, .songs_list tr:first-child {
         background-color: #eee !important;
 }
-.recordings_list tr:nth-child(even) {
+.recordings_list tr:nth-child(even), .songs_list tr:nth-child(even) {
         background-color: #ddd;
 }
-.recordings_list tr:nth-child(odd) {
+.recordings_list tr:nth-child(odd), .songs_list tr:nth-child(odd){
         background-color: #ccc;
 }
-.recordings_list td {
+.recordings_list td, .songs_list td{
      padding: 10px;
 }
 .recordings_list .authors {

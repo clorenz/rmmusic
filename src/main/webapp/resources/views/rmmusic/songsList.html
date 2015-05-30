@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title>rmmusic</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/rmmusic.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/list.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/form.css}"/>
+    <style>
+        .buttonlist {
+        margin-top: 10px;
+        }
+        .buttonlist button {
+        margin-bottom: 10px;
+        }
+        .buttonlist .left {
+        margin-left: 2px;
+        }
+    </style>
+</head>
+<body>
+<div th:include="menu :: menuFragment"></div>
+<div th:include="flash :: flashFragment"></div>
+<div id="rmmusic_body">
+    <div class="list">
+        <fieldset>
+            <ul>
+                <li>
+                    <h2 th:text="#{songsList.headline}"/>
+                </li>
+                <li>
+                    <table class="songs_list">
+                        <tr>
+                            <th><span th:text="#{songslist.header.artist}"></span></th>
+                            <th><span th:text="#{songslist.header.song}"></span></th>
+                            <th><span th:text="#{songslist.header.release}"></span></th>
+                            <th><span th:text="#{songslist.header.year}"></span></th>
+                            <th><span th:text="#{songslist.header.authors}"></span></th>
+                            <th><span th:text="#{songslist.header.dance}"></span></th>
+                            <th><span th:text="#{songslist.header.remarks}"></span></th>
+                        </tr>
+                        <tr th:each="song : ${songs}">
+                            <td>
+                                <span id="artist" th:text="${song.artist.name}"></span>
+                            </td>
+                            <td>
+                                <a th:href="@{'edit/'+${song.id}}"><span id="song" th:text="${song.title}"></span></a>
+                            </td>
+                            <td>
+                                <span id="release" th:text="${song.release}"></span>
+                            </td>
+                            <td>
+                                <span id="year" th:text="${song.year}"></span>
+                            </td>
+                            <td>
+                                <span id="authors" th:text="${song.authors}"></span>
+                            </td>
+                            <td>
+                                <span id="dance" th:text="${song.dance}"></span>
+                            </td>
+                            <td>
+                                <span id="remarks" th:text="${song.remarks}"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+        </fieldset>
+    </div>
+</div>
+
+<div th:include="flash :: flashFragmentFoot"></div>
+
+</body>
+</html>

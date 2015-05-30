@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +38,42 @@ public class SongController {
     @RequestMapping("/select")
     public String selectArtist(Model model) {
         return "rmmusic/selectSongForm";
+    }
+
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    public String editSongByArtistAndTitle(@RequestParam(value = "artist", required = true ) final String artist,
+                                           @RequestParam(value = "title", required = false ) final String title,
+                                           @RequestParam(value = "exact", required = false) final String exact,
+                                           RedirectAttributes redirectAttributes,
+                                           Model model) {
+        List<Song> songs;
+        if ( "on".equals(exact)) {
+            List<Artist> artists = artistRepository.findByName(artist);
+            if ( artists.size()!=1) {
+                redirectAttributes.addFlashAttribute("error", "Found not exactly one artist with name="+artist);
+
+                return "redirect:select";
+            } else {
+                songs = songRepository.findByArtistAndTitle(artists.get(0), title);
+            }
+        } else {
+            songs = songRepository.findByArtistNameIgnoreCaseStartingWithAndTitleIgnoreCaseStartingWithOrderByArtistAscTitleAsc(artist, title);
+        }
+
+        if ( songs.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Found no song for "+artist+"-"+title);
+
+            return "redirect:select";
+        }
+        if ( songs.size()==1) {
+            model.addAttribute("song", songs.get(0));
+            return "rmmusic/editSongForm";
+        } else {
+            model.addAttribute("songs", songs);
+            return "rmmusic/songsList";
+        }
+
+
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
