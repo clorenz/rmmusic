@@ -1,8 +1,10 @@
 package de.christophlorenz.rmmusic.web.controller;
 
 import de.christophlorenz.rmmusic.model.Artist;
+import de.christophlorenz.rmmusic.model.Medium;
 import de.christophlorenz.rmmusic.model.Song;
 import de.christophlorenz.rmmusic.persistence.jpa2.ArtistRepository;
+import de.christophlorenz.rmmusic.persistence.jpa2.MediumRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.SongRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -10,7 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,8 +39,28 @@ public class SongController {
     @Autowired
     ArtistRepository artistRepository;
 
-    @RequestMapping("/select")
-    public String selectArtist(Model model) {
+    @Autowired
+    MediumRepository mediumRepository;
+
+    @RequestMapping(value="/select", method = RequestMethod.GET)
+    public String selectArtist(
+            @RequestParam(value = "medium_id", required = false) final Long mediumId,
+            @RequestParam(value = "side", required = false) final String side,
+            @RequestParam(value = "track", required = false) final Integer track,
+            @RequestParam(value = "counter", required = false) final String counter,
+            Model model) {
+
+        if ( mediumId!=null ) {
+            model.addAttribute("medium_id", mediumId);
+            Medium medium = mediumRepository.getOne(mediumId);
+            model.addAttribute("medium_name", medium.getTypeCode()+" "+medium.getCode());
+            if ( medium.getArtist()!=null) {
+                model.addAttribute("artist", medium.getArtist().getName());
+            }
+        }
+        if ( side!=null ) { model.addAttribute("side", side); }
+        if ( track!=null ) { model.addAttribute("track", track); }
+        if ( counter!=null) { model.addAttribute("counter", counter); }
         return "rmmusic/selectSongForm";
     }
 
@@ -54,6 +80,10 @@ public class SongController {
     public String editSongByArtistAndTitle(@RequestParam(value = "artist", required = true ) final String artist,
                                            @RequestParam(value = "title", required = false ) final String title,
                                            @RequestParam(value = "exact", required = false) final String exact,
+                                           @RequestParam(value = "medium_id", required = false) final Long mediumId,
+                                           @RequestParam(value = "side", required = false) final String side,
+                                           @RequestParam(value = "track", required = false) final Integer track,
+                                           @RequestParam(value = "counter", required = false) final String counter,
                                            RedirectAttributes redirectAttributes,
                                            Model model) {
         List<Song> songs;
@@ -70,14 +100,63 @@ public class SongController {
             songs = songRepository.findByArtistNameIgnoreCaseStartingWithAndTitleIgnoreCaseStartingWithOrderByArtistAscTitleAsc(artist, title);
         }
 
-        if ( songs.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Found no song for "+artist+"-"+title);
+        Medium medium=null;
+        // If you have to forward to the recording screen, set the following fields:
+        if ( mediumId!=null ) {
+            model.addAttribute("medium_id", mediumId);
+            medium = mediumRepository.getOne(mediumId);
+            model.addAttribute("medium_name", medium.getTypeCode()+" "+medium.getCode());
+        }
+        if ( side != null ) {
+            model.addAttribute("side", side);
+        }
+        if ( track != null ) {
+            model.addAttribute("track", track);
+        }
+        if ( counter != null ) {
+            model.addAttribute("counter", counter);
+        }
 
-            return "redirect:select";
+
+        if ( songs.isEmpty()) {
+            log.info("New song!");
+            Song song = new Song();
+            if ( !StringUtils.isBlank(artist)) {
+                song.setArtist(artistRepository.findByName(artist).get(0));
+            }
+            if ( !StringUtils.isBlank(title)) {
+                song.setTitle(title);
+            }
+            if ( medium!=null ) {
+                song.setYear(medium.getpYear());
+                if ( medium.getType()==Medium.LP || medium.getType()==Medium.CD) {
+                    song.setRelease("LP");
+                } else if ( medium.getType()==Medium.SINGLE) {
+                    song.setRelease("S/"+side);
+                }
+            }
+            model.addAttribute("song", song);
+
+            return "rmmusic/editSongForm";
         }
         if ( songs.size()==1) {
             model.addAttribute("song", songs.get(0));
-            return "rmmusic/editSongForm";
+            if ( medium!=null) {
+                String forward="forward:../recording/new?medium_id="+mediumId+"&song_id="+songs.get(0).getId();
+                if ( side!=null ) {
+                    forward += "&side="+side;
+                }
+                if ( track!=null ) {
+                    forward += "&track="+track;
+                }
+                if ( counter!=null ) {
+                    forward += "&counter="+counter;
+                }
+                log.info("forward="+forward);
+                return forward;
+            } else {
+                return "rmmusic/editSongForm";
+            }
         } else {
             model.addAttribute("songs", songs);
             return "rmmusic/songsList";
@@ -88,6 +167,10 @@ public class SongController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     protected String editSong(@Valid @ModelAttribute("song") Song song,
+                              @RequestParam(value = "medium_id", required = false) final String mediumId,
+                              @RequestParam(value = "side", required = false) final String side,
+                              @RequestParam(value = "track", required = false) final Integer track,
+                              @RequestParam(value = "counter", required = false) final String counter,
                               @RequestParam(value = "redirect", required = false) String redirect,
                               HttpServletRequest request,
                               BindingResult br,
@@ -111,7 +194,20 @@ public class SongController {
         song.setTimestamp(new Date());
         log.info("Got song="+song);
 
-        songRepository.save(song);
+        song = songRepository.save(song);
+
+        if ( mediumId!=null ) {
+            redirect = "../recording/new?song_id="+song.getId()+"&medium_id="+mediumId;
+            if ( !StringUtils.isBlank(side)) {
+                redirect += "&side="+side;
+            }
+            if ( track!=null) {
+                redirect += "&track="+track;
+            }
+            if ( !StringUtils.isBlank(counter)) {
+                redirect += "&counter="+counter;
+            }
+        }
 
         if (StringUtils.isBlank(redirect)) {
             String referer = request.getHeader("referer");

@@ -57,10 +57,20 @@
                         <label for="medium" th:text="#{form.label.medium}"></label>
                         <input id="medium" type="text" th:value="${mediumcode}" readonly="readonly" tabindex="-1"/>
                     </li>
-                    <li>
+                    <li th:if="${display_side}">
+                        <label for="side" th:text="#{form.label.side}"></label>
+                        <input id="side" type="text" th:field="*{side}" length="1" maxlength="1" pattern="[A-Za-z]"/>
+                        <span class="form_hint" th:text="#{form.hint.side}"></span>
+                    </li>
+                    <li th:if="${display_track}">
                         <label for="track" th:text="#{form.label.track}"></label>
                         <input id="track" type="text" th:field="*{track}" length="3" maxlength="3" pattern="\d{0,3}"/>
                         <span class="form_hint" th:text="#{form.hint.track}"></span>
+                    </li>
+                    <li th:if="${display_counter}">
+                        <label for="counter" th:text="#{form.label.counter}"></label>
+                        <input id="counter" type="text" th:field="*{counter}" length="5" maxlength="5"/>
+                        <span class="form_hint" th:text="#{form.hint.counter}"></span>
                     </li>
                     <li>
                         <label for="time" th:text="#{form.label.time}"></label>
@@ -95,7 +105,7 @@
                         <textarea id="remarks" th:field="*{remarks}"/>
                     </li>
                     <li>
-                        TODO: Say, where to return to! Maybe by referer?<br/>
+                        <input th:if="${medium_id != null and medium_id != '' }" type="hidden" name="medium_id" id="medium_id" th:value="${medium_id}"/>
                         <input type="hidden" th:field="*{song.id}"/>
                         <input type="hidden" th:field="*{medium.id}"/>
                         <input th:if="*{id > 0}" name="id" type="hidden" th:field="*{id}"/>

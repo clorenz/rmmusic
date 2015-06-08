@@ -32,11 +32,6 @@ public class TapeController extends MediumController {
     }
 
     @Override
-    protected String getMediumTypeAbbreviation() {
-        return "C";
-    }
-
-    @Override
     protected int getMediumType() {
         return Medium.AUDIO_TAPE;
     }

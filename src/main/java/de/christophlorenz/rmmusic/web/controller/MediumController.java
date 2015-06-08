@@ -50,7 +50,9 @@ public abstract class MediumController {
 
     protected abstract String getMediumTypeName();
 
-    protected abstract String getMediumTypeAbbreviation();
+    protected String getMediumTypeAbbreviation() {
+        return Medium.TYPECODES.get(getMediumType());
+    }
 
     protected abstract int getMediumType();
 

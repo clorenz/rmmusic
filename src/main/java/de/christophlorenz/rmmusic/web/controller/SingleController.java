@@ -33,11 +33,6 @@ public class SingleController extends MediumController {
     }
 
     @Override
-    protected String getMediumTypeAbbreviation() {
-        return "S";
-    }
-
-    @Override
     protected int getMediumType() {
         return Medium.SINGLE;
     }

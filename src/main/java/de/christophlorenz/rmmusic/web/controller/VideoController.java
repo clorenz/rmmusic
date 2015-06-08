@@ -32,11 +32,6 @@ public class VideoController extends MediumController {
     }
 
     @Override
-    protected String getMediumTypeAbbreviation() {
-        return "V";
-    }
-
-    @Override
     protected int getMediumType() {
         return Medium.VIDEO_TAPE;
     }

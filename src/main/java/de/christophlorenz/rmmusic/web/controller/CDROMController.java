@@ -32,11 +32,6 @@ public class CDROMController extends MediumController {
     }
 
     @Override
-    protected String getMediumTypeAbbreviation() {
-        return "R";
-    }
-
-    @Override
     protected int getMediumType() {
         return Medium.ROM;
     }

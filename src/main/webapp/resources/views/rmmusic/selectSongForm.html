@@ -15,7 +15,7 @@
 		}
 	</script>
 </head>
-<body>
+<body th:onload="${artist==null} ? 'setAutofocusOnArtist()' : 'setAutofocusOnTitle()'">
 <div th:include="menu :: menuFragment"></div>
 <div th:include="flash :: flashFragment"></div>
 <div id="rmmusic_body">
@@ -24,13 +24,14 @@
             <fieldset>
                 <ul>
                     <li>
-                        <h2 th:text="#{selectSongForm.headline}"/>
+                        <h2 th:if="${medium_id == null}" th:text="#{selectSongForm.headline}"/>
+                        <h2 th:if="${medium_id != null}" th:text="#{selectSongForm.headline.on.medium} + ' ' + ${medium_name} + ' ' + ${side} + ${track} + ${counter}"/>
                     </li>
                     <li>
                         <label for="artist" th:text="#{form.label.artist}"></label>
                         <input size="32" name="artist" id="artist"
                                th:attr="placeholder=#{form.placeholder.artist}"
-                               autofocus="autofocus"/>
+                               th:value="${artist}"/>
                         <span class="form_hint" th:text="#{form.hint.artist}"></span>
                     </li>
                     <li>
@@ -44,6 +45,10 @@
                         <input name="exact" id="exact" type="checkbox"/>
                     </li>
                     <li>
+                        <input th:if="${medium_id != null and medium_id != '' }" type="hidden" name="medium_id" id="medium_id" th:value="${medium_id}"/>
+                        <input th:if="${side != null and side != ''}" type="hidden" name="side" id="side" th:value="${side}"/>
+                        <input th:if="${track != null and track != ''}" type="hidden" name="track" id="track" th:value="${track}"/>
+                        <input th:if="${counter != null and counter != ''}" type="hidden" name="counter" id="counter" th:value="${counter}"/>
                         <button class="submit" type="submit" th:text="#{selectSongForm.button.submit}"></button>
                     </li>
                 </ul>
@@ -55,6 +60,16 @@
 <div th:include="flash :: flashFragmentFoot"></div>
 
 <script type="application/javascript">
+    function setAutofocusOnArtist() {
+        jQuery(function() {
+            $('#artist').focus();
+        });
+    }
+    function setAutofocusOnTitle() {
+        jQuery(function() {
+            $('#title').focus();
+        });
+    }
     jQuery(function () {
         $('#artist').devbridgeAutocomplete({
             serviceUrl: '/artist/search/findByNameIgnoreCaseStartingWithOrderByNameAsc',

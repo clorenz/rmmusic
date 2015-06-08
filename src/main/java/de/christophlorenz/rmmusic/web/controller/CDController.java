@@ -32,11 +32,6 @@ public class CDController extends MediumController {
     }
 
     @Override
-    protected String getMediumTypeAbbreviation() {
-        return "D";
-    }
-
-    @Override
     protected int getMediumType() {
         return Medium.CD;
     }

@@ -76,6 +76,49 @@ public class RecordingController {
         return "rmmusic/recordingsList";
     }
 
+    @RequestMapping(value="/new", method = RequestMethod.GET)
+    protected String addNewRecording(@RequestParam(value = "medium_id") long mediumId,
+                                     @RequestParam("song_id") long songId,
+                                     @RequestParam(value = "side", required = false) final String side,
+                                     @RequestParam(value = "track", required = false) final Integer track,
+                                     @RequestParam(value = "counter", required = false) final String counter,
+                                     Model model) {
+
+        Medium medium = mediumRepository.getOne(mediumId);
+        model.addAttribute("medium_id", mediumId);
+        Song song = songRepository.getOne(songId);
+        Recording recording = new Recording();
+        recording.setMedium(medium);
+        recording.setSong(song);
+        recording.setRecordingYear(song.getYear());
+        if (side != null) {
+            recording.setSide(side);
+            model.addAttribute("side",side);
+        }
+        if (track != null) {
+            recording.setTrack(track);
+            model.addAttribute("track", track);
+        }
+        if (counter != null) {
+            recording.setCounter(counter);
+            model.addAttribute("counter", counter);
+        }
+        if ( !StringUtils.isBlank(medium.getDigital())) {
+            recording.setDigital(medium.getDigital());
+        }
+        model.addAttribute("recording", recording);
+        model.addAttribute("song", song);
+        model.addAttribute("display_side", medium.hasSides());
+        model.addAttribute("display_track", medium.hasTracks());
+        model.addAttribute("display_counter", medium.hasCounter());
+        model.addAttribute("editsong", false);
+
+        String mediumcode = calculateMediumCodePrefix(recording.getMedium().getType()) + " " + recording.getMedium().getCode();
+        model.addAttribute("mediumcode", mediumcode);
+
+        return "rmmusic/editRecordingForm";
+    }
+
     @RequestMapping(value="/", method = RequestMethod.POST, params = "add")
     protected String addRecordingToMedium(@Valid @ModelAttribute("mediumid") long mediumId,
                                           BindingResult br,
@@ -114,7 +157,7 @@ public class RecordingController {
         }
 
         // Select song, pass-through mediumId and next position on medium
-        String redirect = "redirect:../../song/select?medium_id=" + medium.getId() + "&side=" + side + "&track=" + track + "&counter=" + counter;
+        String redirect = "redirect:../song/select?medium_id=" + medium.getId() + "&side=" + side + "&track=" + track + "&counter=" + counter;
         log.info("Redirecing to "+redirect);
         return redirect;
     }
@@ -134,6 +177,9 @@ public class RecordingController {
 
             String mediumcode = calculateMediumCodePrefix(recording.getMedium().getType()) + " " + recording.getMedium().getCode();
             model.addAttribute("mediumcode", mediumcode);
+            model.addAttribute("display_side", recording.getMedium().hasSides());
+            model.addAttribute("display_track", recording.getMedium().hasTracks());
+            model.addAttribute("display_counter", recording.getMedium().hasCounter());
 
             log.info("Mediumcode="+mediumcode);
 
@@ -147,16 +193,32 @@ public class RecordingController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    protected String editRecording(@Valid @ModelAttribute("recording") Recording recording,
+    protected String editRecording(@ModelAttribute("recording") Recording recording,
+                                   @RequestParam(value = "medium_id", required = false) final Long mediumId,
                                    BindingResult br,
                                    Model model,
                                    RedirectAttributes redirectAttributes) {
 
         recording.setTimestamp(new Date());
+        if ( "null".equals(recording.getCounter())) {
+            recording.setCounter(null);
+        }
+        if ( "null".equals(recording.getLongplay())) {
+            recording.setLongplay(null);
+        }
 
         log.info("Got recording="+recording);
 
-        return null;
+        recording = recordingRepository.save(recording);
+
+        log.info("mediumId="+mediumId);
+
+        // Redirect...
+        if ( mediumId!=null) {
+            return "redirect:../recording/?medium="+mediumId;
+        } else {
+            return null;
+        }
     }
 
     protected String incrementCounter(long mediumId) {

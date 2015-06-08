@@ -11,6 +11,10 @@
         <fieldset>
             <ul>
                 <li>
+                    <h2 th:if="${song.id>0 AND editsong==true}" th:text="#{editSongForm.headline.edit}"/>
+                    <h2 th:if="${song.id==0 AND editsong==true}" th:text="#{editSongForm.headline.create}"/>
+                </li>
+                <li>
                     <label for="artist" th:text="#{form.label.artist}"></label>
                     <input id="artist" type="text" th:field="*{artist.name}" tabindex="-1"/>
                     <span class="form_hint" th:text="#{form.hint.artist}"></span>
@@ -23,7 +27,7 @@
                 <li>
                     <label for="release" th:text="#{form.label.release}"></label>
                     <input id="release" type="text" th:field="*{release}" tabindex="-1" maxlength="3" length="3" pattern=".{0,3}"/>
-                    <span class="form_hint" th:text="#{form.hint.relear}"></span>
+                    <span class="form_hint" th:text="#{form.hint.release}"></span>
                 </li>
                 <li>
                     <label for="year" th:text="#{form.label.year}"></label>
@@ -47,12 +51,31 @@
                 <li>
                     <input name="redirect" type="hidden" th:value="${redirect}"/>
                     <input name="id" type="hidden" th:field="*{id}"/>
-                    <button th:if="*{id > 0}" class="submit" type="submit" th:text="#{editSongForm.button.submit.editsong}" tabindex="-1"></button>
+                    <input th:if="${medium_id != null and medium_id != '' }" type="hidden" name="medium_id" id="medium_id" th:value="${medium_id}"/>
+                    <input th:if="${side != null and side != ''}" type="hidden" name="side" id="side" th:value="${side}"/>
+                    <input th:if="${track != null and track != ''}" type="hidden" name="track" id="track" th:value="${track}"/>
+                    <input th:if="${counter != null and counter != ''}" type="hidden" name="counter" id="counter" th:value="${counter}"/>
+                    <button th:if="${(song.id > 0 AND medium_id == null) OR editsong==false}" id="submit" class="submit" type="submit" th:text="#{editSongForm.button.submit.editsong}" tabindex="-1"></button>
+                    <button th:if="${song.id > 0 AND medium_id != null AND editsong==true}" id="submit" class="submit" type="submit" th:text="#{editSongForm.button.submit.editsong.on.medium} + ' ' + ${medium_name} + ' ' + ${side!=null?side:''} + ${track!=null?track:''} + ${counter!=null?counter:''}" tabindex="-1"></button>
+                    <button th:if="${song.id == 0 AND medium_id == null AND editsong==true}" id="submit" class="submit" type="submit" th:text="#{editSongForm.button.submit.createsong}" tabindex="-1"></button>
+                    <button th:if="${song.id == 0 AND medium_id != null AND editsong==true}" id="submit" class="submit" type="submit" th:text="#{editSongForm.button.submit.createsong.on.medium} + ' ' + ${medium_name} + ' ' + ${side!=null?side:''} + ${track!=null?track:''} + ${counter!=null?counter:''}" tabindex="-1"></button>
                     <button th:if="${show_delete_button == 1}" class="delete" type="button" id="delete" th:text="#{editSongForm.button.delete}" tabindex="-1"></button>
                 </li>
             </ul>
         </fieldset>
     </form>
+    <script type="application/javascript" th:inline="javascript" th:if="${song.id==0 AND editsong==true}">
+        jQuery(function() {
+            $('#artist').removeAttr("tabindex");
+            $('#title').removeAttr("tabindex");
+            $('#release').removeAttr("tabindex");
+            $('#year').removeAttr("tabindex");
+            $('#authors').focus().removeAttr("tabindex");
+            $('#dance').removeAttr("tabindex");
+            $('#remarks').removeAttr("tabindex");
+            $('#submit').removeAttr("tabindex");
+        });
+    </script>
     <script type="application/javascript" th:inline="javascript">
     jQuery(function () {
         $('#artist').devbridgeAutocomplete({

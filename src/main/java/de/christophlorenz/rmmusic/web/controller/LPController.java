@@ -32,11 +32,6 @@ public class LPController extends MediumController {
     }
 
     @Override
-    protected String getMediumTypeAbbreviation() {
-        return "L";
-    }
-
-    @Override
     protected int getMediumType() {
         return Medium.LP;
     }

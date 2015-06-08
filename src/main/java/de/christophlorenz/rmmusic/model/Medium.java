@@ -1,6 +1,7 @@
 package de.christophlorenz.rmmusic.model;
 
 import org.apache.commons.lang3.StringUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,6 +19,8 @@ import javax.persistence.UniqueConstraint;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by clorenz on 11.05.15.
@@ -35,6 +38,16 @@ public class Medium {
     public static final int LP=5;
     public static final int SINGLE=6;
     public static final int CD=7;
+
+    public static final Map<Integer,String> TYPECODES = new HashMap<Integer,String>();
+    static {
+        TYPECODES.put(AUDIO_TAPE,"C");
+        TYPECODES.put(VIDEO_TAPE,"V");
+        TYPECODES.put(ROM,"R");
+        TYPECODES.put(LP,"L");
+        TYPECODES.put(SINGLE,"S");
+        TYPECODES.put(CD,"D");
+    }
 
 
     @Id
@@ -336,6 +349,10 @@ public class Medium {
         this.remarks = remarks;
     }
 
+    public String getTypeCode() {
+        return TYPECODES.get(this.type);
+    }
+
     @PostLoad
     public void trimDigitalAndDatesAndFixPrice() {
         digital = StringUtils.trim(digital);
@@ -368,6 +385,17 @@ public class Medium {
         return date;
     }
 
+    public boolean hasSides() {
+        return ( type==AUDIO_TAPE || type == VIDEO_TAPE || type == SINGLE || type == LP);
+    }
+
+    public boolean hasTracks() {
+        return ( type == ROM || type == LP || type == CD);
+    }
+
+    public boolean hasCounter() {
+        return ( type==AUDIO_TAPE || type == VIDEO_TAPE);
+    }
 
     @Override
     public String toString() {

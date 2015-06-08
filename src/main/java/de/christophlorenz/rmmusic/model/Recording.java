@@ -173,20 +173,26 @@ public class Recording {
     }
 
     public String getTimeFormatted() {
-        int minutes = (int) Math.floor((double)time/60d);
-        int seconds = time % 60;
-        return new String().format("%d:%02d", minutes, seconds);
+        if ( time!=null) {
+            int minutes = (int) Math.floor((double) time / 60d);
+            int seconds = time % 60;
+            return new String().format("%d:%02d", minutes, seconds);
+        } else {
+            return "";
+        }
     }
 
     public void setTimeFormatted(String timeFormatted) {
-        String[] parts = timeFormatted.split(":");
-        time = Integer.parseInt(parts[0]);
-        if (parts.length == 2)
-            time = 60 * time + (int) Integer.parseInt(parts[1]);
+        if ( timeFormatted!=null) {
+            String[] parts = timeFormatted.split(":");
+            time = Integer.parseInt(parts[0]);
+            if (parts.length == 2)
+                time = 60 * time + (int) Integer.parseInt(parts[1]);
+        }
     }
 
     public Boolean getQualityStereo() {
-        return ( (quality & 1) == 1);
+        return ( quality==null ? Boolean.TRUE : (quality & 1) == 1);
     }
 
     public void setQualityStereo(boolean stereo) {
@@ -196,7 +202,7 @@ public class Recording {
     }
 
     public Boolean getQualityNoisefree() {
-        return ( (quality & 2) == 2);
+        return ( quality==null ? Boolean.TRUE : (quality & 2) == 2);
     }
 
     public void setQualityNoisefree(boolean noisefree) {
@@ -206,7 +212,7 @@ public class Recording {
     }
 
     public Boolean getQualityComplete() {
-        return ( (quality & 4) == 4);
+        return ( quality==null ? Boolean.TRUE : (quality & 4) == 4);
     }
 
     public void setQualityComplete(boolean complete) {
@@ -216,7 +222,7 @@ public class Recording {
     }
 
     public Boolean getSpecialMaxi() {
-        return ( (special & 1) == 1);
+        return ( special!=null && (special & 1) == 1);
     }
 
     public void setSpecialMaxi(boolean maxi) {
@@ -226,7 +232,7 @@ public class Recording {
     }
 
     public Boolean getSpecialLive() {
-        return ( (special & 2) == 2);
+        return ( special != null && (special & 2) == 2);
     }
 
     public void setSpecialLive(boolean live) {
@@ -236,7 +242,7 @@ public class Recording {
     }
 
     public Boolean getSpecialRemix() {
-        return ( (special & 4) == 4);
+        return ( special != null && (special & 4) == 4);
     }
 
     public void setSpecialRemix(boolean remix) {
@@ -246,7 +252,7 @@ public class Recording {
     }
 
     public Boolean getSpecialVideo() {
-        return ( (special & 8) == 8);
+        return ( special != null && (special & 8) == 8);
     }
 
     public void setSpecialVideo(boolean video) {
