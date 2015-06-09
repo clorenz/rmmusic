@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title></title>
+    <script type="text/javascript" th:src="@{/rmmusic/js/jquery-2.1.4.min.js}"></script>
+    <script type="text/javascript" th:src="@{/rmmusic/js/jquery-ui-1.11.4-min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/form.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/jquery-ui-1.11.4-min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/rmmusic.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/sticker.css}"/>
+</head>
+<body>
+<div id="dialog" th:title="#{deleteStickersDialog.title}">
+    <p th:text="#{deleteStickersDialog.text}"/>
+</div>
+<table class="sticker">
+    <tr th:each="sticker : ${stickers}">
+        <td>
+            <div class="stickercode" th:utext="${sticker.mediumCode}"/>
+            <div class="bottom">
+                <span class="stickerdate" th:if="${sticker.date != null}" th:text="${#dates.format(sticker.date, #messages.msg('date.format'))}"/>
+                <span class="stickerprice" th:text="${sticker.formattedPrice}"/>
+            </div>
+        </td>
+        <td>
+            <span id="title" class="title" th:text="${sticker.artist + ' - ' + sticker.title}"/>
+        </td>
+    </tr>
+</table>
+<hr/>
+<form>
+<button class="delete" type="button" id="delete" th:text="#{stickerlist.button.delete}" tabindex="-1"></button>
+</form>
+<script type="application/javascript" th:inline="javascript">
+    jQuery(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            modal: true,
+				resizable: false,
+				buttons: {
+					"Yes": function() {
+					    deleteStickers();
+						$(this).dialog("close");
+					},
+					"No": function() {
+						$(this).dialog("close");
+					}
+				}
+        });
+        $("#delete").on("click", function() {
+            $("#dialog").dialog("open");
+        });
+    });
+    function deleteStickers() {
+        var deleteForm = document.createElement("form");
+        deleteForm.setAttribute("method","post");
+        deleteForm.setAttribute("action","/rmmusic/sticker/delete");
+        document.body.appendChild(deleteForm);
+        deleteForm.submit();
+    }
+</script>
+</body>
+</html>

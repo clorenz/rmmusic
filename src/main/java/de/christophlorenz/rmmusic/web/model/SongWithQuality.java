@@ -1,9 +1,11 @@
-package de.christophlorenz.rmmusic.model;
+package de.christophlorenz.rmmusic.web.model;
+
+import de.christophlorenz.rmmusic.model.Song;
 
 /**
  * Created by clorenz on 09.06.15.
  */
-public class SongWithQuality extends Song{
+public class SongWithQuality extends Song {
 
     public int quality;
     public String mediumCode;

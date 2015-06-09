@@ -397,6 +397,10 @@ public class Medium {
         return ( type==AUDIO_TAPE || type == VIDEO_TAPE);
     }
 
+    public String getMediumCode() {
+        return getTypeCode()+ " " + getCode();
+    }
+
     @Override
     public String toString() {
         return "Medium{" +
@@ -430,4 +434,6 @@ public class Medium {
                 ", timestamp=" + timestamp +
                 '}';
     }
+
+
 }

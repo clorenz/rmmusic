@@ -24,6 +24,9 @@ public interface MediumTagRepository extends JpaRepository<MediumTag, TagMediumI
     @Query("SELECT m FROM MediumTag m WHERE m.id.userName = :userName")
     List<MediumTag> findByUserName(@Param("userName") String userName);
 
+    @Query("SELECT m FROM MediumTag m WHERE m.id.userName = :userName AND m.action = :action")
+    List<MediumTag> findByUserNameAndAction(@Param("userName") String userName, @Param("action") String action);
+
     /*
     List<MediumTag> findByUserNameAndMediumId(@Param("username") String userName, @Param("mediumid") Long mediumId);
 

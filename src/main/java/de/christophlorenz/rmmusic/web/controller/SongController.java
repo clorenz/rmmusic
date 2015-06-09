@@ -4,7 +4,7 @@ import de.christophlorenz.rmmusic.model.Artist;
 import de.christophlorenz.rmmusic.model.Medium;
 import de.christophlorenz.rmmusic.model.Recording;
 import de.christophlorenz.rmmusic.model.Song;
-import de.christophlorenz.rmmusic.model.SongWithQuality;
+import de.christophlorenz.rmmusic.web.model.SongWithQuality;
 import de.christophlorenz.rmmusic.persistence.jpa2.ArtistRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.MediumRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.RecordingRepository;

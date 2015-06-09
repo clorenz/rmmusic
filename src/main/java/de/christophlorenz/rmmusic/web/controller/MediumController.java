@@ -147,8 +147,8 @@ public abstract class MediumController {
     protected String editMediumReturnToCreateSticker(@Valid @ModelAttribute("medium") Medium medium,
                              Model model,
                              RedirectAttributes redirectAttributes) {
-        log.info("Forwarding to ../../sticker/create");
-        return "forward:../../sticker/create";
+        log.info("Forwarding to ../../sticker/create/");
+        return "forward:../../sticker/create/";
     }
 
 

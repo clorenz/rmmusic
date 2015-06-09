@@ -174,9 +174,7 @@ public class Recording {
 
     public String getPosition() {
         StringBuffer position = new StringBuffer();
-        position.append(medium.getTypeCode());
-        position.append(" ");
-        position.append(medium.getCode());
+        position.append(medium.getMediumCode());
         position.append(" / ");
         if ( side!=null) {
             position.append(side);
