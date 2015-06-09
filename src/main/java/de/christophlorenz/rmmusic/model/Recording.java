@@ -172,6 +172,27 @@ public class Recording {
         this.timestamp = timestamp;
     }
 
+    public String getPosition() {
+        StringBuffer position = new StringBuffer();
+        position.append(medium.getTypeCode());
+        position.append(" ");
+        position.append(medium.getCode());
+        position.append(" / ");
+        if ( side!=null) {
+            position.append(side);
+        }
+        if ( track!=null && track!=0 ) {
+            position.append(""+track);          // toString();
+        }
+        if ( counter!=null) {
+            if ( side!=null ) {
+                position.append(" ");
+            }
+            position.append(counter);
+        }
+        return position.toString();
+    }
+
     public String getTimeFormatted() {
         if ( time!=null) {
             int minutes = (int) Math.floor((double) time / 60d);
@@ -259,6 +280,52 @@ public class Recording {
         if ( special==null) { special=0; }
         special &= ~(1<<3);         // Bit löschen
         special |= (video?1:0)<<3;  // ggf. Bit setzen
+    }
+
+    public String getVerboseQuality() {
+        StringBuffer ret = new StringBuffer();
+        if ( getQualityStereo()) {
+            ret.append("Stereo");
+        }
+        if ( getQualityNoisefree()) {
+            if ( ret.length()>0) {
+                ret.append(", ");
+            }
+            ret.append("Noisefree");
+        }
+        if ( getQualityComplete()) {
+            if ( ret.length()>0) {
+                ret.append(", ");
+            }
+            ret.append("Complete");
+        }
+        return ret.toString();
+    }
+
+    public String getVerboseSpecial() {
+        StringBuffer ret = new StringBuffer();
+        if ( getSpecialMaxi()) {
+            ret.append("Maxi");
+        }
+        if ( getSpecialLive()) {
+            if ( ret.length()>0) {
+                ret.append(", ");
+            }
+            ret.append("Live");
+        }
+        if ( getSpecialRemix()) {
+            if ( ret.length()>0) {
+                ret.append(", ");
+            }
+            ret.append("Remix");
+        }
+        if ( getSpecialVideo()) {
+            if ( ret.length()>0) {
+                ret.append(", ");
+            }
+            ret.append("Video");
+        }
+        return ret.toString();
     }
 
     @Override

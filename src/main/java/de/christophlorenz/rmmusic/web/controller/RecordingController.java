@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by clorenz on 28.05.15.
@@ -77,20 +78,42 @@ public class RecordingController {
     }
 
     @RequestMapping(value="/new", method = RequestMethod.GET)
-    protected String addNewRecording(@RequestParam(value = "medium_id") long mediumId,
-                                     @RequestParam("song_id") long songId,
-                                     @RequestParam(value = "side", required = false) final String side,
+    protected String addNewRecording(@RequestParam(value = "medium_id", required = false) final Long mediumId,
+                                     @RequestParam(value = "song_id") long songId,
+                                     @RequestParam(value = "side", required = false) String side,
                                      @RequestParam(value = "track", required = false) final Integer track,
                                      @RequestParam(value = "counter", required = false) final String counter,
                                      Model model) {
 
-        Medium medium = mediumRepository.getOne(mediumId);
-        model.addAttribute("medium_id", mediumId);
+        if ( side!=null && side.indexOf(",")>-1 ) {
+            // A bug in spring probably, for some reasons, the "side" parameter appears twice, comma separarated!
+            side = side.split(",")[0];
+        }
+        log.info("Side="+side);
+
         Song song = songRepository.getOne(songId);
         Recording recording = new Recording();
-        recording.setMedium(medium);
         recording.setSong(song);
         recording.setRecordingYear(song.getYear());
+
+        if ( mediumId != null ) {
+            Medium medium = mediumRepository.getOne(mediumId);
+            model.addAttribute("medium_id", mediumId);
+            recording.setMedium(medium);
+            if ( !StringUtils.isBlank(medium.getDigital())) {
+                recording.setDigital(medium.getDigital());
+            }
+            model.addAttribute("display_side", medium.hasSides());
+            model.addAttribute("display_track", medium.hasTracks());
+            model.addAttribute("display_counter", medium.hasCounter());
+            String mediumcode = calculateMediumCodePrefix(recording.getMedium().getType()) + " " + recording.getMedium().getCode();
+            model.addAttribute("mediumcode", mediumcode);
+        } else {
+            model.addAttribute("display_side", true);
+            model.addAttribute("display_track", true);
+            model.addAttribute("display_counter", true);
+        }
+
         if (side != null) {
             recording.setSide(side);
             model.addAttribute("side",side);
@@ -103,18 +126,10 @@ public class RecordingController {
             recording.setCounter(counter);
             model.addAttribute("counter", counter);
         }
-        if ( !StringUtils.isBlank(medium.getDigital())) {
-            recording.setDigital(medium.getDigital());
-        }
+
         model.addAttribute("recording", recording);
         model.addAttribute("song", song);
-        model.addAttribute("display_side", medium.hasSides());
-        model.addAttribute("display_track", medium.hasTracks());
-        model.addAttribute("display_counter", medium.hasCounter());
         model.addAttribute("editsong", false);
-
-        String mediumcode = calculateMediumCodePrefix(recording.getMedium().getType()) + " " + recording.getMedium().getCode();
-        model.addAttribute("mediumcode", mediumcode);
 
         return "rmmusic/editRecordingForm";
     }
@@ -192,12 +207,32 @@ public class RecordingController {
         return "redirect:../../";
     }
 
+
+    @RequestMapping(value="/delete", method = RequestMethod.POST)
+    protected String deleteRecording(@Valid @RequestParam("id") Long id,
+                                     RedirectAttributes redirectAttributes) {
+        Recording recording = recordingRepository.getOne(id);
+        log.info("Deleting recording="+recording);
+        recordingRepository.delete(recording);
+
+        // Redirect to song
+        Medium medium = recording.getMedium();
+        redirectAttributes.addFlashAttribute("success", "Removed recording on "+recording.getPosition());
+        return "redirect:../song/edit/"+recording.getSong().getId();
+    }
+
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    protected String editRecording(@ModelAttribute("recording") Recording recording,
+    protected String editRecording(@Valid @ModelAttribute("recording") Recording recording,
                                    @RequestParam(value = "medium_id", required = false) final Long mediumId,
+                                   @RequestParam(value = "medium_code", required = false) final String mediumcode,
                                    BindingResult br,
                                    Model model,
                                    RedirectAttributes redirectAttributes) {
+
+        if ( br.hasErrors()) {
+            log.error(br);
+            return "rmmusic/artistEdit";
+        }
 
         recording.setTimestamp(new Date());
         if ( "null".equals(recording.getCounter())) {
@@ -205,6 +240,22 @@ public class RecordingController {
         }
         if ( "null".equals(recording.getLongplay())) {
             recording.setLongplay(null);
+        }
+
+        if ( mediumId == null && !StringUtils.isBlank(mediumcode)) {
+            // A new recording from the song screen
+            String typeCode = mediumcode.substring(0,1);
+            String code = mediumcode.substring(2);
+
+            for (Map.Entry<Integer, String> type : Medium.TYPECODES.entrySet() ) {
+                if ( type.getValue().equals(typeCode)) {
+                    Medium medium = mediumRepository.findByTypeAndCode(type.getKey(), code);
+                    recording.setMedium(medium);
+                    log.info("Set Medium="+medium+" to recording="+recording);
+                    break;
+                }
+            }
+
         }
 
         log.info("Got recording="+recording);
@@ -217,7 +268,7 @@ public class RecordingController {
         if ( mediumId!=null) {
             return "redirect:../recording/?medium="+mediumId;
         } else {
-            return null;
+            return "redirect:../song/edit/"+recording.getSong().getId();
         }
     }
 

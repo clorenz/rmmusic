@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title></title>
+    <style th:fragment="styleFragment">
+        #title {
+            font-size: 80%;
+        }
+        .list {
+            padding: 10px;
+        }
+        .list li {
+            border-bottom: 1px solid #777;
+        }
+        .list li:last-child {
+            border-bottom: none;
+        }
+        .quality7 {
+            background: #DD6 !important;
+        }
+        .qualityS, .qualityD, .qualityL {
+            background: #6E6 !important;
+        }
+        .quality0, .quality1, .quality2, .quality3, .quality4, .quality5, .quality6 {
+            background: #E66 !important;
+        }
+        .list tr:nth-child(even) {
+            opacity: .9; filter:Alpha(Opacity=90);
+        }
+    </style>
+</head>
+<body>
+<div th:fragment="recordinglistFragment">
+    <div id="rmmusic_body">
+        <div class="list">
+            <fieldset>
+                <ul>
+                    <li>
+                        <h2 th:text="#{occurrences.headline}"/>
+                    </li>
+                    <li>
+                        <table class="recordings_list">
+                            <tr>
+                                <th><span th:text="#{recordingslist.header.position}"></span></th>
+                                <th><span th:text="#{recordingslist.header.time}"></span></th>
+                                <th><span th:text="#{recordingslist.header.year}"></span></th>
+                                <th><span th:text="#{recordingslist.header.quality}"></span></th>
+                                <th><span th:text="#{recordingslist.header.special}"></span></th>
+                                <th><span th:text="#{recordingslist.header.digital}"></span></th>
+                                <th><span th:text="#{recordingslist.header.remarks}"></span></th>
+                            </tr>
+                            <tr th:each="recording : ${recordings}" th:class="${'quality' + recording.quality + ' quality' + recording.medium.typeCode}">
+                                <td>
+                                    <a th:href="'/rmmusic/recording/edit/' + ${recording.id}"><span id="position"
+                                                                               th:text="${recording.position}"></span></a><br/>
+                                    <span id="title" th:if="${recording.medium.artist !=null AND recording.medium.title != null}" th:text="${recording.medium.artist.name} + ' - ' + ${recording.medium.title}"></span>
+                                </td>
+                                <td>
+                                    <span id="time" th:text="${recording.timeFormatted}"></span>
+                                </td>
+                                <td>
+                                    <span id="year" th:text="${recording.recordingYear}"></span>
+                                </td>
+                                <td>
+                                    <span id="quality" th:text="${recording.verboseQuality}"></span>
+                                </td>
+                                <td>
+                                    <span id="special" th:text="${recording.verboseSpecial}"></span>
+                                </td>
+                                <td>
+                                    <span id="digital" th:text="${recording.digital}"></span>
+                                </td>
+                                <td>
+                                    <span id="remarks" th:text="${recording.remarks}"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </li>
+                    <li>
+                        <form method="get" th:action="@{/rmmusic/recording/new}" class="rmmusic_form edit_recording" id="edit_recording_form">
+                            <input type="hidden" name="song_id" id="song_id" th:value="*{id}"/>
+                            <button class="submit" type="submit" th:text="#{recordingslist.submit.add}"></button>
+                        </form>
+                    </li>
+                </ul>
+            </fieldset>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -22,33 +22,33 @@ public class Song {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    protected long id;
 
     @ManyToOne(optional=false, targetEntity = Artist.class, fetch = FetchType.EAGER)
     @JoinColumn(name="artist_id", nullable=false)
-    private Artist artist;
+    protected Artist artist;
 
     @Column(nullable = false)
-    private String title;
+    protected String title;
 
     @Column(length = 3)
-    private String release;
+    protected String release;
 
     @Column(name="\"year\"")
-    private Integer year;
+    protected Integer year;
 
-    private String authors;
+    protected String authors;
 
     @Column(length=2)
-    private String dance;
+    protected String dance;
 
     @Column(name="id3genre", length=24)
-    private String id3Genre;
+    protected String id3Genre;
 
-    private String remarks;
+    protected String remarks;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
+    protected Date timestamp;
 
     public long getId() {
         return id;

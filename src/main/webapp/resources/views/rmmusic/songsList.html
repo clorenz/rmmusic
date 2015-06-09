@@ -17,6 +17,18 @@
         .buttonlist .left {
         margin-left: 2px;
         }
+        .quality7 {
+        background: #DD6 !important;
+        }
+        .qualityS, .qualityD, .qualityL {
+        background: #6E6 !important;
+        }
+        .quality0, .quality1, .quality2, .quality3, .quality4, .quality5, .quality6 {
+        background: #E66 !important;
+        }
+        .songs_list tr:nth-child(even) {
+            opacity: .90; filter:Alpha(Opacity=90);
+        }
     </style>
 </head>
 <body>
@@ -40,7 +52,7 @@
                             <th><span th:text="#{songslist.header.dance}"></span></th>
                             <th><span th:text="#{songslist.header.remarks}"></span></th>
                         </tr>
-                        <tr th:each="song : ${songs}">
+                        <tr th:each="song : ${songs}" th:class="${'quality' + song.quality + ' quality' + song.mediumCode}">
                             <td>
                                 <span id="artist" th:text="${song.artist.name}"></span>
                             </td>

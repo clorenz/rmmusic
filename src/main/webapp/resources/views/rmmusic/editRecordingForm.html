@@ -74,7 +74,7 @@
                     </li>
                     <li>
                         <label for="time" th:text="#{form.label.time}"></label>
-                        <input id="time" type="text" th:field="*{timeFormatted}" autofocus="autofocus" length="5" maxlength="5" pattern="\d{1,2}:\d{2}"/>
+                        <input id="time" type="text" th:field="*{timeFormatted}" autofocus="autofocus" length="5" maxlength="5" pattern="\d{1,2}:\d{2}" required="required"/>
                         <span class="form_hint" th:text="#{form.hint.time}"></span>
                     </li>
                     <li>
@@ -84,16 +84,16 @@
                     </li>
                     <li>
                         <label for="qualityStereo" th:text="#{form.label.quality}"></label>
-                        <span class="checkboxlabel" th:text="#{form.label.stereo}"></span>: <input id="qualityStereo" type="checkbox" th:field="*{qualityStereo}" />
-                        <span class="checkboxlabel" th:text="#{form.label.noisefree}"></span>: <input id="qualityNoisefree" type="checkbox" th:field="*{qualityNoisefree}" />
-                        <span class="checkboxlabel" th:text="#{form.label.complete}"></span>: <input id="qualityComplete" type="checkbox" th:field="*{qualityComplete}"/>
+                        <span class="checkboxlabel" th:text="#{form.label.stereo}"></span>: <input id="qualityStereo" type="checkbox" th:field="*{qualityStereo}" tabindex="-1"/>
+                        <span class="checkboxlabel" th:text="#{form.label.noisefree}"></span>: <input id="qualityNoisefree" type="checkbox" th:field="*{qualityNoisefree}" tabindex="-1"/>
+                        <span class="checkboxlabel" th:text="#{form.label.complete}"></span>: <input id="qualityComplete" type="checkbox" th:field="*{qualityComplete}" tabindex="-1"/>
                     </li>
                     <li>
                         <label for="specialMaxi" th:text="#{form.label.special}"></label>
-                        <span class="checkboxlabel" th:text="#{form.label.maxi}"></span>: <input id="specialMaxi" type="checkbox" th:field="*{specialMaxi}" />
-                        <span class="checkboxlabel" th:text="#{form.label.live}"></span>: <input id="specialLive" type="checkbox" th:field="*{specialLive}"/>
-                        <span class="checkboxlabel" th:text="#{form.label.remix}"></span>: <input id="specialRemix" type="checkbox" th:field="*{specialRemix}"/>
-                        <span class="checkboxlabel" th:text="#{form.label.video}"></span>: <input id="specialVideo" type="checkbox" th:field="*{specialVideo}"/>
+                        <span class="checkboxlabel" th:text="#{form.label.maxi}"></span>: <input id="specialMaxi" type="checkbox" th:field="*{specialMaxi}" tabindex="-1"/>
+                        <span class="checkboxlabel" th:text="#{form.label.live}"></span>: <input id="specialLive" type="checkbox" th:field="*{specialLive}" tabindex="-1"/>
+                        <span class="checkboxlabel" th:text="#{form.label.remix}"></span>: <input id="specialRemix" type="checkbox" th:field="*{specialRemix}" tabindex="-1"/>
+                        <span class="checkboxlabel" th:text="#{form.label.video}"></span>: <input id="specialVideo" type="checkbox" th:field="*{specialVideo}" tabindex="-1"/>
                     </li>
                     <li>
                         <label for="digital" th:text="#{form.label.digital}"></label>
@@ -118,8 +118,44 @@
         </form>
     </div>
 </div>
-
-
+<script type="application/javascript" th:inline="javascript" th:if="${medium == null}">
+        jQuery(function() {
+            $('#medium').removeAttr("tabindex").removeAttr("readonly").prop("required", true).prop("pattern",".{10}").prop("name","medium_code");
+        });
+</script>
+<script type="application/javascript" th:inline="javascript">
+    jQuery(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            modal: true,
+				resizable: false,
+				buttons: {
+					"Yes": function() {
+					    deleteRecording('[[${recording.id}]]');
+						$(this).dialog("close");
+					},
+					"No": function() {
+						$(this).dialog("close");
+					}
+				}
+        });
+        $("#delete").on("click", function() {
+            $("#dialog").dialog("open");
+        });
+    });
+    function deleteRecording(id) {
+        var deleteForm = document.createElement("form");
+        deleteForm.setAttribute("method","post");
+        deleteForm.setAttribute("action","/rmmusic/recording/delete");
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type","hidden");
+        hiddenField.setAttribute("name","id");
+        hiddenField.setAttribute("value",id);
+        deleteForm.appendChild(hiddenField);
+        document.body.appendChild(deleteForm);
+        deleteForm.submit();
+    }
+</script>
 
 
 <div th:include="flash :: flashFragmentFoot"></div>

@@ -2,9 +2,12 @@ package de.christophlorenz.rmmusic.web.controller;
 
 import de.christophlorenz.rmmusic.model.Artist;
 import de.christophlorenz.rmmusic.model.Medium;
+import de.christophlorenz.rmmusic.model.Recording;
 import de.christophlorenz.rmmusic.model.Song;
+import de.christophlorenz.rmmusic.model.SongWithQuality;
 import de.christophlorenz.rmmusic.persistence.jpa2.ArtistRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.MediumRepository;
+import de.christophlorenz.rmmusic.persistence.jpa2.RecordingRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.SongRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -21,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -41,6 +45,9 @@ public class SongController {
 
     @Autowired
     MediumRepository mediumRepository;
+
+    @Autowired
+    RecordingRepository recordingRepository;
 
     @RequestMapping(value="/select", method = RequestMethod.GET)
     public String selectArtist(
@@ -73,6 +80,7 @@ public class SongController {
         model.addAttribute("redirect", request.getHeader("referer"));
         model.addAttribute("song", song);
         model.addAttribute("show_delete_button", 1);
+        setRecordings(song, model);
         return "rmmusic/editSongForm";
     }
 
@@ -120,6 +128,7 @@ public class SongController {
 
         if ( songs.isEmpty()) {
             log.info("New song!");
+            model.addAttribute("editsong", true);
             Song song = new Song();
             if ( !StringUtils.isBlank(artist)) {
                 song.setArtist(artistRepository.findByName(artist).get(0));
@@ -141,6 +150,7 @@ public class SongController {
         }
         if ( songs.size()==1) {
             model.addAttribute("song", songs.get(0));
+            setRecordings(songs.get(0), model);
             if ( medium!=null) {
                 String forward="forward:../recording/new?medium_id="+mediumId+"&song_id="+songs.get(0).getId();
                 if ( side!=null ) {
@@ -158,11 +168,43 @@ public class SongController {
                 return "rmmusic/editSongForm";
             }
         } else {
-            model.addAttribute("songs", songs);
+            List<SongWithQuality> songWithQualities = new ArrayList<SongWithQuality>();
+            for ( Song song : songs) {
+                SongWithQuality swq = new SongWithQuality(song);
+                List<Recording> recordings = recordingRepository.findBySong(song);
+                int bestQuality=-1;
+                String bestTypeCode=null;
+                for ( Recording recording : recordings ) {
+                    if ( recording.getQuality() > bestQuality) {
+                        bestQuality = recording.getQuality();
+                        if ( bestTypeCode==null || "C".equals(bestTypeCode) || "R".equals(bestTypeCode) || "V".equals(bestTypeCode)) {
+                            bestTypeCode = recording.getMedium().getTypeCode();
+                        } else if ( "S".equals(bestTypeCode) && recording.getMedium().getType() > Medium.SINGLE) {
+                            bestTypeCode = recording.getMedium().getTypeCode();
+                        } else if ( "L".equals(bestTypeCode) && recording.getMedium().getType() > Medium.LP) {
+                            bestTypeCode = recording.getMedium().getTypeCode();
+                        } else if ( recording.getMedium().getType() == Medium.CD) {
+                            bestTypeCode = "D";
+                        }
+                    }
+                }
+                swq.setMediumCode(bestTypeCode);
+                swq.setQuality(bestQuality);
+                songWithQualities.add(swq);
+            }
+            model.addAttribute("songs", songWithQualities);
             return "rmmusic/songsList";
         }
 
 
+    }
+
+    private void setRecordings(Song song, Model model) {
+        List<Recording> recordings = recordingRepository.findBySong(song);
+        if ( !recordings.isEmpty()) {
+            model.addAttribute("recordings", recordings);
+            log.info("Found recordings="+recordings);
+        }
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)

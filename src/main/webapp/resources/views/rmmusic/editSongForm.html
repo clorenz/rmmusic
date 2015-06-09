@@ -8,6 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/rmmusic.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/form.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/list.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/jquery-ui-1.11.4-min.css}"/>
     <style>
         #code, #medium {
@@ -29,6 +30,7 @@
         display: inline-block; width: 100px; text-align: right;
         }
     </style>
+    <style th:if="${recordings != null}" th:include="recordinglist :: styleFragment"></style>
     <script>
 		if (top !== self) {
 			$.ui.dialog.prototype._focusTabbable = $.noop;
@@ -46,6 +48,8 @@
 <div id="rmmusic_body">
     <div th:include="song :: songDisplayFragment"></div>
 </div>
+
+<div th:if="${recordings != null}" th:include="recordinglist :: recordinglistFragment"></div>
 
 <div th:include="flash :: flashFragmentFoot"></div>
 </body>
