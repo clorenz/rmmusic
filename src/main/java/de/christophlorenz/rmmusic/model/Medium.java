@@ -59,7 +59,6 @@ public class Medium {
         TYPENAMES.put(CD,"CD");
     }
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

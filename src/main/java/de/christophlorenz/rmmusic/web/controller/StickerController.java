@@ -81,7 +81,12 @@ public class StickerController {
         redirectAttributes.addFlashAttribute("success", "Added sticker for "+medium.getMediumCode());
         String redirect="/rmmusic/";
         String referer = request.getHeader("referer");
+        log.info("Referer="+referer);
         String origin = request.getHeader("origin");
+        if( origin==null) {
+            origin = request.getScheme()+"://" + request.getHeader("host");
+        }
+        log.info("Origin="+origin);
         redirect = referer.replace(origin, "");
 
         log.info("Redirecting to redirect:"+redirect);

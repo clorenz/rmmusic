@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by clorenz on 27.05.15.
@@ -30,6 +28,16 @@ public abstract class MediumController {
 
     private static final Logger log = Logger.getLogger(MediumController.class);
     private static final String SIX_BLANKS = "      ";
+    public static final Map<Integer,String> PATH = new HashMap<Integer,String>();
+    static {
+        PATH.put(Medium.AUDIO_TAPE, "tape");
+        PATH.put(Medium.VIDEO_TAPE, "video");
+        PATH.put(Medium.ROM, "cdrom");
+        PATH.put(Medium.LP, "lp");
+        PATH.put(Medium.SINGLE, "single");
+        PATH.put(Medium.CD, "cd");
+    }
+
 
     @Autowired
     MediumRepository mediumRepository;

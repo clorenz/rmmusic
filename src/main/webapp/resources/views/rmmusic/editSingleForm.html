@@ -56,7 +56,7 @@
                     </li>
                     <li>
                         <label for="code" th:text="#{form.label.code}"></label>
-                        <input th:if="*{id == 0}" id="code" type="text" th:field="*{code}" required="required" maxlength="8" width="100" pattern="[\sa-zA-Z0-9&amp;+]{8}"/>
+                        <input th:if="*{id == 0}" id="code" type="text" th:field="*{code}" required="required" maxlength="8" width="100" pattern="[\.\sa-zA-Z0-9&amp;+]{8}"/>
                         <input th:if="*{id > 0}" id="code" type="text" th:field="*{code}" required="required" maxlength="8" width="100" readonly="readonly"/>
                         <span class="form_hint" th:text="#{form.hint.code}"></span>
                     </li>
@@ -68,12 +68,12 @@
                     </li>
                     <li>
                         <label for="title" th:text="#{form.label.title}"></label>
-                        <input id="title" type="text" th:field="*{title}" autofocus="autofocus" required="required"/>
+                        <input id="title" type="text" th:field="*{title}" required="required"/>
                         <span class="form_hint" th:text="#{form.hint.title}"></span>
                     </li>
                     <li>
                         <label for="label" th:text="#{form.label.label}"></label>
-                        <input id="label" name="label" type="text" th:field="*{label}" required="required"/>
+                        <input id="label" name="label" type="text" th:field="*{label}" autofocus="autofocus" required="required"/>
                         <span class="form_hint" th:text="#{form.hint.label}"></span>
                     </li>
                     <li>

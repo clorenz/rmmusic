@@ -72,6 +72,10 @@ public class RecordingController {
 
         Medium medium = mediumRepository.getOne(mediumId);
         model.addAttribute("mediumid", medium.getId());
+
+        String artist = ( medium.getArtist()!=null ? medium.getArtist().getPrint() : null);
+        String title = medium.getTitle();
+        model.addAttribute("headline", (artist!=null ? (artist + " - ") : "") + (title!=null ? title : ""));
         model.addAttribute("displayTimeFormatter", sdf);
 
         return "rmmusic/recordingsList";
@@ -132,6 +136,15 @@ public class RecordingController {
         model.addAttribute("editsong", false);
 
         return "rmmusic/editRecordingForm";
+    }
+
+    @RequestMapping(value="/", method = RequestMethod.POST, params = "back")
+    protected String backToMedium(@Valid @ModelAttribute("mediumid") long mediumId,
+                                          BindingResult br,
+                                          Model model,
+                                          RedirectAttributes redirectAttributes) {
+        Medium medium = mediumRepository.getOne(mediumId);
+        return "redirect:../medium/"+ MediumController.PATH.get(medium.getType())+"/edit/"+mediumId;
     }
 
     @RequestMapping(value="/", method = RequestMethod.POST, params = "add")
@@ -203,7 +216,7 @@ public class RecordingController {
             log.error("Cannot find recording with id="+recordingId+": ",e);
         }
 
-        redirectAttributes.addFlashAttribute("error", "Recording with id="+recordingId+" does not exist!");
+        redirectAttributes.addFlashAttribute("error", "Recording with id=" + recordingId + " does not exist!");
         return "redirect:../../";
     }
 

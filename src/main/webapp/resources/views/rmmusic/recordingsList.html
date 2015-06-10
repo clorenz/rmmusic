@@ -28,7 +28,8 @@
             <fieldset>
                 <ul>
                     <li>
-                        <h2 th:text="#{recordingsList.headline}"/>
+                        <h2 th:text="${#messages.msg('recordingsList.headline.on') + ' '
+                            + headline}"/>
                         <input name="mediumid" type="hidden" th:value="${mediumid}"/>
                     </li>
                     <li>
@@ -51,18 +52,12 @@
                                     <span th:if="${recording.track > 0}" id="track" th:text="${recording.track}"></span>
                                     <span th:if="${recording.counter != null}" id="counter" th:text="${recording.counter}"></span>
                                 </td>
-                                <td>
-                                    <span id="artist" th:text="${recording.song.artist.name}"></span>
-                                </td>
-                                <td>
-                                    <span id="title" th:text="${recording.song.title}"></span>
-                                </td>
+                                <td><span id="artist" th:text="${recording.song.artist.name}"></span></td>
+                                <td><span id="title" th:text="${recording.song.title}"></span></td>
                                 <td>
                                     <span th:if="${recording.recordingYear > 0}" id="year" th:text="${recording.recordingYear}"></span>
                                 </td>
-                                <td>
-                                    <span class="authors" th:text="${recording.song.authors}"></span>
-                                </td>
+                                <td><span class="authors" th:text="${recording.song.authors}"></span></td>
                                 <td>
                                     <span id="time" th:text="${{recording.timeFormatted}}"></span>
                                 </td>
