@@ -49,6 +49,16 @@ public class Medium {
         TYPECODES.put(CD,"D");
     }
 
+    public static final Map<Integer,String> TYPENAMES = new HashMap<Integer,String>();
+    static {
+        TYPENAMES.put(AUDIO_TAPE,"audio tape");
+        TYPENAMES.put(VIDEO_TAPE,"video tape");
+        TYPENAMES.put(ROM,"CD-ROM");
+        TYPENAMES.put(LP,"LP");
+        TYPENAMES.put(SINGLE,"Single");
+        TYPENAMES.put(CD,"CD");
+    }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

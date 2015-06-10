@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title>rmmusic</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/rmmusic.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/list.css}"/>
+    <style>
+        .right {
+            text-align: right;
+        }
+        .data {
+            float: right;
+        }
+        .list li:nth-child(even) {
+        border-bottom: 1px solid #eee;
+        }
+        .list li:first-child, li:nth-child(odd) {
+            border-bottom: 1px solid #777;
+        }
+        .generic_statistics td {
+            padding: 10px;
+        }
+        .generic_statistics tr {
+            background-color: #ddd;
+        }
+        .generic_statistics tr.head  {
+            background-color: #eee !important;
+        }
+    </style>
+</head>
+<body>
+<div th:include="menu :: menuFragment"></div>
+<div th:include="flash :: flashFragment"></div>
+<div id="rmmusic_body">
+    <div class="list">
+        <fieldset>
+            <ul>
+                <li>
+                    <h2 th:text="#{statistics.songs.artists.headline}"/>
+                </li>
+                <li>
+                    <table class="generic_statistics">
+                        <tr>
+                            <td>
+                                <span th:text="#{statistics.amount.artists}" class="label"/>
+                            </td>
+                            <td>
+                                <span th:text="${artists}" class="data"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span th:text="#{statistics.amount.songs}" class="label"/>
+                            </td>
+                            <td>
+                                <span th:text="${songs}" class="data"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span th:text="#{statistics.amount.songs.original.media}" class="label"/>
+                            </td>
+                            <td>
+                                <span th:text="${songsOnOriginalMedia + ' (' + songsOnOriginalMediaPercentage + ')'}" class="data"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span th:text="#{statistics.amount.songs.best.quality}" class="label"/>
+                            </td>
+                            <td>
+                                <span th:text="${numberOfSongsInBestQuality + ' (' + numberOfSongsInBestQualityPercentage + ')'}" class="data"/>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+
+                <li>
+                    <h2 th:text="#{statistics.songqualities.headline}"/>
+                </li>
+                <li>
+                    <table class="generic_statistics">
+                        <tr th:each="songquality : ${songqualities}">
+                            <td>
+                                <span th:text="${#messages.msg('statistics.numberof.quality') + ' ' + songquality.key + ' ' + #messages.msg('statistics.songs')}"/>
+                            </td>
+                            <td>
+                                <span class="data right" th:text="${songquality.value}"/>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+
+                <li>
+                    <h2 th:text="#{statistics.media.headline}"/>
+                </li>
+                <li>
+                    <table class="generic_statistics">
+                        <tr class="head">
+                            <th>
+                                <span th:text="#{statistics.medium.header.type}"/>
+                            </th>
+                            <th>
+                                <span th:text="#{statistics.medium.header.amount}"/>
+                            </th>
+                            <th>
+                                <span th:text="#{statistics.medium.header.sumvalue}"/>
+                            </th>
+                            <th>
+                                <span th:text="#{statistics.medium.header.avgvalue}"/>
+                            </th>
+                        </tr>
+                        <tr th:each="statEntry : ${mediastatistics}">
+                            <td>
+                                <span th:text="${#messages.msg('statistics.numberof') + ' ' + statEntry.value.mediumTypeName}"/>
+                            </td>
+                            <td>
+                                <span class="data" th:text="${statEntry.value.amount}"/>
+                            </td>
+                            <td>
+                                <span class="data" th:text="${statEntry.value.formattedSumValue}"/>
+                            </td>
+                            <td>
+                                <span class="data right" th:if="${statEntry.value.boughtMediaCount>0}" th:text="${statEntry.value.formattedAvgValue + ' (' + statEntry.value.boughtMediaCount + ')'}"/>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+
+                <li>
+                    <h2 th:text="#{statistics.recordingqualities.headline}"/>
+                </li>
+                <li>
+                    <table class="generic_statistics">
+                        <tr th:each="recordingquality : ${recordingqualities}">
+                            <td>
+                                <span th:text="${#messages.msg('statistics.numberof.quality') + ' ' + recordingquality.key + ' ' + #messages.msg('statistics.recordings')}"/>
+                            </td>
+                            <td>
+                                <span class="data right" th:text="${recordingquality.value}"/>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+        </fieldset>
+    </div>
+</div>
+
+<div th:include="flash :: flashFragmentFoot"></div>
+
+</body>
+</html>
