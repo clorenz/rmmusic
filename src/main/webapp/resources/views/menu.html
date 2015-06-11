@@ -8,7 +8,7 @@
 <div th:fragment="menuFragment">
 <table border="0" cellpadding="2" cellspacing="0">
     <tr>
-        <td rowspan="3" style="padding-right: 20px; text-align:center; padding-bottom: 32px;"><a href="/rmmusic/" tabindex="-1"><img src="/rmmusic/img/rmmusic.png" width="100" border="0" style="margin-top: -6px;"/><br/><h2 th:text="#{rmmusic.with.version}" style="margin-top: -61px; font-size:14px; color: #00F;"/></a></td>
+        <td rowspan="3" style="padding-right: 20px; text-align:center; padding-bottom: 32px;"><a href="/rmmusic/" tabindex="-1" style="text-decoration: none;"><img src="/rmmusic/img/rmmusic.png" width="100" border="0" style="margin-top: -6px;"/><br/><h2 th:text="${#messages.msg('rmmusic.name') + ' ' + @environment.getProperty('version')}" style="text-align: center; text-shadow: 0 0 3px #FFF, 0 0 5px #FFF; margin-top: -61px; font-size:14px; color: #000;"/></a></td>
         <td>&nbsp;<a href="/rmmusic/medium/tape/select" tabindex="-1"><img src="/rmmusic/img/audio_tape.png" border="0" width="40"/></a>&nbsp;</td>
         <td>&nbsp;<a href="/rmmusic/medium/video/select" tabindex="-1"><img src="/rmmusic/img/video_tape.png" border="0" width="40"/></a>&nbsp;</td>
         <td>&nbsp;<a href="/rmmusic/medium/cdrom/select" tabindex="-1"><img src="/rmmusic/img/cd.png" border="0" width="40"/></a>&nbsp;</td>

@@ -1,0 +1,19 @@
+Setting up the PostgreSQL database
+----------------------------------
+
+- Please install a PostgreSQL database server in version 9.3 or above
+
+- As system user "postgres", create a user called "rmmusic":
+  $ createuser -d rmmusic
+  $ psql
+  postgres=# alter user rmmusic with password 'rmmusic';
+  postgres=# \q
+  $ createdb rmmusic
+  $ psql rmmusic
+  postgres=# psql rmmusic < schema.sql
+
+- If you want to use different database names, users or password, you have to
+  modify the application.properties accordingly, by modifying the properties
+  - spring.datasource.url
+  - spring.datasource.username
+  - spring.datasource.password

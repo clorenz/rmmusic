@@ -1,7 +1,11 @@
 package de.christophlorenz.rmmusic.rest;
 
+import de.christophlorenz.rmmusic.persistence.jpa2.ArtistRepository;
+import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -15,7 +19,28 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ImportResource("classpath:/applicationContext.xml")
 public class Application {
 
+    private static final Logger log = Logger.getLogger(Application.class);
+
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+
+        ApplicationContext ctx = SpringApplication.run(Application.class, args);
+
+        ArtistRepository artistRepository = (ArtistRepository) ctx.getBean(ArtistRepository.class);
+
+        if ( !healthCheck(artistRepository)) {
+            System.err.println("Please set up the database according to INSTALL");
+            ((ConfigurableApplicationContext)ctx).close();
+        }
+    }
+
+    private static boolean healthCheck(ArtistRepository artistRepository) {
+        try {
+            artistRepository.count();
+            return true;
+        } catch ( Exception e) {
+            log.error("Health check for artistRepository failed: ",e);
+        }
+
+        return false;
     }
 }
