@@ -60,13 +60,29 @@ public class SongController {
         if ( mediumId!=null ) {
             model.addAttribute("medium_id", mediumId);
             Medium medium = mediumRepository.getOne(mediumId);
-            model.addAttribute("medium_name", medium.getTypeCode()+" "+medium.getCode());
+            String mediumPosition = medium.getMediumCode();
+            if ( side!=null ) {
+                mediumPosition += " " + side;
+            }
+            if ( track!=null && track>0 ) {
+                mediumPosition += " " + track;
+            }
+            if ( counter!=null) {
+                mediumPosition += " " + counter;
+            }
+
+            model.addAttribute("medium_position", mediumPosition);
             if ( medium.getArtist()!=null) {
                 model.addAttribute("artist", medium.getArtist().getName());
             }
+            if ( medium.getType() == Medium.SINGLE && "A".equals(side)) {
+                // On the A side of a single, prefill the title of the song with the title of the single
+                model.addAttribute("title", medium.getTitle());
+                model.addAttribute("exact", "true");
+            }
         }
         if ( side!=null ) { model.addAttribute("side", side); }
-        if ( track!=null ) { model.addAttribute("track", track); }
+        if ( track!=null && track>0 ) { model.addAttribute("track", track); }
         if ( counter!=null) { model.addAttribute("counter", counter); }
         return "rmmusic/selectSongForm";
     }

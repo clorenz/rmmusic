@@ -59,7 +59,7 @@
                     </li>
                     <li>
                         <label for="code" th:text="#{form.label.code}"></label>
-                        <input th:if="*{id == 0}" id="code" type="text" th:field="*{code}" required="required" maxlength="8" width="100" pattern="[\sa-zA-Z0-9&amp;+]{8}"/>
+                        <input th:if="*{id == 0}" id="code" type="text" th:field="*{code}" required="required" maxlength="8" width="100" pattern="[\sa-zA-ZÄÖÜäöüß0-9&amp;+]{8}"/>
                         <input th:if="*{id > 0}" id="code" type="text" th:field="*{code}" required="required" maxlength="8" width="100" readonly="readonly"/>
                         <span class="form_hint" th:text="#{form.hint.code}"></span>
                     </li>
@@ -101,7 +101,7 @@
                     </li>
                     <li>
                         <label for="buyPrice" th:text="#{form.label.buyprice}"></label>
-                        <input id="buyPrice" type="text" th:field="*{{buyPrice}}" width="6" maxlength="6" th:pattern="#{price.pattern}"/>
+                        <input id="buyPrice" type="text" th:field="*{{buyPriceFormatted}}" width="6" maxlength="6" th:pattern="#{price.pattern}"/>
                         <span class="form_hint" th:text="#{form.hint.buyprice}"></span>
                     </li>
                     <li>

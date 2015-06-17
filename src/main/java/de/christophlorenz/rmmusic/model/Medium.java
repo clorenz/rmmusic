@@ -16,11 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.NumberFormat;
+import java.util.*;
 
 /**
  * Created by clorenz on 11.05.15.
@@ -344,6 +341,10 @@ public class Medium {
 
     public Double getBuyPrice() {
         return buyPrice;
+    }
+
+    public String getBuyPriceFormatted() {
+       return String.format(Locale.ENGLISH,"%.02f", buyPrice);
     }
 
     public void setBuyPrice(Double buyPrice) {

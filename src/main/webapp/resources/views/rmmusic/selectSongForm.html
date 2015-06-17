@@ -25,7 +25,7 @@
                 <ul>
                     <li>
                         <h2 th:if="${medium_id == null}" th:text="#{selectSongForm.headline}"/>
-                        <h2 th:if="${medium_id != null}" th:text="#{selectSongForm.headline.on.medium} + ' ' + ${medium_name} + ' ' + ${side} + ${track} + ${counter}"/>
+                        <h2 th:if="${medium_id != null}" th:text="#{selectSongForm.headline.on.medium} + ' ' + ${medium_position}"/>
                     </li>
                     <li>
                         <label for="artist" th:text="#{form.label.artist}"></label>
@@ -37,17 +37,18 @@
                     <li>
                         <label for="title" th:text="#{form.label.title}"></label>
                         <input name="title" id="title"
-                               th:attr="placeholder=#{form.placeholder.title}"/>
+                               th:attr="placeholder=#{form.placeholder.title}"
+                                th:value="${title}"/>
                         <span class="form_hint" th:text="#{form.hint.title}"></span>
                     </li>
                     <li>
                         <label for="exact" th:text="#{form.label.exact}"></label>
-                        <input name="exact" id="exact" type="checkbox"/>
+                        <input name="exact" id="exact" type="checkbox" th:checked="${exact}"/>
                     </li>
                     <li>
                         <input th:if="${medium_id != null and medium_id != '' }" type="hidden" name="medium_id" id="medium_id" th:value="${medium_id}"/>
                         <input th:if="${side != null and side != ''}" type="hidden" name="side" id="side" th:value="${side}"/>
-                        <input th:if="${track != null and track != ''}" type="hidden" name="track" id="track" th:value="${track}"/>
+                        <input th:if="${track != null and track != '' and track > 0}" type="hidden" name="track" id="track" th:value="${track}"/>
                         <input th:if="${counter != null and counter != ''}" type="hidden" name="counter" id="counter" th:value="${counter}"/>
                         <button class="submit" type="submit" th:text="#{selectSongForm.button.submit}"></button>
                     </li>
