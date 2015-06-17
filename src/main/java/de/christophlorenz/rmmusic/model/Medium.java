@@ -344,11 +344,17 @@ public class Medium {
     }
 
     public String getBuyPriceFormatted() {
-       return String.format(Locale.ENGLISH,"%.02f", buyPrice);
+       return buyPrice!=null ? String.format(Locale.ENGLISH,"%.02f", buyPrice) : null;
     }
 
     public void setBuyPrice(Double buyPrice) {
         this.buyPrice = buyPrice;
+    }
+
+    public void setBuyPriceFormatted(String buyPrice) {
+        if ( !StringUtils.isBlank(buyPrice)) {
+            this.buyPrice = Double.parseDouble(buyPrice);
+        }
     }
 
     public String getRemarks() {
