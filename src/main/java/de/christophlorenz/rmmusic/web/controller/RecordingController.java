@@ -64,7 +64,7 @@ public class RecordingController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     protected String editMediumById(@RequestParam(value = "medium") Long mediumId, Model model) {
 
-        List<Recording> recordings = recordingRepository.findByMediumId(mediumId);
+        List<Recording> recordings = recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(mediumId);
         model.addAttribute("recordings", recordings);
         if ( !recordings.isEmpty()) {
             model.addAttribute("mediumcodeprefix", calculateMediumCodePrefix(recordings.get(0).getMedium().getType()));
@@ -286,7 +286,7 @@ public class RecordingController {
     }
 
     protected String incrementCounter(long mediumId) {
-        List<Recording> recordings = recordingRepository.findByMediumId(mediumId);
+        List<Recording> recordings = recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(mediumId);
         if ( !recordings.isEmpty()) {
             Collections.sort(recordings, new RecordingsCounterComparator());
             String latestCounter = recordings.get(recordings.size() - 1).getCounter();
@@ -301,7 +301,7 @@ public class RecordingController {
     }
 
     protected Integer incrementTrack(long mediumId) {
-        List<Recording> recordings = recordingRepository.findByMediumId(mediumId);
+        List<Recording> recordings = recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(mediumId);
         if ( !recordings.isEmpty()) {
             Collections.sort(recordings, new RecordingsTrackComparator());
             Integer latestTrack = recordings.get(recordings.size() - 1).getTrack();
@@ -314,7 +314,7 @@ public class RecordingController {
     }
 
     protected String incrementSide(long mediumId) {
-        List<Recording> recordings = recordingRepository.findByMediumId(mediumId);
+        List<Recording> recordings = recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(mediumId);
         if ( !recordings.isEmpty()) {
             Collections.sort(recordings, new RecordingsSideComparator());
             String latestSide = recordings.get(recordings.size() - 1).getSide();
@@ -330,7 +330,7 @@ public class RecordingController {
     }
 
     protected String[] incrementSideAndTrack(long mediumId) {
-        List<Recording> recordings = recordingRepository.findByMediumId(mediumId);
+        List<Recording> recordings = recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(mediumId);
         if ( !recordings.isEmpty()) {
             Collections.sort(recordings, new RecordingsSideAndTrackComparator());
             String latestSide = recordings.get(recordings.size() - 1).getSide();

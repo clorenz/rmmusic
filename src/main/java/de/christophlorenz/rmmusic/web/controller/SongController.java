@@ -270,7 +270,14 @@ public class SongController {
         if (StringUtils.isBlank(redirect)) {
             String referer = request.getHeader("referer");
             String origin = request.getHeader("origin");
-            redirect = referer.replace(origin, "");
+            log.info("Redirect is empty. Referer="+referer+", origin="+origin);
+            if ( referer!=null) {
+                if ( origin!=null ) {
+                    redirect = referer.replace(origin, "");
+                } else {
+                    redirect = referer;
+                }
+            }
         }
 
         log.info("Redirect="+redirect);
