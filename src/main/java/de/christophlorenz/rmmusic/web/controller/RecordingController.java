@@ -75,7 +75,7 @@ public class RecordingController {
 
         String artist = ( medium.getArtist()!=null ? medium.getArtist().getPrint() : null);
         String title = medium.getTitle();
-        model.addAttribute("headline", (artist!=null ? (artist + " - ") : "") + (title!=null ? title : ""));
+        model.addAttribute("headline", (artist!=null ? artist  : "") + (title!=null ? " - " +title : ""));
         model.addAttribute("displayTimeFormatter", sdf);
 
         return "rmmusic/recordingsList";
@@ -119,8 +119,8 @@ public class RecordingController {
         }
 
         if (side != null) {
-            recording.setSide(side);
-            model.addAttribute("side",side);
+            recording.setSide(side.toUpperCase());
+            model.addAttribute("side",side.toUpperCase());
         }
         if (track != null) {
             recording.setTrack(track);

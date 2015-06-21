@@ -85,7 +85,7 @@ public class Recording {
     }
 
     public String getSide() {
-        return side;
+        return (side!=null?side.toUpperCase():null);
     }
 
     public void setSide(String side) {
@@ -177,7 +177,7 @@ public class Recording {
         position.append(medium.getMediumCode());
         position.append(" / ");
         if ( side!=null) {
-            position.append(side);
+            position.append(side.toUpperCase());
         }
         if ( track!=null && track!=0 ) {
             position.append(""+track);          // toString();

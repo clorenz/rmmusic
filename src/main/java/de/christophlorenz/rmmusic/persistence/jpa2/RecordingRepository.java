@@ -17,7 +17,7 @@ public interface RecordingRepository extends JpaRepository<Recording,Long>, Reco
 
     List<Recording> findById(@Param("id") long id);
 
-    @Query(value = "Select r from Recording r where r.medium.id=:medium_id order by r.side, r.track, r.counter asc")
+    @Query(value = "Select r from Recording r where r.medium.id=:medium_id order by lower(r.side), r.track, r.counter asc")
     List<Recording> findByMediumIdOrderBySideTrackCounterAsc(@Param("medium_id") long medium_id);
 
     List<Recording> findBySong(@Param("song")Song song);
