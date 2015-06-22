@@ -67,7 +67,7 @@ public class RecordingController {
         List<Recording> recordings = recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(mediumId);
         model.addAttribute("recordings", recordings);
         if ( !recordings.isEmpty()) {
-            model.addAttribute("mediumcodeprefix", calculateMediumCodePrefix(recordings.get(0).getMedium().getType()));
+            model.addAttribute("mediumcodeprefix", recordings.get(0).getMedium().getTypeCode());
         }
 
         Medium medium = mediumRepository.getOne(mediumId);
@@ -110,7 +110,7 @@ public class RecordingController {
             model.addAttribute("display_side", medium.hasSides());
             model.addAttribute("display_track", medium.hasTracks());
             model.addAttribute("display_counter", medium.hasCounter());
-            String mediumcode = calculateMediumCodePrefix(recording.getMedium().getType()) + " " + recording.getMedium().getCode();
+            String mediumcode = recording.getMedium().getTypeCode() + " " + recording.getMedium().getCode();
             model.addAttribute("mediumcode", mediumcode);
         } else {
             model.addAttribute("display_side", true);
@@ -203,7 +203,7 @@ public class RecordingController {
             Song song = recording.getSong();
             model.addAttribute("song", song);
 
-            String mediumcode = calculateMediumCodePrefix(recording.getMedium().getType()) + " " + recording.getMedium().getCode();
+            String mediumcode = recording.getMedium().getTypeCode() + " " + recording.getMedium().getCode();
             model.addAttribute("mediumcode", mediumcode);
             model.addAttribute("display_side", recording.getMedium().hasSides());
             model.addAttribute("display_track", recording.getMedium().hasTracks());
@@ -349,19 +349,4 @@ public class RecordingController {
         }
         return new String[] { "A", "1" };
     }
-
-
-
-    private String calculateMediumCodePrefix(int type) {
-        switch (type) {
-            case 0: return "C";
-            case 1: return "V";
-            case 2: return "R";
-            case 5: return "L";
-            case 6: return "S";
-            case 7: return "D";
-            default: return "";
-        }
-    }
-
 }
