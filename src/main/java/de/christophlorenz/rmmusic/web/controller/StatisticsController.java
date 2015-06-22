@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.DoubleConsumer;
 
 /**
  * Created by clorenz on 10.06.15.
@@ -66,24 +67,26 @@ public class StatisticsController {
             List<Medium> media = mediumRepository.findByType(type);
 
             if ( !media.isEmpty()) {
-                double sumValue = 0;
-                long boughtMediaCount=0;
-                for (Medium medium : media) {
-                    if (medium.getBuyPrice() != null) {
-                        sumValue += medium.getBuyPrice();
-                        boughtMediaCount++;
-                    }
-                }
+                Averager averagePrice = media.stream().
+                        filter(v -> v.getBuyPrice() != null).
+                        map(Medium::getBuyPrice).
+                        collect(Averager::new, Averager::accept, Averager::combine);
+
+
                 MediumStatistics stat = new MediumStatistics();
-                stat.setAmount((long) media.size());
+                stat.setAmount(media.size());
                 stat.setMediumTypeName(Medium.TYPENAMES.get(type) + (media.size() != 1 ? "s" : ""));
-                stat.setFormattedSumValue(String.format("EUR %.02f", sumValue));
-                if ( boughtMediaCount>0) {
-                    stat.setFormattedAvgValue(String.format("EUR %.02f", (sumValue / (double) boughtMediaCount)));
+                stat.setFormattedSumValue(String.format("EUR %.02f", averagePrice.total()));
+                if (averagePrice.count() > 0) {
+                    stat.setFormattedAvgValue(String.format("EUR %.02f", averagePrice.average()));
                 }
-                stat.setBoughtMediaCount(boughtMediaCount);
+                stat.setBoughtMediaCount(averagePrice.count());
                 mediumStatistics.put(type, stat);
+
+                log.info("stat="+stat);
             }
+
+
         }
         model.addAttribute("mediastatistics", mediumStatistics);
         log.info("mediastatistics="+mediumStatistics);
@@ -118,5 +121,39 @@ public class StatisticsController {
         model.addAttribute("numberOfSongsInBestQuality", numberOfSongsInBestQuality);
         model.addAttribute("numberOfSongsInBestQualityPercentage", String.format("%.01f%%", 100d*((double)numberOfSongsInBestQuality)/(double)numberOfSongs));
 
+    }
+
+
+    // ----------------------------------------------------------------------------------------------------------------
+    private class Averager implements DoubleConsumer {
+        private double total=0;
+        private int count=0;
+
+        public double average() {
+            return count>0? (total/(double)count) : 0;
+        }
+
+        public int count() {
+            return count;
+        }
+
+        public void combine(Averager other) {
+            total += other.total;
+            count += other.count;
+        }
+        @Override
+        public void accept(double value) {
+            total += value;
+            count++;
+        }
+
+        @Override
+        public DoubleConsumer andThen(DoubleConsumer after) {
+            return null;
+        }
+
+        public double total() {
+            return total;
+        }
     }
 }

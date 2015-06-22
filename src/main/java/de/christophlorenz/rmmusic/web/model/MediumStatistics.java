@@ -6,10 +6,10 @@ package de.christophlorenz.rmmusic.web.model;
 public class MediumStatistics {
 
     String mediumTypeName;
-    Long amount;
+    Integer amount;
     String formattedSumValue;
     String formattedAvgValue;
-    Long boughtMediaCount;
+    Integer boughtMediaCount;
 
     public String getMediumTypeName() {
         return mediumTypeName;
@@ -19,11 +19,11 @@ public class MediumStatistics {
         this.mediumTypeName = mediumTypeName;
     }
 
-    public Long getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 
@@ -43,11 +43,11 @@ public class MediumStatistics {
         this.formattedAvgValue = formattedAvgValue;
     }
 
-    public Long getBoughtMediaCount() {
+    public Integer getBoughtMediaCount() {
         return boughtMediaCount;
     }
 
-    public void setBoughtMediaCount(Long boughtMediaCount) {
+    public void setBoughtMediaCount(Integer boughtMediaCount) {
         this.boughtMediaCount = boughtMediaCount;
     }
 
