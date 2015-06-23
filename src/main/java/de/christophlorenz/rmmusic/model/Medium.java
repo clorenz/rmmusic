@@ -372,7 +372,7 @@ public class Medium {
     @PostLoad
     public void trimDigitalAndDatesAndFixPrice() {
         digital = StringUtils.trim(digital);
-        if ( buyPrice!=null && buyPrice < 0.01) {
+        if ( buyPrice!=null && buyPrice < 0.01 && type<Medium.SINGLE) {
             buyPrice=null;
         }
         if ( recBeginDate!=null ) {

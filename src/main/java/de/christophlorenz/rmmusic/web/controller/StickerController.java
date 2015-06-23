@@ -53,7 +53,8 @@ public class StickerController {
                     sticker.setArtist(StringUtils.isBlank(print) ? m.getArtist().getName() : print);
                 }
                 sticker.setDate(m.getBuyDate());
-                sticker.setFormattedPrice(String.format(Locale.GERMANY, "EUR %.2f", m.getBuyPrice()));
+                String price = m.getBuyPriceFormatted();
+                sticker.setFormattedPrice(price!=null?"EUR "+price:"");
                 stickers.add(sticker);
             } catch ( Exception e) {
                 log.error("Cannot add sticker for ID="+mediumTag.getId().getMediumId()+": ",e);
