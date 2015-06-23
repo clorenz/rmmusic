@@ -68,10 +68,9 @@ public class StatisticsController {
 
             if ( !media.isEmpty()) {
                 Averager averagePrice = media.stream().
-                        filter(v -> v.getBuyPrice() != null).
                         map(Medium::getBuyPrice).
+                        filter(v -> v != null).
                         collect(Averager::new, Averager::accept, Averager::combine);
-
 
                 MediumStatistics stat = new MediumStatistics();
                 stat.setAmount(media.size());

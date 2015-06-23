@@ -1,19 +1,18 @@
 package de.christophlorenz.rmmusic.web.controller;
 
 import de.christophlorenz.rmmusic.model.Recording;
-import de.christophlorenz.rmmusic.persistence.jpa2.MediumRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.RecordingRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -38,7 +37,7 @@ public class RecordingControllerTest {
     @Test
     public void testIncrementCounterOnMediumWithNoRecordingsReturnsZero() {
         List<Recording> emptyList = new ArrayList<Recording>();
-        when(recordingRepository.findByMediumId(eq(0l))).thenReturn(emptyList);
+        when(recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(eq(0l))).thenReturn(emptyList);
         assertThat(recordingController.incrementCounter(0l), is("0"));
     }
 
@@ -47,7 +46,7 @@ public class RecordingControllerTest {
         List<Recording> recordingList = new ArrayList<Recording>();
         Recording recording = createRecordingWithCounter("1234");
         recordingList.add(recording);
-        when(recordingRepository.findByMediumId(eq(0l))).thenReturn(recordingList);
+        when(recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(eq(0l))).thenReturn(recordingList);
         assertThat(recordingController.incrementCounter(0l), is("1235"));
     }
 
@@ -59,14 +58,14 @@ public class RecordingControllerTest {
         recordingList.add(createRecordingWithCounter(""));
         recordingList.add(createRecordingWithCounter("12 40"));
         recordingList.add(createRecordingWithCounter("12"));
-        when(recordingRepository.findByMediumId(eq(0l))).thenReturn(recordingList);
+        when(recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(eq(0l))).thenReturn(recordingList);
         assertThat(recordingController.incrementCounter(0l), is("1241"));
     }
 
     @Test
     public void testIncrementTrackOnMediumWithNoRecordingsReturnsOne() {
         List<Recording> emptyList = new ArrayList<Recording>();
-        when(recordingRepository.findByMediumId(eq(0l))).thenReturn(emptyList);
+        when(recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(eq(0l))).thenReturn(emptyList);
         assertThat(recordingController.incrementTrack(0l), is(1));
     }
 
@@ -75,7 +74,7 @@ public class RecordingControllerTest {
         List<Recording> recordingList = new ArrayList<Recording>();
         Recording recording = createRecordingWithTrack(1);
         recordingList.add(recording);
-        when(recordingRepository.findByMediumId(eq(0l))).thenReturn(recordingList);
+        when(recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(eq(0l))).thenReturn(recordingList);
         assertThat(recordingController.incrementTrack(0l), is(2));
     }
 
@@ -86,14 +85,14 @@ public class RecordingControllerTest {
         recordingList.add(createRecordingWithTrack(null));
         recordingList.add(createRecordingWithTrack(2));
         recordingList.add(createRecordingWithTrack(5));
-        when(recordingRepository.findByMediumId(eq(0l))).thenReturn(recordingList);
+        when(recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(eq(0l))).thenReturn(recordingList);
         assertThat(recordingController.incrementTrack(0l), is(6));
     }
 
     @Test
     public void testIncrementSideOnMediumWithNoRecordingsReturnsA() {
         List<Recording> emptyList = new ArrayList<Recording>();
-        when(recordingRepository.findByMediumId(eq(0l))).thenReturn(emptyList);
+        when(recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(eq(0l))).thenReturn(emptyList);
         assertThat(recordingController.incrementSide(0l), is("A"));
     }
 
@@ -102,7 +101,7 @@ public class RecordingControllerTest {
         List<Recording> recordingList = new ArrayList<Recording>();
         Recording recording = createRecordingWithSide("A");
         recordingList.add(recording);
-        when(recordingRepository.findByMediumId(eq(0l))).thenReturn(recordingList);
+        when(recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(eq(0l))).thenReturn(recordingList);
         assertThat(recordingController.incrementSide(0l), is("B"));
     }
 
@@ -114,14 +113,14 @@ public class RecordingControllerTest {
         recordingList.add(createRecordingWithSide(""));
         recordingList.add(createRecordingWithSide("   "));
         recordingList.add(createRecordingWithSide("C"));
-        when(recordingRepository.findByMediumId(eq(0l))).thenReturn(recordingList);
+        when(recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(eq(0l))).thenReturn(recordingList);
         assertThat(recordingController.incrementSide(0l), is("D"));
     }
 
     @Test
     public void testIncrementSideAndTrackOnMediumWithNoRecordingsReturnsA1() {
         List<Recording> emptyList = new ArrayList<Recording>();
-        when(recordingRepository.findByMediumId(eq(0l))).thenReturn(emptyList);
+        when(recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(eq(0l))).thenReturn(emptyList);
         assertThat(joinSideAndTrack(recordingController.incrementSideAndTrack(0l)), is("A1"));
     }
 
@@ -130,7 +129,7 @@ public class RecordingControllerTest {
         List<Recording> recordingList = new ArrayList<Recording>();
         Recording recording = createRecordingWithSideAndTrack("A", 1);
         recordingList.add(recording);
-        when(recordingRepository.findByMediumId(eq(0l))).thenReturn(recordingList);
+        when(recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(eq(0l))).thenReturn(recordingList);
         assertThat(joinSideAndTrack(recordingController.incrementSideAndTrack(0l)), is("A2"));
     }
 
@@ -142,7 +141,7 @@ public class RecordingControllerTest {
         recordingList.add(createRecordingWithSideAndTrack("", 4));
         recordingList.add(createRecordingWithSideAndTrack("B",3));
         recordingList.add(createRecordingWithSideAndTrack("B",4));
-        when(recordingRepository.findByMediumId(eq(0l))).thenReturn(recordingList);
+        when(recordingRepository.findByMediumIdOrderBySideTrackCounterAsc(eq(0l))).thenReturn(recordingList);
         assertThat(joinSideAndTrack(recordingController.incrementSideAndTrack(0l)), is("B5"));
     }
 
