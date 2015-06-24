@@ -11,6 +11,25 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
+apply plugin: "sonar-runner"
+apply plugin: "jacoco"
+
+sonarRunner {
+        sonarProperties {
+                property "sonar.host.url", "http://localhost:9000"
+                property "sonar.jdbc.url", "jdbc:postgresql://localhost:5432/sonar"
+                property "sonar.jdbc.driverClassName", "org.postgresql.Driver"
+                property "sonar.username", "sonar"
+                property "sonar.password", "sonar"
+                property "sonar.projectName", "rmmusic"
+                property "sonar.jacoco.reportPath", "build/jacoco/test.exec"
+        }
+}
+
+jacoco {
+    reportsDir = file("build/tmp/jacoco.exec")
+}
+
 
 bootRepackage {
     withJarTask jar
@@ -67,6 +86,7 @@ dependencies {
         exclude module: 'junit:junit'
     }
 }
+
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.4'
