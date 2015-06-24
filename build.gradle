@@ -23,6 +23,7 @@ sonarRunner {
                 property "sonar.password", "sonar"
                 property "sonar.projectName", "rmmusic"
                 property "sonar.jacoco.reportPath", "build/jacoco/test.exec"
+                property "sonar.java.source property", "1.8"
         }
 }
 
