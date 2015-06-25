@@ -124,7 +124,7 @@ public class StatisticsController {
 
 
     // ----------------------------------------------------------------------------------------------------------------
-    private class Averager implements DoubleConsumer {
+    private static class Averager implements DoubleConsumer {
         private double total=0;
         private int count=0;
 

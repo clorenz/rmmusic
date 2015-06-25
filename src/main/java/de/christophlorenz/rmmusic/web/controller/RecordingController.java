@@ -229,7 +229,6 @@ public class RecordingController {
         recordingRepository.delete(recording);
 
         // Redirect to song
-        Medium medium = recording.getMedium();
         redirectAttributes.addFlashAttribute("success", "Removed recording on "+recording.getPosition());
         return "redirect:../song/edit/"+recording.getSong().getId();
     }

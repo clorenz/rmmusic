@@ -195,7 +195,7 @@ public class Recording {
         if ( time!=null) {
             int minutes = (int) Math.floor((double) time / 60d);
             int seconds = time % 60;
-            return new String().format("%d:%02d", minutes, seconds);
+            return String.format("%d:%02d", minutes, seconds);
         } else {
             return "";
         }

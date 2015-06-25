@@ -1,15 +1,14 @@
 package de.christophlorenz.rmmusic.web.model;
 
-import de.christophlorenz.rmmusic.model.Medium;
 import de.christophlorenz.rmmusic.model.Recording;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  * Created by clorenz on 30.05.15.
  */
-public class RecordingsCounterComparator implements Comparator<Recording> {
-
+public class RecordingsCounterComparator implements Comparator<Recording>, Serializable {
 
     @Override
     public int compare(Recording o1, Recording o2) {

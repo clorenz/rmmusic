@@ -292,8 +292,7 @@ public abstract class MediumController {
         String newCode="";
 
         String[] artistParts = artistName.replaceAll("\\s", "").split(",");
-        int length = (int) Math.floor(6 / Math.min(6, artistParts.length));
-        String[] newParts = new String[artistParts.length];
+        int length = (int) Math.floor(6 / (double)Math.min(6, artistParts.length));
 
         for (int partNo = 0; partNo < Math.min(6, artistParts.length); partNo++) {
             ret += artistParts[partNo].substring(0, Math.min(length, artistParts[partNo].length()));

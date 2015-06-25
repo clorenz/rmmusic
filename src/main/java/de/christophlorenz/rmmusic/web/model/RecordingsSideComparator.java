@@ -2,12 +2,13 @@ package de.christophlorenz.rmmusic.web.model;
 
 import de.christophlorenz.rmmusic.model.Recording;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  * Created by clorenz on 30.05.15.
  */
-public class RecordingsSideComparator implements Comparator<Recording> {
+public class RecordingsSideComparator implements Comparator<Recording>, Serializable {
 
 
     @Override

@@ -2,12 +2,13 @@ package de.christophlorenz.rmmusic.persistence.jpa2;
 
 import de.christophlorenz.rmmusic.model.Medium;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  * Created by clorenz on 27.05.15.
  */
-public class MediaCodeComparator implements Comparator<Medium> {
+public class MediaCodeComparator implements Comparator<Medium>, Serializable {
 
     @Override
     /**
