@@ -191,7 +191,7 @@ public class SongController {
                 int bestQuality=-1;
                 String bestTypeCode=null;
                 for ( Recording recording : recordings ) {
-                    if ( recording.getQuality() > bestQuality) {
+                    if ( recording.getQuality() >= bestQuality) {
                         bestQuality = recording.getQuality();
                         if ( bestTypeCode==null || "C".equals(bestTypeCode) || "R".equals(bestTypeCode) || "V".equals(bestTypeCode)) {
                             bestTypeCode = recording.getMedium().getTypeCode();
