@@ -109,7 +109,7 @@
                         <input type="hidden" th:field="*{song.id}"/>
                         <input type="hidden" th:field="*{medium.id}"/>
                         <input th:if="*{id > 0}" name="id" type="hidden" th:field="*{id}"/>
-                        <button th:if="*{id > 0}" class="submit" type="submit" th:text="#{editRecordingForm.button.submit.changes}"></button>
+                        <button th:if="*{id > 0}" class="submit" type="submit" th:text="#{editRecordingForm.button.submit.changes}" onclick="submitSongAndRecording();"></button>
                         <button th:if="*{id == 0}" class="submit" type="submit" th:text="#{editRecordingForm.button.submit.create}"></button>
                         <button th:if="*{id > 0}" class="delete" type="button" id="delete" th:text="#{editRecordingForm.button.delete}" tabindex="-1"></button>
                     </li>
@@ -142,6 +142,26 @@
         $("#delete").on("click", function() {
             $("#dialog").dialog("open");
         });
+        /* Hide submit button of edit song fragment */
+        $("#submit").hide();
+
+
+        /* Submit both, the song form and the recording form */
+        $("#edit_song_form").submit(function(e) {
+            var postData = $(this).serializeArray();
+            var formURL = $(this).attr("action");
+            $.ajax( {
+                url: formURL,
+                type: "POST",
+                data: postData,
+                success: function (data, textStatus, jqXHR) {
+                    $("edit_recording_form").submit();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {}
+            });
+            e.preventDefault();
+            e.unbind();
+        });
     });
     function deleteRecording(id) {
         var deleteForm = document.createElement("form");
@@ -154,6 +174,11 @@
         deleteForm.appendChild(hiddenField);
         document.body.appendChild(deleteForm);
         deleteForm.submit();
+    }
+    function submitSongAndRecording() {
+        jQuery(function () {
+            $("#edit_song_form").submit();
+        });
     }
 </script>
 

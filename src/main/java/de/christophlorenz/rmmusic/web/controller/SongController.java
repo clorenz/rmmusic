@@ -219,7 +219,7 @@ public class SongController {
         List<Recording> recordings = recordingRepository.findBySong(song);
         if ( !recordings.isEmpty()) {
             model.addAttribute("recordings", recordings);
-            log.info("Found recordings="+recordings);
+            log.info("Found recordings=" + recordings);
         }
     }
 
@@ -234,25 +234,6 @@ public class SongController {
                               BindingResult br,
                                Model model,
                                RedirectAttributes redirectAttributes) {
-
-        //TODO: Save song
-        List<Artist> artists = artistRepository.findByName(song.getArtist().getName());
-        if ( artists.size()!=1) {
-            redirectAttributes.addFlashAttribute("error", "Invalid artist. Song was NOT updated");
-            String referer = request.getHeader("referer");
-            String origin = request.getHeader("origin");
-            redirect = referer.replace(origin, "");
-
-            log.info("Redirecting to redirect:"+redirect);
-
-            return "redirect:"+ redirect;
-        }
-
-        song.setArtist(artists.get(0));
-        song.setTimestamp(new Date());
-        log.info("Got song="+song);
-
-        song = songRepository.save(song);
 
         if ( mediumId!=null ) {
             redirect = "../recording/new?song_id="+song.getId()+"&medium_id="+mediumId;
@@ -282,11 +263,61 @@ public class SongController {
 
         log.info("Redirect="+redirect);
 
+        if ( song!=null && song.getId()>0) {
+            Song originalSong = songRepository.getOne(song.getId());
+            if ( songIsUnchanged(song, originalSong)) {
+                log.info("Song unchanged!");
+                return "redirect: "+redirect;
+            }
+        }
+
+        // Song was changed... Process as expected
+        List<Artist> artists = artistRepository.findByName(song.getArtist().getName());
+        if ( artists.size()!=1) {
+            redirectAttributes.addFlashAttribute("error", "Invalid artist. Song was NOT updated");
+            String referer = request.getHeader("referer");
+            String origin = request.getHeader("origin");
+            redirect = referer.replace(origin, "");
+
+            log.info("Redirecting to redirect:"+redirect);
+
+            return "redirect:" + redirect;
+        }
+
+        song.setArtist(artists.get(0));
+        song.setTimestamp(new Date());
+
+        log.info("Saving song=" + song);
+        song = songRepository.save(song);
+
+
+
         // Redirecting to that very edit form
         redirectAttributes.addFlashAttribute("success", "Successfully updated song " + song.getArtist().getName() + " - " + song.getTitle());
         log.info("Redirecting to redirect:"+redirect);
 
         return "redirect:"+ redirect;
+    }
+
+    private boolean songIsUnchanged(Song song, Song originalSong) {
+        log.info("Checking song: song.id="+song.getId()+", originalSong.getId="+originalSong.getId());
+        log.info("Checking song: song.title="+song.getTitle()+", originalSong.getTitle="+originalSong.getTitle());
+        log.info("Checking artist: song.artist="+song.getArtist().getName()+", originalSong.getArtist="+originalSong.getArtist().getName());
+        log.info("Checking release: song.release="+song.getRelease()+", originalSong.getRelease="+originalSong.getRelease());
+        log.info("Checking authors: song.authors="+song.getAuthors()+", originalSong.getAuthors="+originalSong.getAuthors());
+        log.info("Checking dance: song.dance="+song.getDance()+", originalSong.getDance="+originalSong.getDance());
+        log.info("Checking remarks: song.remarks="+song.getRemarks()+", originalSong.getRemarks="+originalSong.getRemarks());
+
+        // TODO: Unit tests
+
+        return ( song.getId()==originalSong.getId() &&
+                 song.getTitle()!=null && song.getTitle().equals(originalSong.getTitle()) &&
+                 song.getArtist()!=null && song.getArtist().getName().equals(originalSong.getArtist().getName()) &&
+                 song.getRelease()!=null && song.getRelease().equals(originalSong.getRelease()) &&
+                 song.getAuthors()!=null && song.getAuthors().equals(originalSong.getAuthors()) &&
+                 song.getDance()!=null && song.getDance().equals(originalSong.getDance()) &&
+                 song.getRemarks()!=null && song.getRemarks().equals(originalSong.getRemarks())
+        );
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)

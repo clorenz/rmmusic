@@ -1,5 +1,7 @@
 package de.christophlorenz.rmmusic.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -104,7 +106,10 @@ public class Song {
 
     public void setDance(String dance) {
         this.dance = dance;
-    }
+        if (StringUtils.isBlank(dance)) {
+            this.dance = null;
+        }
+     }
 
     public String getId3Genre() {
         return id3Genre;
