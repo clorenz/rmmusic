@@ -1,3 +1,5 @@
+project.version="0.4.0"
+
 buildscript {
     repositories {
         mavenCentral()
@@ -36,11 +38,6 @@ bootRepackage {
     withJarTask jar
 }
 
-jar {
-    baseName = 'rmmusic'
-    version =  '0.3.3'
-}
-
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -56,6 +53,17 @@ ext {
     hibernate_version = "4.3.9.Final"
     postgresql_version = "9.1-901-1.jdbc4"
 }
+
+jar {
+    baseName = 'rmmusic'
+}
+
+task versionProperty() {
+    def versionPropertiesFile = new File("src/main/resources/version.properties")
+    versionPropertiesFile.write("version="+project.version)
+}
+
+build.dependsOn 'versionProperty'
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")

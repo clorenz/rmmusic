@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
@@ -17,6 +18,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan(basePackages = {"de.christophlorenz.rmmusic", "de.christophlorenz.rmmusic.model", "de.christophlorenz.rmmusic.web"})
 @EnableJpaRepositories(basePackages = {"de.christophlorenz.rmmusic.persistence.jpa2"})
 @ImportResource("classpath:/applicationContext.xml")
+@PropertySource(value="classpath:/version.properties")
 public class Application {
 
     private static final Logger log = Logger.getLogger(Application.class);

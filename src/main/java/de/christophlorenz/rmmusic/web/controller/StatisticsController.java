@@ -51,7 +51,7 @@ public class StatisticsController {
         calculateMediaData(model);
         calculateRecordingsData(model);
 
-        return "/rmmusic/statistics";
+        return "rmmusic/statistics";
     }
 
     private void calculateRecordingsData(Model model) {
