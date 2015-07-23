@@ -289,8 +289,11 @@ public class SongController {
 
         log.info("Saving song=" + song);
         song = songRepository.save(song);
+        log.info("Song_id="+song.getId());
 
-
+        if ( redirect.indexOf("song_id=0")>-1) {
+            redirect = redirect.replace("song_id=0","song_id="+song.getId());
+        }
 
         // Redirecting to that very edit form
         redirectAttributes.addFlashAttribute("success", "Successfully updated song " + song.getArtist().getName() + " - " + song.getTitle());
