@@ -83,6 +83,8 @@
         }
         .rmmusic_form textarea {padding:8px; width:300px;}
         .rmmusic_form input[type="checkbox"] {padding:8px; width:20px;}
+        .rmmusic_form input[id="side"] {width:24px;}
+        .rmmusic_form input[id="track"] {width:36px;}
         .rmmusic_form button {margin-left:156px;}
         .rmmusic_form input, .contact_form textarea {
         border:1px solid #aaa;

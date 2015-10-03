@@ -235,6 +235,8 @@ public class SongController {
                                Model model,
                                RedirectAttributes redirectAttributes) {
 
+        log.info("Edit song "+song);
+
         if ( mediumId!=null ) {
             redirect = "../recording/new?song_id="+song.getId()+"&medium_id="+mediumId;
             if ( !StringUtils.isBlank(side)) {
@@ -307,6 +309,7 @@ public class SongController {
         log.info("Checking song: song.title="+song.getTitle()+", originalSong.getTitle="+originalSong.getTitle());
         log.info("Checking artist: song.artist="+song.getArtist().getName()+", originalSong.getArtist="+originalSong.getArtist().getName());
         log.info("Checking release: song.release="+song.getRelease()+", originalSong.getRelease="+originalSong.getRelease());
+        log.info("Checking year: song.year="+song.getYear()+", originalSong.getYear="+originalSong.getYear());
         log.info("Checking authors: song.authors="+song.getAuthors()+", originalSong.getAuthors="+originalSong.getAuthors());
         log.info("Checking dance: song.dance="+song.getDance()+", originalSong.getDance="+originalSong.getDance());
         log.info("Checking remarks: song.remarks="+song.getRemarks()+", originalSong.getRemarks="+originalSong.getRemarks());
@@ -317,6 +320,7 @@ public class SongController {
                  song.getTitle()!=null && song.getTitle().equals(originalSong.getTitle()) &&
                  song.getArtist()!=null && song.getArtist().getName().equals(originalSong.getArtist().getName()) &&
                  song.getRelease()!=null && song.getRelease().equals(originalSong.getRelease()) &&
+                 song.getYear()!=null && song.getYear().equals(originalSong.getYear()) &&
                  song.getAuthors()!=null && song.getAuthors().equals(originalSong.getAuthors()) &&
                  song.getDance()!=null && song.getDance().equals(originalSong.getDance()) &&
                  song.getRemarks()!=null && song.getRemarks().equals(originalSong.getRemarks())
