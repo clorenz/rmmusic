@@ -1,4 +1,4 @@
-project.version="0.4.2"
+project.version="0.4.3"
 
 buildscript {
     repositories {
