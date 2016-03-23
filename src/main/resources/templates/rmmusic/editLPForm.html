@@ -56,7 +56,7 @@
                     </li>
                     <li>
                         <label for="code" th:text="#{form.label.code}"></label>
-                        <input th:if="*{id == 0}" id="code" type="text" th:field="*{code}" required="required" maxlength="8" width="100" pattern="[\sa-zA-ZÄÖÜäöüß0-9&amp;+]{8}"/>
+                        <input th:if="*{id == 0}" id="code" type="text" th:field="*{code}" required="required" maxlength="8" width="100" pattern="[\sa-zA-ZÄÖÜäöüß0-9&amp;+\.]{8}"/>
                         <input th:if="*{id > 0}" id="code" type="text" th:field="*{code}" required="required" maxlength="8" width="100" readonly="readonly"/>
                         <span class="form_hint" th:text="#{form.hint.code}"></span>
                     </li>
