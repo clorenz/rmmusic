@@ -121,7 +121,8 @@ public class SongController {
                 songs = songRepository.findByArtistAndTitle(artists.get(0), title);
             }
         } else {
-            songs = songRepository.findByArtistNameIgnoreCaseStartingWithAndTitleIgnoreCaseStartingWithOrderByArtistAscTitleAsc(artist, title);
+            songs = songRepository.findByArtistNameIgnoreCaseStartingWithAndTitleIgnoreCaseContainingOrderByArtistAscTitleAsc(artist, title);
+            //songs = songRepository.findByArtistNameIgnoreCaseStartingWithAndTitleIgnoreCaseStartingWithOrderByArtistAscTitleAsc(artist, title);
         }
 
         Medium medium=null;

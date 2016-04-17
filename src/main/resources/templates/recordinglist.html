@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <title></title>
     <style th:fragment="styleFragment">
-        #title {
+        #songtitle {
             font-size: 80%;
         }
         .list {
@@ -54,7 +54,7 @@
                                 <td>
                                     <a th:href="'/rmmusic/recording/edit/' + ${recording.id}"><span id="position"
                                                                                th:text="${recording.position}"></span></a><br/>
-                                    <span id="title" th:if="${recording.medium.artist !=null AND recording.medium.title != null}" th:text="${recording.medium.artist.name} + ' - ' + ${recording.medium.title}"></span>
+                                    <span id="songtitle" th:if="${recording.medium.artist !=null AND recording.medium.title != null}" th:text="${recording.medium.artist.name} + ' - ' + ${recording.medium.title}"></span>
                                 </td>
                                 <td>
                                     <span id="time" th:text="${recording.timeFormatted}"></span>

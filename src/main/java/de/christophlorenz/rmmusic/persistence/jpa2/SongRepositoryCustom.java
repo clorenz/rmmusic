@@ -12,4 +12,6 @@ import java.util.List;
 public interface SongRepositoryCustom {
 
     List<Song> findByArtistNameIgnoreCaseContainingAndTitleIgnoreCaseContaining(String artistName, @Param("title")String title);
+
+    List<Song> findByArtistNameIgnoreCaseStartingWithAndTitleIgnoreCaseContainingOrderByArtistAscTitleAsc(String artistName, @Param("title")String title);
 }
