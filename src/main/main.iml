@@ -7,5 +7,26 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-webmvc:4.1.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-web:4.1.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: postgresql:postgresql:9.1-901-1.jdbc4" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:log4j-over-slf4j:1.7.11" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:16.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.4" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-beans:4.1.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-context:4.1.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: javax.validation:validation-api:1.1.0.Final" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.data:spring-data-rest-core:2.2.2.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.data:spring-data-jpa:1.7.2.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.data:spring-data-commons:1.9.2.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.tomcat.embed:tomcat-embed-core:8.0.20" level="project" />
+    <orderEntry type="library" name="Gradle: org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-core:4.1.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot:1.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-autoconfigure:1.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.data:spring-data-rest-webmvc:2.2.2.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.thymeleaf:thymeleaf-spring4:2.1.4.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.thymeleaf:thymeleaf:2.1.4.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.flywaydb:flyway-core:4.0.1" level="project" />
   </component>
 </module>

@@ -6,6 +6,7 @@ The following techniques are used:
 - Spring (Boot, MVC, REST, HATEOAS, Data)
 - JPA2
 - Hibernate
+- Flyway
 - PostgreSQL 9
 - Thymeleaf
 - HTML 5 / CSS / JQuery

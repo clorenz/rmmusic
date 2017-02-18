@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <script type="text/javascript" th:src="@{/rmmusic/js/jquery-2.1.4.min.js}"></script>
+    <script type="text/javascript" th:src="@{/rmmusic/js/jquery.autocomplete-1.2.20.min.js}"></script>
+    <script type="text/javascript" th:src="@{/rmmusic/js/jquery-ui-1.11.4-min.js}"></script>
+    <title>rmmusic</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/rmmusic.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/form.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/rmmusic/css/jquery-ui-1.11.4-min.css}"/>
+    <script>
+		if (top !== self) {
+			$.ui.dialog.prototype._focusTabbable = $.noop;
+		}
+	</script>
+</head>
+<body>
+<div th:include="menu :: menuFragment"></div>
+<div th:include="flash :: flashFragment"></div>
+<div id="rmmusic_body">
+    <div class="search">
+        <form class="rmmusic_form" id="select_search_form" method="get" action="/rmmusic/search/search">
+            <fieldset>
+                <ul>
+                    <li>
+                        <h2 th:text="#{selectSearchForm.headline}"/>
+                    </li>
+                    <li>
+                        <label for="artist" th:text="#{form.label.artist}"></label>
+                        <input size="32" name="artist" id="artist"
+                               th:attr="placeholder=#{form.placeholder.artist}"
+                               th:value="${artist}"/>
+                        <span class="form_hint" th:text="#{form.hint.artist}"></span>
+                    </li>
+                    <li>
+                        <label for="title" th:text="#{form.label.title}"></label>
+                        <input name="title" id="title"
+                               th:attr="placeholder=#{form.placeholder.title}"
+                                th:value="${title}"/>
+                        <span class="form_hint" th:text="#{form.hint.title}"></span>
+                    </li>
+                    <li>
+                        <label for="authors" th:text="#{form.label.authors}"></label>
+                        <input name="authors" id="authors"
+                               th:attr="placeholder=#{form.placeholder.authors}"
+                               th:value="${authors}"/>
+                        <span class="form_hint" th:text="#{form.hint.title}"></span>
+                    </li>
+                    <li>
+                        <button class="submit" type="submit" th:text="#{selectSearchForm.button.submit}"></button>
+                    </li>
+                </ul>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<div th:include="flash :: flashFragmentFoot"></div>
+
+<script type="application/javascript">
+    function setAutofocusOnArtist() {
+        jQuery(function() {
+            $('#artist').focus();
+        });
+    }
+    function setAutofocusOnTitle() {
+        jQuery(function() {
+            $('#title').focus();
+        });
+    }
+    jQuery(function () {
+        $('#artist').devbridgeAutocomplete({
+            serviceUrl: '/artist/search/findByNameIgnoreCaseStartingWithOrderByNameAsc',
+            paramName: "name",
+            params: {},
+            minChars: 1,
+            maxHeight: 'none',
+            transformResult: function (response) {
+                // overwrite, maybe needed for reading additional information in response
+                // return $.parseJSON(response);
+                var artistlist = $.parseJSON(response);
+                return {
+                  suggestions: $.map(artistlist._embedded.artist, function(artistDetails) {
+                    return { value: artistDetails.name, data: artistDetails.name };
+                  })
+                };
+            },
+        });
+
+        $('#title').devbridgeAutocomplete({
+            serviceUrl: '/song/search/findByArtistNameAndTitleIgnoreCaseStartingWith',
+            params: { "artist_name" : function() { return $('#artist').val(); }},
+            paramName: "title",
+            minChars: 2,
+            maxHeight: 'none',
+            transformResult: function (response) {
+                // overwrite, maybe needed for reading additional information in response
+                // return $.parseJSON(response);
+                var songlist = $.parseJSON(response);
+                return {
+                  suggestions: $.map(songlist._embedded.song, function(songDetails) {
+                    return { value: songDetails.title, data: songDetails.title };
+                  })
+                };
+            }
+        });
+
+        $("#title").keyup(function(event){
+            if(event.which == 13){
+                $("#exact").prop("checked", true);
+                document.select_song_form.submit();
+            }
+        });
+    });
+</script>
+</body>
+</html>

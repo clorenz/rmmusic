@@ -28,4 +28,6 @@ public interface SongRepository extends JpaRepository<Song, Long>, SongRepositor
     List<Song> findByArtistNameAndTitleIgnoreCaseStartingWith(@Param("artist_name") String artistName, @Param("title") String title);
 
     List<Song> findByArtistNameIgnoreCaseStartingWithAndTitleIgnoreCaseStartingWithOrderByArtistAscTitleAsc(@Param("artist_name") String artistName, @Param("title") String title);
+
+    List<Song> findByArtistNameIgnoreCaseStartingWithAndTitleIgnoreCaseContainingAndAuthorsIgnoreCaseContainingOrderByArtistAscTitleAsc(@Param("artist_name") String artist, @Param("title")String title, @Param("authors")String authors);
 }

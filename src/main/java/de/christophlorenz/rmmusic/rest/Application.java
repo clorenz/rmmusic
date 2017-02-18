@@ -2,6 +2,7 @@ package de.christophlorenz.rmmusic.rest;
 
 import de.christophlorenz.rmmusic.persistence.jpa2.ArtistRepository;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -24,7 +25,6 @@ public class Application {
     private static final Logger log = Logger.getLogger(Application.class);
 
     public static void main(String[] args) {
-
         ApplicationContext ctx = SpringApplication.run(Application.class, args);
 
         ArtistRepository artistRepository = (ArtistRepository) ctx.getBean(ArtistRepository.class);

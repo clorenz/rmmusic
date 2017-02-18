@@ -1,3 +1,11 @@
+Abfrage der Labelcodes via POST auf http://labelcode.gvl.de/interfaces/data.php
+mit Parametern mode=default&filter%5Blabelcode%5D=07413&&dimensions%5Bstart%5D=0&dimensions%5Blimit%5D=10
+(Labelcode immer fünfstellig, mit führender Null!)
+
+Wann immer ein Labelcode gesetzt wird, kann das Feld "Label" ignoriert bzw. auf NULL gesetzt werden.
+
+Gibt es zu einem Label kein Labelcode (z.B. da vor 1976 oder da keine offizielle Pressung), wird ein virtuelles Label mit negativem Code angelegt
+
 Produzent und Arrangeur hinzufügen
 
 ID eines Medium sollte geändert werden können

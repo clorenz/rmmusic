@@ -30,7 +30,7 @@ SET default_tablespace = '';
 SET default_with_oids = true;
 
 --
--- Name: artist; Type: TABLE; Schema: public; Owner: rmmusic; Tablespace: 
+-- Name: artist; Type: TABLE; Schema: public; Owner: clorenz; Tablespace: 
 --
 
 CREATE TABLE artist (
@@ -46,10 +46,10 @@ CREATE TABLE artist (
 );
 
 
-ALTER TABLE public.artist OWNER TO rmmusic;
+ALTER TABLE public.artist OWNER TO clorenz;
 
 --
--- Name: artist_id_seq; Type: SEQUENCE; Schema: public; Owner: rmmusic
+-- Name: artist_id_seq; Type: SEQUENCE; Schema: public; Owner: clorenz
 --
 
 CREATE SEQUENCE artist_id_seq
@@ -60,17 +60,17 @@ CREATE SEQUENCE artist_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.artist_id_seq OWNER TO rmmusic;
+ALTER TABLE public.artist_id_seq OWNER TO clorenz;
 
 --
--- Name: artist_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rmmusic
+-- Name: artist_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: clorenz
 --
 
 ALTER SEQUENCE artist_id_seq OWNED BY artist.id;
 
 
 --
--- Name: db_info; Type: TABLE; Schema: public; Owner: rmmusic; Tablespace: 
+-- Name: db_info; Type: TABLE; Schema: public; Owner: clorenz; Tablespace: 
 --
 
 CREATE TABLE db_info (
@@ -78,10 +78,10 @@ CREATE TABLE db_info (
 );
 
 
-ALTER TABLE public.db_info OWNER TO rmmusic;
+ALTER TABLE public.db_info OWNER TO clorenz;
 
 --
--- Name: medium; Type: TABLE; Schema: public; Owner: rmmusic; Tablespace: 
+-- Name: medium; Type: TABLE; Schema: public; Owner: clorenz; Tablespace: 
 --
 
 CREATE TABLE medium (
@@ -116,10 +116,10 @@ CREATE TABLE medium (
 );
 
 
-ALTER TABLE public.medium OWNER TO rmmusic;
+ALTER TABLE public.medium OWNER TO clorenz;
 
 --
--- Name: label; Type: VIEW; Schema: public; Owner: rmmusic
+-- Name: label; Type: VIEW; Schema: public; Owner: clorenz
 --
 
 CREATE VIEW label AS
@@ -127,10 +127,10 @@ CREATE VIEW label AS
    FROM medium;
 
 
-ALTER TABLE public.label OWNER TO rmmusic;
+ALTER TABLE public.label OWNER TO clorenz;
 
 --
--- Name: medium_id_seq; Type: SEQUENCE; Schema: public; Owner: rmmusic
+-- Name: medium_id_seq; Type: SEQUENCE; Schema: public; Owner: clorenz
 --
 
 CREATE SEQUENCE medium_id_seq
@@ -141,17 +141,17 @@ CREATE SEQUENCE medium_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.medium_id_seq OWNER TO rmmusic;
+ALTER TABLE public.medium_id_seq OWNER TO clorenz;
 
 --
--- Name: medium_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rmmusic
+-- Name: medium_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: clorenz
 --
 
 ALTER SEQUENCE medium_id_seq OWNED BY medium.id;
 
 
 --
--- Name: recording; Type: TABLE; Schema: public; Owner: rmmusic; Tablespace: 
+-- Name: recording; Type: TABLE; Schema: public; Owner: clorenz; Tablespace: 
 --
 
 CREATE TABLE recording (
@@ -172,10 +172,10 @@ CREATE TABLE recording (
 );
 
 
-ALTER TABLE public.recording OWNER TO rmmusic;
+ALTER TABLE public.recording OWNER TO clorenz;
 
 --
--- Name: recording_id_seq; Type: SEQUENCE; Schema: public; Owner: rmmusic
+-- Name: recording_id_seq; Type: SEQUENCE; Schema: public; Owner: clorenz
 --
 
 CREATE SEQUENCE recording_id_seq
@@ -186,17 +186,17 @@ CREATE SEQUENCE recording_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.recording_id_seq OWNER TO rmmusic;
+ALTER TABLE public.recording_id_seq OWNER TO clorenz;
 
 --
--- Name: recording_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rmmusic
+-- Name: recording_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: clorenz
 --
 
 ALTER SEQUENCE recording_id_seq OWNED BY recording.id;
 
 
 --
--- Name: song; Type: TABLE; Schema: public; Owner: rmmusic; Tablespace: 
+-- Name: song; Type: TABLE; Schema: public; Owner: clorenz; Tablespace: 
 --
 
 CREATE TABLE song (
@@ -213,10 +213,10 @@ CREATE TABLE song (
 );
 
 
-ALTER TABLE public.song OWNER TO rmmusic;
+ALTER TABLE public.song OWNER TO clorenz;
 
 --
--- Name: song_id_seq; Type: SEQUENCE; Schema: public; Owner: rmmusic
+-- Name: song_id_seq; Type: SEQUENCE; Schema: public; Owner: clorenz
 --
 
 CREATE SEQUENCE song_id_seq
@@ -227,17 +227,17 @@ CREATE SEQUENCE song_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.song_id_seq OWNER TO rmmusic;
+ALTER TABLE public.song_id_seq OWNER TO clorenz;
 
 --
--- Name: song_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rmmusic
+-- Name: song_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: clorenz
 --
 
 ALTER SEQUENCE song_id_seq OWNED BY song.id;
 
 
 --
--- Name: tag_medium; Type: TABLE; Schema: public; Owner: rmmusic; Tablespace: 
+-- Name: tag_medium; Type: TABLE; Schema: public; Owner: clorenz; Tablespace: 
 --
 
 CREATE TABLE tag_medium (
@@ -247,38 +247,38 @@ CREATE TABLE tag_medium (
 );
 
 
-ALTER TABLE public.tag_medium OWNER TO rmmusic;
+ALTER TABLE public.tag_medium OWNER TO clorenz;
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: rmmusic
+-- Name: id; Type: DEFAULT; Schema: public; Owner: clorenz
 --
 
 ALTER TABLE ONLY artist ALTER COLUMN id SET DEFAULT nextval('artist_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: rmmusic
+-- Name: id; Type: DEFAULT; Schema: public; Owner: clorenz
 --
 
 ALTER TABLE ONLY medium ALTER COLUMN id SET DEFAULT nextval('medium_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: rmmusic
+-- Name: id; Type: DEFAULT; Schema: public; Owner: clorenz
 --
 
 ALTER TABLE ONLY recording ALTER COLUMN id SET DEFAULT nextval('recording_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: rmmusic
+-- Name: id; Type: DEFAULT; Schema: public; Owner: clorenz
 --
 
 ALTER TABLE ONLY song ALTER COLUMN id SET DEFAULT nextval('song_id_seq'::regclass);
 
 
 --
--- Name: artist_pkey; Type: CONSTRAINT; Schema: public; Owner: rmmusic; Tablespace: 
+-- Name: artist_pkey; Type: CONSTRAINT; Schema: public; Owner: clorenz; Tablespace: 
 --
 
 ALTER TABLE ONLY artist
@@ -286,7 +286,7 @@ ALTER TABLE ONLY artist
 
 
 --
--- Name: medium_pkey; Type: CONSTRAINT; Schema: public; Owner: rmmusic; Tablespace: 
+-- Name: medium_pkey; Type: CONSTRAINT; Schema: public; Owner: clorenz; Tablespace: 
 --
 
 ALTER TABLE ONLY medium
@@ -294,7 +294,7 @@ ALTER TABLE ONLY medium
 
 
 --
--- Name: recording_pkey; Type: CONSTRAINT; Schema: public; Owner: rmmusic; Tablespace: 
+-- Name: recording_pkey; Type: CONSTRAINT; Schema: public; Owner: clorenz; Tablespace: 
 --
 
 ALTER TABLE ONLY recording
@@ -302,7 +302,7 @@ ALTER TABLE ONLY recording
 
 
 --
--- Name: song_pkey; Type: CONSTRAINT; Schema: public; Owner: rmmusic; Tablespace: 
+-- Name: song_pkey; Type: CONSTRAINT; Schema: public; Owner: clorenz; Tablespace: 
 --
 
 ALTER TABLE ONLY song
@@ -310,7 +310,7 @@ ALTER TABLE ONLY song
 
 
 --
--- Name: recording_medium_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: rmmusic
+-- Name: recording_medium_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: clorenz
 --
 
 ALTER TABLE ONLY recording
@@ -318,7 +318,7 @@ ALTER TABLE ONLY recording
 
 
 --
--- Name: recording_song_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: rmmusic
+-- Name: recording_song_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: clorenz
 --
 
 ALTER TABLE ONLY recording
@@ -326,7 +326,7 @@ ALTER TABLE ONLY recording
 
 
 --
--- Name: song_artist_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: rmmusic
+-- Name: song_artist_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: clorenz
 --
 
 ALTER TABLE ONLY song
@@ -344,103 +344,112 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --
--- Name: artist; Type: ACL; Schema: public; Owner: rmmusic
+-- Name: artist; Type: ACL; Schema: public; Owner: clorenz
 --
 
 REVOKE ALL ON TABLE artist FROM PUBLIC;
-REVOKE ALL ON TABLE artist FROM rmmusic;
-GRANT ALL ON TABLE artist TO rmmusic;
+REVOKE ALL ON TABLE artist FROM clorenz;
+GRANT ALL ON TABLE artist TO clorenz;
 GRANT ALL ON TABLE artist TO postgres;
+GRANT ALL ON TABLE artist TO jmmusic;
 
 
 --
--- Name: artist_id_seq; Type: ACL; Schema: public; Owner: rmmusic
+-- Name: artist_id_seq; Type: ACL; Schema: public; Owner: clorenz
 --
 
 REVOKE ALL ON SEQUENCE artist_id_seq FROM PUBLIC;
-REVOKE ALL ON SEQUENCE artist_id_seq FROM rmmusic;
-GRANT ALL ON SEQUENCE artist_id_seq TO rmmusic;
+REVOKE ALL ON SEQUENCE artist_id_seq FROM clorenz;
+GRANT ALL ON SEQUENCE artist_id_seq TO clorenz;
 GRANT ALL ON SEQUENCE artist_id_seq TO postgres;
+GRANT ALL ON SEQUENCE artist_id_seq TO jmmusic;
 
 
 --
--- Name: db_info; Type: ACL; Schema: public; Owner: rmmusic
---
-
-REVOKE ALL ON TABLE db_info FROM PUBLIC;
-REVOKE ALL ON TABLE db_info FROM rmmusic;
-GRANT ALL ON TABLE db_info TO rmmusic;
-GRANT ALL ON TABLE db_info TO postgres;
-
-
---
--- Name: medium; Type: ACL; Schema: public; Owner: rmmusic
+-- Name: medium; Type: ACL; Schema: public; Owner: clorenz
 --
 
 REVOKE ALL ON TABLE medium FROM PUBLIC;
-REVOKE ALL ON TABLE medium FROM rmmusic;
-GRANT ALL ON TABLE medium TO rmmusic;
+REVOKE ALL ON TABLE medium FROM clorenz;
+GRANT ALL ON TABLE medium TO clorenz;
 GRANT ALL ON TABLE medium TO postgres;
+GRANT ALL ON TABLE medium TO jmmusic;
 
 
 --
--- Name: medium_id_seq; Type: ACL; Schema: public; Owner: rmmusic
+-- Name: label; Type: ACL; Schema: public; Owner: clorenz
+--
+
+REVOKE ALL ON TABLE label FROM PUBLIC;
+REVOKE ALL ON TABLE label FROM clorenz;
+GRANT ALL ON TABLE label TO clorenz;
+GRANT ALL ON TABLE label TO jmmusic;
+
+
+--
+-- Name: medium_id_seq; Type: ACL; Schema: public; Owner: clorenz
 --
 
 REVOKE ALL ON SEQUENCE medium_id_seq FROM PUBLIC;
-REVOKE ALL ON SEQUENCE medium_id_seq FROM rmmusic;
-GRANT ALL ON SEQUENCE medium_id_seq TO rmmusic;
+REVOKE ALL ON SEQUENCE medium_id_seq FROM clorenz;
+GRANT ALL ON SEQUENCE medium_id_seq TO clorenz;
 GRANT ALL ON SEQUENCE medium_id_seq TO postgres;
+GRANT ALL ON SEQUENCE medium_id_seq TO jmmusic;
 
 
 --
--- Name: recording; Type: ACL; Schema: public; Owner: rmmusic
+-- Name: recording; Type: ACL; Schema: public; Owner: clorenz
 --
 
 REVOKE ALL ON TABLE recording FROM PUBLIC;
-REVOKE ALL ON TABLE recording FROM rmmusic;
-GRANT ALL ON TABLE recording TO rmmusic;
+REVOKE ALL ON TABLE recording FROM clorenz;
+GRANT ALL ON TABLE recording TO clorenz;
 GRANT ALL ON TABLE recording TO postgres;
+GRANT ALL ON TABLE recording TO jmmusic;
 
 
 --
--- Name: recording_id_seq; Type: ACL; Schema: public; Owner: rmmusic
+-- Name: recording_id_seq; Type: ACL; Schema: public; Owner: clorenz
 --
 
 REVOKE ALL ON SEQUENCE recording_id_seq FROM PUBLIC;
-REVOKE ALL ON SEQUENCE recording_id_seq FROM rmmusic;
-GRANT ALL ON SEQUENCE recording_id_seq TO rmmusic;
+REVOKE ALL ON SEQUENCE recording_id_seq FROM clorenz;
+GRANT ALL ON SEQUENCE recording_id_seq TO clorenz;
 GRANT ALL ON SEQUENCE recording_id_seq TO postgres;
+GRANT ALL ON SEQUENCE recording_id_seq TO jmmusic;
 
 
 --
--- Name: song; Type: ACL; Schema: public; Owner: rmmusic
+-- Name: song; Type: ACL; Schema: public; Owner: clorenz
 --
 
 REVOKE ALL ON TABLE song FROM PUBLIC;
-REVOKE ALL ON TABLE song FROM rmmusic;
-GRANT ALL ON TABLE song TO rmmusic;
+REVOKE ALL ON TABLE song FROM clorenz;
+GRANT ALL ON TABLE song TO clorenz;
 GRANT ALL ON TABLE song TO postgres;
+GRANT ALL ON TABLE song TO jmmusic;
 
 
 --
--- Name: song_id_seq; Type: ACL; Schema: public; Owner: rmmusic
+-- Name: song_id_seq; Type: ACL; Schema: public; Owner: clorenz
 --
 
 REVOKE ALL ON SEQUENCE song_id_seq FROM PUBLIC;
-REVOKE ALL ON SEQUENCE song_id_seq FROM rmmusic;
-GRANT ALL ON SEQUENCE song_id_seq TO rmmusic;
+REVOKE ALL ON SEQUENCE song_id_seq FROM clorenz;
+GRANT ALL ON SEQUENCE song_id_seq TO clorenz;
 GRANT ALL ON SEQUENCE song_id_seq TO postgres;
+GRANT ALL ON SEQUENCE song_id_seq TO jmmusic;
 
 
 --
--- Name: tag_medium; Type: ACL; Schema: public; Owner: rmmusic
+-- Name: tag_medium; Type: ACL; Schema: public; Owner: clorenz
 --
 
 REVOKE ALL ON TABLE tag_medium FROM PUBLIC;
-REVOKE ALL ON TABLE tag_medium FROM rmmusic;
-GRANT ALL ON TABLE tag_medium TO rmmusic;
+REVOKE ALL ON TABLE tag_medium FROM clorenz;
+GRANT ALL ON TABLE tag_medium TO clorenz;
 GRANT ALL ON TABLE tag_medium TO postgres;
+GRANT ALL ON TABLE tag_medium TO jmmusic;
 
 
 --

@@ -3,9 +3,11 @@ package de.christophlorenz.rmmusic.rest;
 import de.christophlorenz.rmmusic.model.TagMediumId;
 import de.christophlorenz.rmmusic.persistence.jpa2.TagMediumIdConverter;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.support.ConfigurableConversionService;
+import org.springframework.data.repository.support.Repositories;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 
 /**

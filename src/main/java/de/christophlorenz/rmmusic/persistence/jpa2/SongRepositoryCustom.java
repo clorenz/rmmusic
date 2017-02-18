@@ -14,4 +14,6 @@ public interface SongRepositoryCustom {
     List<Song> findByArtistNameIgnoreCaseContainingAndTitleIgnoreCaseContaining(String artistName, @Param("title")String title);
 
     List<Song> findByArtistNameIgnoreCaseStartingWithAndTitleIgnoreCaseContainingOrderByArtistAscTitleAsc(String artistName, @Param("title")String title);
+
+    List<Song> findByArtistNameIgnoreCaseStartingWithAndTitleIgnoreCaseContainingAndAuthorsIgnoreCaseContainingOrderByArtistAscTitleAsc(@Param("artist_name") String artist, @Param("title")String title, @Param("authors")String authors);
 }

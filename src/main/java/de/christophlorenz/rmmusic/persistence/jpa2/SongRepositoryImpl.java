@@ -51,5 +51,20 @@ public class SongRepositoryImpl implements SongRepositoryCustom {
         return q.getResultList();
     }
 
+    @Override
+    public List<Song> findByArtistNameIgnoreCaseStartingWithAndTitleIgnoreCaseContainingAndAuthorsIgnoreCaseContainingOrderByArtistAscTitleAsc(String artistName, @Param("title")String title, @Param("authors")String authors) {
+        List<Artist> artists = em.createQuery("select a from Artist a where a.name like :artistName")
+                .setParameter("artistName", "%"+artistName+"%")
+                .getResultList();
+
+        Query q = em.createQuery("select s from Song s where s.artist in :artists and s.title like :title and s.authors like :authors order by s.artist.name, s.title")
+                .setParameter("artists", artists)
+                .setParameter("title", "%" + title + "%")
+                .setParameter("authors", "%" + authors + "%");
+
+        return q.getResultList();
+    }
+
+
 
 }
