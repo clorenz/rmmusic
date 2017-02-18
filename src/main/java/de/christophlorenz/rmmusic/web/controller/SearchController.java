@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +40,15 @@ public class SearchController {
         return "rmmusic/selectSearchForm";
     }
 
+    @RequestMapping(value="/edit/{id}", method = RequestMethod.GET)
+    public String edit(@PathVariable(value = "id") long id,
+                       Model model) {
+        //model.addAttribute("id", id);
+        String forwardUrl = "forward:/rmmusic/song/edit/"+id;
+        log.info("Forwarding to "+forwardUrl);
+        return forwardUrl;
+    }
+
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String searchSongs(@RequestParam(value = "artist", required = false ) final String artist,
                               @RequestParam(value = "title", required = false ) final String title,
@@ -48,8 +58,6 @@ public class SearchController {
         List<Song> songs =
                 songRepository.findByArtistNameIgnoreCaseStartingWithAndTitleIgnoreCaseContainingAndAuthorsIgnoreCaseContainingOrderByArtistAscTitleAsc(artist, title, authors);
 
-
-        log.info("Songs="+songs);
         List<SongWithQuality> songWithQualities = new ArrayList<SongWithQuality>();
         for (Song song : songs) {
             SongWithQuality swq = new SongWithQuality(song);
@@ -75,6 +83,7 @@ public class SearchController {
             songWithQualities.add(swq);
         }
         model.addAttribute("songs", songWithQualities);
+        model.addAttribute("amount", songWithQualities.size()+" found songs");
         return "rmmusic/songsList";
     }
 }
