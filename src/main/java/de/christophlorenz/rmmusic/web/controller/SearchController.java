@@ -68,7 +68,7 @@ public class SearchController {
                     } else if (recording.getMedium().getType() == Medium.CD) {
                         bestTypeCode = "D";
                     }
-                    if ( recording.getTime() > swq.getTime()) {
+                    if ( recording.getTime() != null && recording.getTime() > swq.getTime()) {
                         swq.setTime(recording.getTime());
                     }
 
