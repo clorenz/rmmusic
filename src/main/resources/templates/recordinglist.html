@@ -7,6 +7,10 @@
         #songtitle {
             font-size: 80%;
         }
+        #mediumdetails {
+            font-size: 80%;
+            display: block;
+        }
         .list {
             padding: 10px;
         }
@@ -55,6 +59,7 @@
                                     <a th:href="'/rmmusic/recording/edit/' + ${recording.id}"><span id="position"
                                                                                th:text="${recording.position}"></span></a><br/>
                                     <span id="songtitle" th:if="${recording.medium.artist !=null AND recording.medium.title != null}" th:text="${recording.medium.artist.name} + ' - ' + ${recording.medium.title}"></span>
+                                    <span id="mediumdetails"  th:if="${recording.medium.label!=null AND recording.medium.ordercode != null}" th:text="'(' + ${recording.medium.label} + ' ' + ${recording.medium.ordercode} + ')'"></span>
                                 </td>
                                 <td>
                                     <span id="time" th:text="${recording.timeFormatted}"></span>

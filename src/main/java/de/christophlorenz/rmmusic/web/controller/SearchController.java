@@ -7,6 +7,7 @@ import de.christophlorenz.rmmusic.persistence.jpa2.ArtistRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.RecordingRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.SongRepository;
 import de.christophlorenz.rmmusic.web.model.SongWithQuality;
+import de.christophlorenz.rmmusic.web.model.SongWithQualityAndTime;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,15 +41,6 @@ public class SearchController {
         return "rmmusic/selectSearchForm";
     }
 
-    @RequestMapping(value="/edit/{id}", method = RequestMethod.GET)
-    public String edit(@PathVariable(value = "id") long id,
-                       Model model) {
-        //model.addAttribute("id", id);
-        String forwardUrl = "forward:/rmmusic/song/edit/"+id;
-        log.info("Forwarding to "+forwardUrl);
-        return forwardUrl;
-    }
-
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String searchSongs(@RequestParam(value = "artist", required = false ) final String artist,
                               @RequestParam(value = "title", required = false ) final String title,
@@ -58,9 +50,9 @@ public class SearchController {
         List<Song> songs =
                 songRepository.findByArtistNameIgnoreCaseStartingWithAndTitleIgnoreCaseContainingAndAuthorsIgnoreCaseContainingOrderByArtistAscTitleAsc(artist, title, authors);
 
-        List<SongWithQuality> songWithQualities = new ArrayList<SongWithQuality>();
+        List<SongWithQualityAndTime> songWithQualities = new ArrayList<SongWithQualityAndTime>();
         for (Song song : songs) {
-            SongWithQuality swq = new SongWithQuality(song);
+            SongWithQualityAndTime swq = new SongWithQualityAndTime(song);
             List<Recording> recordings = recordingRepository.findBySong(song);
             int bestQuality = -1;
             String bestTypeCode = null;
@@ -76,6 +68,10 @@ public class SearchController {
                     } else if (recording.getMedium().getType() == Medium.CD) {
                         bestTypeCode = "D";
                     }
+                    if ( recording.getTime() > swq.getTime()) {
+                        swq.setTime(recording.getTime());
+                    }
+
                 }
             }
             swq.setMediumCode(bestTypeCode);
@@ -84,6 +80,6 @@ public class SearchController {
         }
         model.addAttribute("songs", songWithQualities);
         model.addAttribute("amount", songWithQualities.size()+" found songs");
-        return "rmmusic/songsList";
+        return "rmmusic/searchSongsList";
     }
 }

@@ -40,6 +40,7 @@
             <ul>
                 <li>
                     <h2 th:text="#{songsList.headline}"/>
+                    <h3 th:text="${amount}"/>
                 </li>
                 <li>
                     <table class="songs_list">
@@ -49,7 +50,7 @@
                             <th><span th:text="#{songslist.header.release}"></span></th>
                             <th><span th:text="#{songslist.header.year}"></span></th>
                             <th><span th:text="#{songslist.header.authors}"></span></th>
-                            <th><span th:text="#{songslist.header.dance}"></span></th>
+                            <th><span th:text="#{songslist.header.time}"></span></th>
                             <th><span th:text="#{songslist.header.remarks}"></span></th>
                         </tr>
                         <tr th:each="song : ${songs}" th:class="${'quality' + song.quality + ' quality' + song.mediumCode}">
@@ -57,7 +58,7 @@
                                 <span id="artist" th:text="${song.artist.name}"></span>
                             </td>
                             <td>
-                                <a th:href="@{'edit/'+${song.id}}"><span id="song" th:text="${song.title}"></span></a>
+                                <a th:href="@{'../song/edit/'+${song.id}}"><span id="song" th:text="${song.title}"></span></a>
                             </td>
                             <td>
                                 <span id="release" th:text="${song.release}"></span>
@@ -69,7 +70,7 @@
                                 <span id="authors" th:text="${song.authors}"></span>
                             </td>
                             <td>
-                                <span id="dance" th:text="${song.dance}"></span>
+                                <span id="time" th:text="${song.timeFormatted}"></span>
                             </td>
                             <td>
                                 <span id="remarks" th:text="${song.remarks}"></span>
