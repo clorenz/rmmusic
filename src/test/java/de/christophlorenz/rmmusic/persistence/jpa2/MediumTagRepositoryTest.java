@@ -3,6 +3,7 @@ package de.christophlorenz.rmmusic.persistence.jpa2;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import de.christophlorenz.rmmusic.model.MediumTag;
 import de.christophlorenz.rmmusic.model.TagMediumId;
+import java.util.Optional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -32,12 +33,10 @@ import static org.junit.Assert.assertThat;
 public class MediumTagRepositoryTest extends BaseRepositoryTest {
 
     @Test
-    public void findWithInvalidIdReturnsEmptyList() {
+    public void findWithInvalidIdReturnsNonPresentOptional() {
         TagMediumId id = new TagMediumId("clorenz",1L);
-        List<MediumTag> ret = mediumTagRepository.findById(id);
-
-        assertThat(ret, is(not(nullValue())));
-        assertThat(ret.size(), is(0));
+        Optional<MediumTag> ret = mediumTagRepository.findById(id);
+        assertThat(ret.isPresent(), is(false));
     }
 
     @Test
@@ -48,13 +47,13 @@ public class MediumTagRepositoryTest extends BaseRepositoryTest {
         mediumTag.setAction("action");
         mediumTagRepository.save(mediumTag);
 
-        List<MediumTag> ret = mediumTagRepository.findById(id);
+        Optional<MediumTag> ret = mediumTagRepository.findById(id);
 
         assertThat(ret, is(not(nullValue())));
-        assertThat(ret.size(), is(1));
-        assertThat(ret.get(0).getId().getUserName(), is("clorenz"));
-        assertThat(ret.get(0).getId().getMediumId(), is(1L));
-        assertThat(ret.get(0).getAction(), is("action"));
+        assertThat(ret.isPresent(), is(true));
+        assertThat(ret.get().getId().getUserName(), is("clorenz"));
+        assertThat(ret.get().getId().getMediumId(), is(1L));
+        assertThat(ret.get().getAction(), is("action"));
     }
 
     @Test

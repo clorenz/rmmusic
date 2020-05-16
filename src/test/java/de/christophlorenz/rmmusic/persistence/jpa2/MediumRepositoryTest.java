@@ -5,6 +5,7 @@ import de.christophlorenz.rmmusic.model.Artist;
 import de.christophlorenz.rmmusic.model.Medium;
 import de.christophlorenz.rmmusic.persistence.jpa2.ArtistRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.MediumRepository;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,11 +37,10 @@ import static org.junit.Assert.assertThat;
 public class MediumRepositoryTest extends BaseRepositoryTest{
 
     @Test
-    public void findWithInvalidIdReturnsEmptyList() {
-        List<Medium> ret = mediumRepository.findById(0);
+    public void findWithInvalidIdReturnsNonPresentOptional() {
+        Optional<Medium> ret = mediumRepository.findById(0);
 
-        assertThat(ret, not(nullValue()));
-        assertThat(ret.size(), is(0));
+        assertThat(ret.isPresent(), is(false));
     }
 
 

@@ -1,6 +1,7 @@
 package de.christophlorenz.rmmusic.web.controller;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/rmmusic/error")
 public class ErrorController {
 
-    private static final Logger log = Logger.getLogger(ErrorController.class);
+    private static final Logger log = LogManager.getLogger(ErrorController.class);
 
     @ExceptionHandler(Exception.class)
     public ModelAndView error500(Exception exception) {

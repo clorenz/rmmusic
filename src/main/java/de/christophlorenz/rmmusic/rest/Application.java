@@ -1,10 +1,12 @@
 package de.christophlorenz.rmmusic.rest;
 
 import de.christophlorenz.rmmusic.persistence.jpa2.ArtistRepository;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.rest.RepositoryRestMvcAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,7 +24,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @PropertySource(value="classpath:/version.properties")
 public class Application {
 
-    private static final Logger log = Logger.getLogger(Application.class);
+    private static final Logger log = LogManager.getLogger(Application.class);
 
     public static void main(String[] args) {
         ApplicationContext ctx = SpringApplication.run(Application.class, args);

@@ -2,6 +2,7 @@ package de.christophlorenz.rmmusic.persistence.jpa2;
 
 import de.christophlorenz.rmmusic.model.MediumTag;
 import de.christophlorenz.rmmusic.model.TagMediumId;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +20,7 @@ import java.util.List;
 @RepositoryRestResource(collectionResourceRel="medium_tag", path="mediumtag")
 public interface MediumTagRepository extends JpaRepository<MediumTag, TagMediumId> {
 
-    List<MediumTag> findById(@Param("id") TagMediumId tagMediumId);
+    Optional<MediumTag> findById(@Param("id") TagMediumId tagMediumId);
 
     @Query("SELECT m FROM MediumTag m WHERE m.id.userName = :userName")
     List<MediumTag> findByUserName(@Param("userName") String userName);

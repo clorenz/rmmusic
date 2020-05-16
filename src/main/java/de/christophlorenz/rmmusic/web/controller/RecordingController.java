@@ -12,7 +12,8 @@ import de.christophlorenz.rmmusic.web.model.RecordingsSideAndTrackComparator;
 import de.christophlorenz.rmmusic.web.model.RecordingsSideComparator;
 import de.christophlorenz.rmmusic.web.model.RecordingsTrackComparator;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,7 +39,7 @@ import java.util.Map;
 @RequestMapping("/rmmusic/recording")
 public class RecordingController {
 
-    private static final Logger log = Logger.getLogger(RecordingController.class);
+    private static final Logger log = LogManager.getLogger(RecordingController.class);
 
     @Autowired
     RecordingRepository recordingRepository;

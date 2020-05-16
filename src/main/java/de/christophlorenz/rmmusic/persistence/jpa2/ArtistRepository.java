@@ -1,6 +1,7 @@
 package de.christophlorenz.rmmusic.persistence.jpa2;
 
 import de.christophlorenz.rmmusic.model.Artist;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -17,7 +18,7 @@ import java.util.List;
 @RepositoryRestResource(collectionResourceRel="artist", path="artist")
 public interface ArtistRepository extends JpaRepository<Artist, Long>{
 
-    List<Artist> findById(@Param("id") long id);
+    Optional<Artist> findById(@Param("id") long id);
 
     List<Artist> findByNameIgnoreCaseContaining(@Param("name") String name);
 

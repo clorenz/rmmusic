@@ -2,6 +2,7 @@ package de.christophlorenz.rmmusic.persistence.jpa2;
 
 import de.christophlorenz.rmmusic.model.Artist;
 import de.christophlorenz.rmmusic.persistence.jpa2.ArtistRepository;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 
 import java.util.List;
+
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -32,11 +34,10 @@ import static org.hamcrest.Matchers.nullValue;
 public class ArtistRepositoryTest extends BaseRepositoryTest {
 
     @Test
-    public void findWithInvalidIdReturnsEmptyList() {
-        List<Artist> ret = artistRepository.findById(0);
+    public void findWithInvalidIdReturnsOptionalFalse() {
+        Optional<Artist> ret = artistRepository.findById(0);
 
-        assertThat(ret, not(nullValue()));
-        assertThat(ret.size(), is(0));
+        assertThat(ret.isPresent(), is(false));
     }
 
     @Test
@@ -55,11 +56,11 @@ public class ArtistRepositoryTest extends BaseRepositoryTest {
         Artist artist1 = createArtist("First artist");
         Artist artist2 = createArtist("Second artist");
 
-        List<Artist> ret = artistRepository.findById(artist1.getId());
+        Optional<Artist> ret = artistRepository.findById(artist1.getId());
 
         assertThat(ret, not(nullValue()));
-        assertThat(ret.size(), is(1));
-        assertThat(ret.get(0).getId(), is(artist1.getId()));
+        assertThat(ret.isPresent(), is(true));
+        assertThat(ret.get().getId(), is(artist1.getId()));
     }
 
     @Test

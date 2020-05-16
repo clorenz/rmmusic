@@ -10,7 +10,8 @@ import de.christophlorenz.rmmusic.persistence.jpa2.MediumRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.RecordingRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.SongRepository;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +36,7 @@ import java.util.List;
 @RequestMapping("/rmmusic/song")
 public class SongController {
 
-    private static final Logger log = Logger.getLogger(SongController.class);
+    private static final Logger log = LogManager.getLogger(SongController.class);
 
     @Autowired
     SongRepository songRepository;

@@ -7,7 +7,8 @@ import de.christophlorenz.rmmusic.persistence.jpa2.ArtistRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.MediaCodeComparator;
 import de.christophlorenz.rmmusic.persistence.jpa2.MediumRepository;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,7 +27,7 @@ import java.util.*;
  */
 public abstract class MediumController {
 
-    private static final Logger log = Logger.getLogger(MediumController.class);
+    private static final Logger log = LogManager.getLogger(MediumController.class);
     private static final String SIX_BLANKS = "      ";
     public static final Map<Integer,String> PATH = new HashMap<Integer,String>();
     static {

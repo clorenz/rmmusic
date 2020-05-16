@@ -8,7 +8,8 @@ import de.christophlorenz.rmmusic.persistence.jpa2.RecordingRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.SongRepository;
 import de.christophlorenz.rmmusic.web.model.SongWithQuality;
 import de.christophlorenz.rmmusic.web.model.SongWithQualityAndTime;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +29,7 @@ import java.util.List;
 @RequestMapping("/rmmusic/search")
 public class SearchController {
 
-    private static final Logger log = Logger.getLogger(SearchController.class);
+    private static final Logger log = LogManager.getLogger(SearchController.class);
 
     @Autowired
     RecordingRepository recordingRepository;

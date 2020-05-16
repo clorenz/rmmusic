@@ -2,9 +2,11 @@ package de.christophlorenz.rmmusic.web.controller;
 
 import de.christophlorenz.rmmusic.model.Artist;
 import de.christophlorenz.rmmusic.persistence.jpa2.ArtistRepository;
+import java.util.Optional;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +30,7 @@ import java.util.List;
 @RequestMapping("/rmmusic/artist")
 public class ArtistController {
 
-    private static final Logger log = Logger.getLogger(ArtistController.class);
+    private static final Logger log = LogManager.getLogger(ArtistController.class);
 
     @Autowired
     ArtistRepository artistRepository;
@@ -41,12 +43,12 @@ public class ArtistController {
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String editArtistById(@PathVariable(value="id") Long id,
                                  Model model) {
-        List<Artist> artists = artistRepository.findById(id);
-        if ( artists.isEmpty()) {
+        Optional<Artist> artist = artistRepository.findById(id);
+        if (!artist.isPresent()) {
             // Should not be possible
             return "forward:/select";
         } else {
-            return editFirstArtistInList(artists, model);
+            return editArtist(artist.get(), model);
         }
     }
 
@@ -61,7 +63,7 @@ public class ArtistController {
         if ( artists.isEmpty()) {
             return editNewArtist(name, model);
         } else if ( artists.size()==1) {
-            return editFirstArtistInList(artists, model);
+            return editArtist(artists.get(0), model);
         } else {
             model.addAttribute("artists", artists);
             return "rmmusic/artistList";
@@ -80,8 +82,8 @@ public class ArtistController {
             return "rmmusic/artistEdit";
         }
 
-        // Verify, that we don't have any other artist with the same name!
-        if ( !artistRepository.findByName(artist.getName()).isEmpty()) {
+        // Verify, that we don't have any other artist with the same name, if we want to create a new artist!
+        if ( artist.getId()<=0 && !artistRepository.findByName(artist.getName()).isEmpty()) {
             br.addError(new FieldError("name","name","Name is already used for another artist"));
             model.addAttribute("error","Name "+br.getRawFieldValue("name")+" is already used for another artist");
             return "rmmusic/artistEdit";
@@ -115,8 +117,7 @@ public class ArtistController {
         return "redirect:select";
     }
 
-    private String editFirstArtistInList(List<Artist> artists, Model model) {
-        Artist artist = artists.get(0);
+    private String editArtist(Artist artist, Model model) {
         model.addAttribute("artist", artist);
         log.info("Editing artist="+artist);
         return "rmmusic/artistEdit";

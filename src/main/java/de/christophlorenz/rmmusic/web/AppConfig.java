@@ -1,9 +1,7 @@
 package de.christophlorenz.rmmusic.web;
 
-import org.apache.log4j.Logger;
-import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.context.embedded.ErrorPage;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -14,11 +12,13 @@ import org.springframework.http.HttpStatus;
 @Configuration
 public class AppConfig {
 
-    private static final Logger log = Logger.getLogger(AppConfig.class);
+    private static final Logger log = LogManager.getLogger(AppConfig.class);
 
     static {
         log.info("AppConfig");
     }
+
+    /*
 
     @Bean
     public EmbeddedServletContainerCustomizer containerCustomizer(){
@@ -34,4 +34,6 @@ public class AppConfig {
         }
 
     }
+
+     */
 }

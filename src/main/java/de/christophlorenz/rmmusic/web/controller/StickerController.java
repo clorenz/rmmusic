@@ -7,7 +7,8 @@ import de.christophlorenz.rmmusic.persistence.jpa2.MediumRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.MediumTagRepository;
 import de.christophlorenz.rmmusic.web.model.Sticker;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +30,7 @@ import java.util.Locale;
 @RequestMapping("/rmmusic/sticker")
 public class StickerController {
 
-    private static final Logger log = Logger.getLogger(StickerController.class);
+    private static final Logger log = LogManager.getLogger(StickerController.class);
 
     @Autowired
     MediumTagRepository mediumTagRepository;
@@ -99,14 +100,14 @@ public class StickerController {
     public String deleteSticker(Model model,
                                 RedirectAttributes redirectAttributes) {
         List<MediumTag> oldMediumTags = mediumTagRepository.findByUserNameAndAction("clorenz", "sticker.backup");
-        mediumTagRepository.delete(oldMediumTags);
+        mediumTagRepository.deleteAll(oldMediumTags);
 
         List<MediumTag> mediumTags = mediumTagRepository.findByUserNameAndAction("clorenz", "sticker");
         for ( MediumTag mediumTag: mediumTags ) {
             mediumTag.setAction("sticker.backup");
         }
 
-        mediumTagRepository.save(mediumTags);
+        mediumTagRepository.saveAll(mediumTags);
 
         redirectAttributes.addFlashAttribute("success", "Deleted stickers");
         return "redirect:/rmmusic/";

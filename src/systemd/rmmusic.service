@@ -1,0 +1,13 @@
+[Unit]
+Description=rmmusic - Music management application
+
+[Service]
+WorkingDirectory=/opt/rmmusic
+ExecStart=/usr/bin/java -jar /opt/rmmusic/rmmusic-0.6.0.jar > /tmp/rmmusic.log
+User=nobody
+Type=simple
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

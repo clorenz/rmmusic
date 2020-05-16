@@ -2,14 +2,14 @@ rmmusic is the successor wmmusic, a web based music inventory system.
 
 The following techniques are used:
 
-- Java 8
+- Java 11
 - Spring (Boot, MVC, REST, HATEOAS, Data)
 - JPA2
 - Hibernate
 - Flyway
-- PostgreSQL 9
+- PostgreSQL 12
 - Thymeleaf
 - HTML 5 / CSS / JQuery
 - JUnit 4
-- Gradle
+- Maven
 - IntelliJ IDEA

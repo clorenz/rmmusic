@@ -1,7 +1,8 @@
 package de.christophlorenz.rmmusic.web.controller;
 
 import de.christophlorenz.rmmusic.persistence.jpa2.ArtistRepository;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,7 @@ import java.util.Date;
 @RequestMapping("/rmmusic")
 public class RootController {
 
-    static final Logger log = Logger.getLogger(RootController.class);
+    static final Logger log = LogManager.getLogger(RootController.class);
 
     @Autowired
     ArtistRepository artistRepository;
