@@ -6,6 +6,7 @@ import de.christophlorenz.rmmusic.model.TagMediumId;
 import de.christophlorenz.rmmusic.persistence.jpa2.MediumRepository;
 import de.christophlorenz.rmmusic.persistence.jpa2.MediumTagRepository;
 import de.christophlorenz.rmmusic.web.model.Sticker;
+import java.util.Collections;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -61,6 +62,8 @@ public class StickerController {
                 log.error("Cannot add sticker for ID="+mediumTag.getId().getMediumId()+": ",e);
             }
         }
+
+        Collections.sort(stickers);
 
         model.addAttribute("stickers", stickers);
 
