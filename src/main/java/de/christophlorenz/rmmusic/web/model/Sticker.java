@@ -1,11 +1,12 @@
 package de.christophlorenz.rmmusic.web.model;
 
 import java.util.Date;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by clorenz on 09.06.15.
  */
-public class Sticker {
+public class Sticker implements Comparable<Sticker> {
 
     public String mediumCode;
     public Date date;
@@ -51,5 +52,10 @@ public class Sticker {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public int compareTo(Sticker sticker) {
+        return StringUtils.compare(mediumCode.substring(0,1), sticker.getMediumCode().substring(0,1));
     }
 }
