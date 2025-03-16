@@ -209,6 +209,7 @@ public class RecordingController {
             model.addAttribute("display_side", recording.getMedium().hasSides());
             model.addAttribute("display_track", recording.getMedium().hasTracks());
             model.addAttribute("display_counter", recording.getMedium().hasCounter());
+            model.addAttribute("medium_id", recording.getMedium().getId());
 
             log.info("Mediumcode="+mediumcode);
 
@@ -262,6 +263,7 @@ public class RecordingController {
 
             for (Map.Entry<Integer, String> type : Medium.TYPECODES.entrySet() ) {
                 if ( type.getValue().equals(typeCode)) {
+                    log.info("Selecting by type=" + type.getKey() + " and code=" + code);
                     Medium medium = mediumRepository.findByTypeAndCode(type.getKey(), code);
                     recording.setMedium(medium);
                     log.info("Set Medium="+medium+" to recording="+recording);
